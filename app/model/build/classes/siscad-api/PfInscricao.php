@@ -55,16 +55,27 @@ private $_errorMessage = '';
   public function getInscricao($id){
 
     if($id !== null){
-      $query = $this->getById($id);
+      $query = $this->_getById($id);
+
+      if(!is_null($query)){
+        $response = $query->toArray();
+        $response["pf_informacoes"] = $this->_getRelation(PfInformacoesQuery::create()->findPK($query->getFkIdPfInformacoes()));
+
+        return $response;
+      }else{
+        throw new Exception('Nenhum resultado encontrado', 400);
+      }
+
     }else{
-      $query = PfInscricaoQuery::create()->find();
+      $query = $this->_getCollection();
+
+      if(!is_null($query)){
+        return $query->toArray();
+      }else{
+        throw new Exception('Nenhum resultado encontrado', 400);
+      }
     }
 
-    if(!is_null($query)){
-      return $query->toArray();
-    }else{
-      throw new Exception('Nenhum resultado encontrado', 400);
-    }
   }
 
   /*
@@ -72,7 +83,7 @@ private $_errorMessage = '';
   */
   public function setInscricao($id, $fields){
 
-    $query = $this->getById($id);
+    $query = $this->_getById($id);
 
     foreach ($fields as $key => $value) {
       //verifica se o  campo existe na tabela
@@ -130,10 +141,8 @@ private $_errorMessage = '';
   /*
 
   */
-  private function getById($id){
-    if($id !== null){
-        $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
-    }
+  private function _getById($id){
+    $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
     return PfInscricaoQuery::create()->findPK($id);
   }
 
@@ -144,6 +153,18 @@ private $_errorMessage = '';
 
   private function _sanitize($key, $value){
     return filter_var($value, $this->_columns[$key]['sanitize']);
+  }
+
+  private function _getCollection(){
+    return PfInscricaoQuery::create()->find();
+  }
+
+  private function _getRelation($obj){
+    if(!is_null($obj)){
+      return $obj->toArray();
+    }else{
+      return null;
+    }
   }
 
 }

@@ -7,7 +7,7 @@ class Endereco{
 
     $model = new PfjEndereco();
 
-    $response = $model->getEndereco($id);
+    $response = $model->getEnderecoM($id);
     $response = Utils::utf8_converter($response);
 
     return json_encode($response);
@@ -19,7 +19,7 @@ class Endereco{
     $model = new PfjEndereco();
 
     if(!empty($fields)){
-      $model->setEndereco($id, $fields);
+      $model->setEnderecoM($id, $fields);
       $response = 'Atualizado com sucesso';
     }else{
       throw new Exception('Dados inválidos', 400);
