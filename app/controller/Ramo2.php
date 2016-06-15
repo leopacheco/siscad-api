@@ -1,25 +1,25 @@
 <?php
 
-class Graduacao{
+class Ramo2{
 
 
-  public function getGraduacao($id){
+  public function getRamo2($id){
 
-    $model = new PfGraduacao();
+    $model = new TabRamo2();
 
-    $response = $model->getGraduacao($id);
+    $response = $model->getRamo2($id);
     $response = Utils::utf8_converter($response);
 
     return json_encode($response);
   }
 
 
-  public function setGraduacao($id, $fields){
+  public function setRamo2($id, $fields){
 
-    $model = new PfGraduacao();
+    $model = new TabRamo2();
 
     if(!empty($fields)){
-      $model->setGraduacao($id, $fields);
+      $model->setRamo2($id, $fields);
       $response = 'Atualizado com sucesso';
     }else{
       throw new Exception('Dados inválidos', 400);
@@ -28,11 +28,11 @@ class Graduacao{
     return json_encode($response);
   }
 
-  public function getGraduacaoWithFilters($filters){
+  public function getRamo2WithFilters($filters){
 
-    $model = new PfGraduacao();
+    $model = new TabRamo2();
     if(!empty($filters)){
-      $response = $model->getGraduacaoWithFilters($filters);
+      $response = $model->getRamo2WithFilters($filters);
       $response = Utils::utf8_converter($response);
     }
     return json_encode($response);

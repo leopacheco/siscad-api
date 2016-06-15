@@ -1,25 +1,25 @@
 <?php
 
-class Graduacao{
+class Uf{
 
 
-  public function getGraduacao($id){
+  public function getUf($id){
 
-    $model = new PfGraduacao();
+    $ufModel = new TabUf();
 
-    $response = $model->getGraduacao($id);
+    $response = $ufModel->getUf($id);
     $response = Utils::utf8_converter($response);
 
     return json_encode($response);
   }
 
 
-  public function setGraduacao($id, $fields){
+  public function setUf($id, $fields){
 
-    $model = new PfGraduacao();
+    $ufModel = new TabUf();
 
     if(!empty($fields)){
-      $model->setGraduacao($id, $fields);
+      $ufModel->setUf($id, $fields);
       $response = 'Atualizado com sucesso';
     }else{
       throw new Exception('Dados inválidos', 400);
@@ -28,11 +28,11 @@ class Graduacao{
     return json_encode($response);
   }
 
-  public function getGraduacaoWithFilters($filters){
+  public function getUfWithFilters($filters){
 
-    $model = new PfGraduacao();
+    $ufModel = new TabUf();
     if(!empty($filters)){
-      $response = $model->getGraduacaoWithFilters($filters);
+      $response = $ufModel->getUfWithFilters($filters);
       $response = Utils::utf8_converter($response);
     }
     return json_encode($response);

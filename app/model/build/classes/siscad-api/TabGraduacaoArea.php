@@ -1,7 +1,4 @@
 <?php
-
-
-
 /**
  * Skeleton subclass for representing a row from the 'tab_graduacao_area' table.
  *
@@ -15,13 +12,18 @@
  */
 class TabGraduacaoArea extends BaseTabGraduacaoArea
 {
-    private $_valid = true;
-    private $_errorMessage = '';
+  private $_columns = array("id_tab_graduacao_area" => array("sanitize"=>FILTER_SANITIZE_NUMBER_INT, "size"=>"5"),
+                            "descricao" => array("sanitize"=>FILTER_SANITIZE_STRING, "size"=>"50")
+                            );
 
-  public function getGraduacaoArea($id = null){
+  private $_valid = false;
+  private $_errorMessage = '';
+  /*
+
+  */
+  public function getGraduacaoArea($id){
 
     if($id !== null){
-      $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
       $graduacaoArea = $this->getById($id);
     }else{
       $graduacaoArea = TabGraduacaoAreaQuery::create()->find();
@@ -29,51 +31,89 @@ class TabGraduacaoArea extends BaseTabGraduacaoArea
 
     if(!is_null($graduacaoArea)){
       return $graduacaoArea->toArray();
+    }else{
+      throw new Exception('Nenhum resultado encontrado', 400);
     }
-      return false;
   }
 
+  /*
 
+  */
   public function setGraduacaoArea($id, $fields){
-    //$graduacaoArea = $this->getById($id);
-    $graduacaoArea = new TabGraduacaoAreaQuery();
-    var_dump($graduacaoArea);
-/*
-    if($graduacaoArea !== null){
-      $this->validateFields($fields);
-    }*/
-    if($this->_valid){
-      foreach ($fields as $key => $value) {
-        $campo = $this->dashesToCamelCase($key);
-        $graduacaoArea->$campo = $value;
+
+    $graduacaoArea = $this->getById($id);
+    //var_dump($graduacaoArea);
+    foreach ($fields as $key => $value) {
+      //verifica se o  campo existe na tabela
+      if(array_key_exists($key, $this->_columns)){
+          $value = $this->_sanitize($key, $value);
+
+        if($this->_validate($key, $value)){
+          $column = 'set'.Utils::dashesToCamelCase($key);
+          $graduacaoArea->$column($value);
+        }
       }
 
-      //$graduacaoArea->save();
+    }
 
-      var_dump($graduacaoArea);
+    if($this->_valid){
+      $graduacaoArea->save();
+      return true;
     }else{
-      return $this->_errorMessage;
+      throw new Exception($this->_errorMessage, 400);
     }
 
   }
 
-  private function dashesToCamelCase($string){
-    $str = str_replace(' ', '', ucwords(str_replace('-', ' ', $string)));
-    $str[0] = strtolower($str[0]);
-    return $str;
+
+  /*
+
+  */
+  public function getGraduacaoAreaWithFilters($filters){
+
+    $parsedFilters = Utils::parseFilters($filters);
+
+    if(is_array($parsedFilters)){
+      //compara os filtos enviados com as colunas da tabela
+      $validFilters = array_intersect_key($parsedFilters, $this->_columns);
+      if(count($validFilters) > 0){
+        $query =  TabGraduacaoAreaQuery::create();
+
+        foreach ($validFilters as $key => $value) {
+          $query->where("TabGraduacaoArea.{$key} like ?", "%{$value}%");
+        }
+
+        $graduacaoArea = $query->find();
+        if(count($graduacaoArea) > 0){
+          return $graduacaoArea->toArray();
+        }else{
+          throw new Exception('Nenhum resultado encontrado', 400);
+        }
+
+      }else{
+        throw new Exception('Parâmetros de busca inválidos', 400);
+      }
+    }
   }
 
+  /*
 
-  private function validateFields($fields){
-    $this->_valid = true;
-  }
-
-
+  */
   private function getById($id){
     if($id !== null){
         $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
     }
     return TabGraduacaoAreaQuery::create()->findPK($id);
   }
+
+  private function _validate($key, $value){
+    $this->_valid = true;
+    return true;
+  }
+
+  private function _sanitize($key, $value){
+    return filter_var($value, $this->_columns[$key]['sanitize']);
+  }
+
 
 }

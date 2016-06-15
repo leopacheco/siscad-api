@@ -11,47 +11,29 @@ set_include_path("app/model/build/classes" . PATH_SEPARATOR . get_include_path()
 
 //Iniciando a aplicação
 $app = new \Slim\Slim(array(
-    'debug' => true,
-    'mode' => 'development',
-    'log.enabled' => true
+    'debug' => false,
+    'mode' => 'development'
 ));
 // Middleware de autenticação
 $app->add(new \Autenticacao());
 // setando headers de resposta para json
 $app->response->headers->set('Content-Type', 'application/json; charset=utf-8');
 
-
-$app->get('/', function () use ($app) {
-  $app->response->setStatus(200);
-  $app->response->body(json_encode(array("Nome"=>APP_NAME, "Versão"=>APP_VERSION)));
-
-});
-
-
-//Endpoints Graduação
-//retorna a lista de graduações ou uma graduação específica
-$app->get('/graduacao-area(/:id)', function ($id = null) use ($app) {
-  $graduacao = new Graduacao;
-  $app->response->body($graduacao->getGraduacaoArea($id));
-});
-
-$app->put('/graduacao-area/:id', function ($id = null) use ($app) {
-  $graduacao = new Graduacao;
-  $graduacao->setGraduacaoArea($id, $app->request->params());
-  $app->response->body();
-});
-
-// ERROR HANDLING
-// 500
-$app->error(function (\Exception $e) use ($app) {
-    $app->response->setStatus(500);
-    echo json_encode(["Erro"=> $e->getMessage()]);
-});
-
-//404
-$app->notFound(function () use ($app) {
-  $app->response->setStatus(404);
-  echo json_encode(["Erro"=> "URL inválida"]);
-});
+//routes
+require 'app/route/index.php';
+require 'app/route/correio.php';
+require 'app/route/endereco.php';
+require 'app/route/graduacao.php';
+require 'app/route/graduacao-area.php';
+require 'app/route/graduacao-nivel.php';
+require 'app/route/ies.php';
+require 'app/route/inscricao.php';
+require 'app/route/informacoes.php';
+require 'app/route/profissao.php';
+require 'app/route/ramo1.php';
+require 'app/route/ramo2.php';
+require 'app/route/ramo3.php';
+require 'app/route/uf.php';
+require 'app/route/error.php';
 
 $app->run();

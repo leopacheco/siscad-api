@@ -1,25 +1,25 @@
 <?php
 
-class Graduacao{
+class Correio{
 
 
-  public function getGraduacao($id){
+  public function getCorreio($id){
 
-    $model = new PfGraduacao();
+    $model = new TabCorreio();
 
-    $response = $model->getGraduacao($id);
+    $response = $model->getCorreio($id);
     $response = Utils::utf8_converter($response);
 
     return json_encode($response);
   }
 
 
-  public function setGraduacao($id, $fields){
+  public function setCorreio($id, $fields){
 
-    $model = new PfGraduacao();
+    $model = new TabCorreio();
 
     if(!empty($fields)){
-      $model->setGraduacao($id, $fields);
+      $model->setCorreio($id, $fields);
       $response = 'Atualizado com sucesso';
     }else{
       throw new Exception('Dados inválidos', 400);
@@ -28,11 +28,11 @@ class Graduacao{
     return json_encode($response);
   }
 
-  public function getGraduacaoWithFilters($filters){
+  public function getCorreioWithFilters($filters){
 
-    $model = new PfGraduacao();
+    $model = new TabCorreio();
     if(!empty($filters)){
-      $response = $model->getGraduacaoWithFilters($filters);
+      $response = $model->getCorreioWithFilters($filters);
       $response = Utils::utf8_converter($response);
     }
     return json_encode($response);

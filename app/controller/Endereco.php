@@ -1,25 +1,25 @@
 <?php
 
-class Graduacao{
+class Endereco{
 
 
-  public function getGraduacao($id){
+  public function getEndereco($id){
 
-    $model = new PfGraduacao();
+    $model = new PfjEndereco();
 
-    $response = $model->getGraduacao($id);
+    $response = $model->getEndereco($id);
     $response = Utils::utf8_converter($response);
 
     return json_encode($response);
   }
 
 
-  public function setGraduacao($id, $fields){
+  public function setEndereco($id, $fields){
 
-    $model = new PfGraduacao();
+    $model = new PfjEndereco();
 
     if(!empty($fields)){
-      $model->setGraduacao($id, $fields);
+      $model->setEndereco($id, $fields);
       $response = 'Atualizado com sucesso';
     }else{
       throw new Exception('Dados inválidos', 400);
@@ -28,11 +28,11 @@ class Graduacao{
     return json_encode($response);
   }
 
-  public function getGraduacaoWithFilters($filters){
+  public function getEnderecoWithFilters($filters){
 
-    $model = new PfGraduacao();
+    $model = new PfjEndereco();
     if(!empty($filters)){
-      $response = $model->getGraduacaoWithFilters($filters);
+      $response = $model->getEnderecoWithFilters($filters);
       $response = Utils::utf8_converter($response);
     }
     return json_encode($response);

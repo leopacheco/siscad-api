@@ -1,25 +1,26 @@
+
 <?php
 
-class Graduacao{
+class Inscricao{
 
 
-  public function getGraduacao($id){
+  public function getInscricao($id){
 
-    $model = new PfGraduacao();
+    $model = new PfInscricao();
 
-    $response = $model->getGraduacao($id);
+    $response = $model->getInscricao($id);
     $response = Utils::utf8_converter($response);
 
     return json_encode($response);
   }
 
 
-  public function setGraduacao($id, $fields){
+  public function setInscricao($id, $fields){
 
-    $model = new PfGraduacao();
+    $model = new PfInscricao();
 
     if(!empty($fields)){
-      $model->setGraduacao($id, $fields);
+      $model->setInscricao($id, $fields);
       $response = 'Atualizado com sucesso';
     }else{
       throw new Exception('Dados inválidos', 400);
@@ -28,11 +29,11 @@ class Graduacao{
     return json_encode($response);
   }
 
-  public function getGraduacaoWithFilters($filters){
+  public function getInscricaoWithFilters($filters){
 
-    $model = new PfGraduacao();
+    $model = new PfInscricao();
     if(!empty($filters)){
-      $response = $model->getGraduacaoWithFilters($filters);
+      $response = $model->getInscricaoWithFilters($filters);
       $response = Utils::utf8_converter($response);
     }
     return json_encode($response);
