@@ -4,12 +4,22 @@
 $conf = array (
   'datasources' => 
   array (
-    'siscad-api' => 
+    'siscad' => 
     array (
       'adapter' => 'mysql',
       'connection' => 
       array (
         'dsn' => 'mysql:host=localhost;dbname=siscad',
+        'user' => 'root',
+        'password' => '',
+      ),
+    ),
+    'siscad_autenticacao' => 
+    array (
+      'adapter' => 'mysql',
+      'connection' => 
+      array (
+        'dsn' => 'mysql:host=localhost;dbname=siscad_autenticacao',
         'user' => 'root',
         'password' => '',
       ),
