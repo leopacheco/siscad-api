@@ -3,7 +3,7 @@
 
 
 /**
- * This class defines the structure of the 'usuario' table.
+ * This class defines the structure of the 'log_acesso' table.
  *
  *
  *
@@ -14,13 +14,13 @@
  *
  * @package    propel.generator.siscad_autenticacao.map
  */
-class UsuarioTableMap extends TableMap
+class LogAcessoTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'siscad_autenticacao.map.UsuarioTableMap';
+    const CLASS_NAME = 'siscad_autenticacao.map.LogAcessoTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -32,18 +32,16 @@ class UsuarioTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('usuario');
-        $this->setPhpName('Usuario');
-        $this->setClassname('Usuario');
+        $this->setName('log_acesso');
+        $this->setPhpName('LogAcesso');
+        $this->setClassname('LogAcesso');
         $this->setPackage('siscad_autenticacao');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('nome', 'Nome', 'VARCHAR', true, 30, null);
-        $this->addColumn('descricao', 'Descricao', 'VARCHAR', false, 255, null);
-        $this->addColumn('secret', 'Secret', 'VARCHAR', true, 30, null);
-        $this->addColumn('ativo', 'Ativo', 'BOOLEAN', true, 1, null);
-        $this->addForeignKey('perfil_id', 'PerfilId', 'INTEGER', 'perfil', 'id', true, null, null);
+        $this->addForeignKey('usuario_id', 'UsuarioId', 'INTEGER', 'usuario', 'id', true, null, null);
+        $this->addColumn('nonce', 'Nonce', 'VARCHAR', true, 20, null);
+        $this->addColumn('data', 'Data', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
         // validators
     } // initialize()
 
@@ -52,8 +50,7 @@ class UsuarioTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Perfil', 'Perfil', RelationMap::MANY_TO_ONE, array('perfil_id' => 'id', ), null, null);
-        $this->addRelation('LogAcesso', 'LogAcesso', RelationMap::ONE_TO_MANY, array('id' => 'usuario_id', ), null, null, 'LogAcessos');
+        $this->addRelation('Usuario', 'Usuario', RelationMap::MANY_TO_ONE, array('usuario_id' => 'id', ), null, null);
     } // buildRelations()
 
-} // UsuarioTableMap
+} // LogAcessoTableMap

@@ -16,7 +16,7 @@
 class Usuario extends BaseUsuario
 {
 
-  public function getUserByName($name){
+  public static function getUserByName($name){
     return UsuarioQuery::create()
                             ->filterByAtivo(1)
                             ->findOneByNome($name);

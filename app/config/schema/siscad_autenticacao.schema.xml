@@ -12,6 +12,22 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
+  <table name="log_acesso" phpName="LogAcesso" idMethod="native">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="usuario_id" phpName="UsuarioId" type="INTEGER" required="true"/>
+    <column name="nonce" phpName="Nonce" type="VARCHAR" size="20" required="true"/>
+    <column name="data" phpName="Data" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
+    <foreign-key foreignTable="usuario" name="fk_log_acesso_usuario_id" onDelete="RESTRICT" onUpdate="RESTRICT">
+      <reference local="usuario_id" foreign="id"/>
+    </foreign-key>
+    <unique name="usuario_id">
+      <unique-column name="usuario_id"/>
+      <unique-column name="nonce"/>
+    </unique>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
   <table name="perfil" phpName="Perfil" idMethod="native">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="nome" phpName="Nome" type="VARCHAR" size="30" required="true"/>

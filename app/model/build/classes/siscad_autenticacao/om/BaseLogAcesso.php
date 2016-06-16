@@ -2,24 +2,24 @@
 
 
 /**
- * Base class that represents a row from the 'usuario' table.
+ * Base class that represents a row from the 'log_acesso' table.
  *
  *
  *
  * @package    propel.generator.siscad_autenticacao.om
  */
-abstract class BaseUsuario extends BaseObject implements Persistent
+abstract class BaseLogAcesso extends BaseObject implements Persistent
 {
     /**
      * Peer class name
      */
-    const PEER = 'UsuarioPeer';
+    const PEER = 'LogAcessoPeer';
 
     /**
      * The Peer class.
      * Instance provides a convenient way of calling static methods on a class
      * that calling code may not be able to identify.
-     * @var        UsuarioPeer
+     * @var        LogAcessoPeer
      */
     protected static $peer;
 
@@ -36,45 +36,28 @@ abstract class BaseUsuario extends BaseObject implements Persistent
     protected $id;
 
     /**
-     * The value for the nome field.
-     * @var        string
-     */
-    protected $nome;
-
-    /**
-     * The value for the descricao field.
-     * @var        string
-     */
-    protected $descricao;
-
-    /**
-     * The value for the secret field.
-     * @var        string
-     */
-    protected $secret;
-
-    /**
-     * The value for the ativo field.
-     * @var        boolean
-     */
-    protected $ativo;
-
-    /**
-     * The value for the perfil_id field.
+     * The value for the usuario_id field.
      * @var        int
      */
-    protected $perfil_id;
+    protected $usuario_id;
 
     /**
-     * @var        Perfil
+     * The value for the nonce field.
+     * @var        string
      */
-    protected $aPerfil;
+    protected $nonce;
 
     /**
-     * @var        PropelObjectCollection|LogAcesso[] Collection to store aggregation of LogAcesso objects.
+     * The value for the data field.
+     * Note: this column has a database default value of: (expression) CURRENT_TIMESTAMP
+     * @var        string
      */
-    protected $collLogAcessos;
-    protected $collLogAcessosPartial;
+    protected $data;
+
+    /**
+     * @var        Usuario
+     */
+    protected $aUsuario;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -97,10 +80,24 @@ abstract class BaseUsuario extends BaseObject implements Persistent
     protected $alreadyInClearAllReferencesDeep = false;
 
     /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see        __construct()
      */
-    protected $logAcessosScheduledForDeletion = null;
+    public function applyDefaultValues()
+    {
+    }
+
+    /**
+     * Initializes internal state of BaseLogAcesso object.
+     * @see        applyDefaults()
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->applyDefaultValues();
+    }
 
     /**
      * Get the [id] column value.
@@ -114,65 +111,72 @@ abstract class BaseUsuario extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [nome] column value.
-     *
-     * @return string
-     */
-    public function getNome()
-    {
-
-        return $this->nome;
-    }
-
-    /**
-     * Get the [descricao] column value.
-     *
-     * @return string
-     */
-    public function getDescricao()
-    {
-
-        return $this->descricao;
-    }
-
-    /**
-     * Get the [secret] column value.
-     *
-     * @return string
-     */
-    public function getSecret()
-    {
-
-        return $this->secret;
-    }
-
-    /**
-     * Get the [ativo] column value.
-     *
-     * @return boolean
-     */
-    public function getAtivo()
-    {
-
-        return $this->ativo;
-    }
-
-    /**
-     * Get the [perfil_id] column value.
+     * Get the [usuario_id] column value.
      *
      * @return int
      */
-    public function getPerfilId()
+    public function getUsuarioId()
     {
 
-        return $this->perfil_id;
+        return $this->usuario_id;
+    }
+
+    /**
+     * Get the [nonce] column value.
+     *
+     * @return string
+     */
+    public function getNonce()
+    {
+
+        return $this->nonce;
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [data] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getData($format = 'Y-m-d H:i:s')
+    {
+        if ($this->data === null) {
+            return null;
+        }
+
+        if ($this->data === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->data);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->data, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
     }
 
     /**
      * Set the value of [id] column.
      *
      * @param  int $v new value
-     * @return Usuario The current object (for fluent API support)
+     * @return LogAcesso The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -182,7 +186,7 @@ abstract class BaseUsuario extends BaseObject implements Persistent
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[] = UsuarioPeer::ID;
+            $this->modifiedColumns[] = LogAcessoPeer::ID;
         }
 
 
@@ -190,121 +194,73 @@ abstract class BaseUsuario extends BaseObject implements Persistent
     } // setId()
 
     /**
-     * Set the value of [nome] column.
-     *
-     * @param  string $v new value
-     * @return Usuario The current object (for fluent API support)
-     */
-    public function setNome($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->nome !== $v) {
-            $this->nome = $v;
-            $this->modifiedColumns[] = UsuarioPeer::NOME;
-        }
-
-
-        return $this;
-    } // setNome()
-
-    /**
-     * Set the value of [descricao] column.
-     *
-     * @param  string $v new value
-     * @return Usuario The current object (for fluent API support)
-     */
-    public function setDescricao($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->descricao !== $v) {
-            $this->descricao = $v;
-            $this->modifiedColumns[] = UsuarioPeer::DESCRICAO;
-        }
-
-
-        return $this;
-    } // setDescricao()
-
-    /**
-     * Set the value of [secret] column.
-     *
-     * @param  string $v new value
-     * @return Usuario The current object (for fluent API support)
-     */
-    public function setSecret($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->secret !== $v) {
-            $this->secret = $v;
-            $this->modifiedColumns[] = UsuarioPeer::SECRET;
-        }
-
-
-        return $this;
-    } // setSecret()
-
-    /**
-     * Sets the value of the [ativo] column.
-     * Non-boolean arguments are converted using the following rules:
-     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     *
-     * @param boolean|integer|string $v The new value
-     * @return Usuario The current object (for fluent API support)
-     */
-    public function setAtivo($v)
-    {
-        if ($v !== null) {
-            if (is_string($v)) {
-                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-            } else {
-                $v = (boolean) $v;
-            }
-        }
-
-        if ($this->ativo !== $v) {
-            $this->ativo = $v;
-            $this->modifiedColumns[] = UsuarioPeer::ATIVO;
-        }
-
-
-        return $this;
-    } // setAtivo()
-
-    /**
-     * Set the value of [perfil_id] column.
+     * Set the value of [usuario_id] column.
      *
      * @param  int $v new value
-     * @return Usuario The current object (for fluent API support)
+     * @return LogAcesso The current object (for fluent API support)
      */
-    public function setPerfilId($v)
+    public function setUsuarioId($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
-        if ($this->perfil_id !== $v) {
-            $this->perfil_id = $v;
-            $this->modifiedColumns[] = UsuarioPeer::PERFIL_ID;
+        if ($this->usuario_id !== $v) {
+            $this->usuario_id = $v;
+            $this->modifiedColumns[] = LogAcessoPeer::USUARIO_ID;
         }
 
-        if ($this->aPerfil !== null && $this->aPerfil->getId() !== $v) {
-            $this->aPerfil = null;
+        if ($this->aUsuario !== null && $this->aUsuario->getId() !== $v) {
+            $this->aUsuario = null;
         }
 
 
         return $this;
-    } // setPerfilId()
+    } // setUsuarioId()
+
+    /**
+     * Set the value of [nonce] column.
+     *
+     * @param  string $v new value
+     * @return LogAcesso The current object (for fluent API support)
+     */
+    public function setNonce($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->nonce !== $v) {
+            $this->nonce = $v;
+            $this->modifiedColumns[] = LogAcessoPeer::NONCE;
+        }
+
+
+        return $this;
+    } // setNonce()
+
+    /**
+     * Sets the value of [data] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return LogAcesso The current object (for fluent API support)
+     */
+    public function setData($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->data !== null || $dt !== null) {
+            $currentDateAsString = ($this->data !== null && $tmpDt = new DateTime($this->data)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->data = $newDateAsString;
+                $this->modifiedColumns[] = LogAcessoPeer::DATA;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setData()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -339,11 +295,9 @@ abstract class BaseUsuario extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->nome = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->descricao = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->secret = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->ativo = ($row[$startcol + 4] !== null) ? (boolean) $row[$startcol + 4] : null;
-            $this->perfil_id = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+            $this->usuario_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+            $this->nonce = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+            $this->data = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -353,10 +307,10 @@ abstract class BaseUsuario extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 6; // 6 = UsuarioPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 4; // 4 = LogAcessoPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating Usuario object", $e);
+            throw new PropelException("Error populating LogAcesso object", $e);
         }
     }
 
@@ -376,8 +330,8 @@ abstract class BaseUsuario extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
-        if ($this->aPerfil !== null && $this->perfil_id !== $this->aPerfil->getId()) {
-            $this->aPerfil = null;
+        if ($this->aUsuario !== null && $this->usuario_id !== $this->aUsuario->getId()) {
+            $this->aUsuario = null;
         }
     } // ensureConsistency
 
@@ -402,13 +356,13 @@ abstract class BaseUsuario extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(UsuarioPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(LogAcessoPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $stmt = UsuarioPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+        $stmt = LogAcessoPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
         $row = $stmt->fetch(PDO::FETCH_NUM);
         $stmt->closeCursor();
         if (!$row) {
@@ -418,9 +372,7 @@ abstract class BaseUsuario extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aPerfil = null;
-            $this->collLogAcessos = null;
-
+            $this->aUsuario = null;
         } // if (deep)
     }
 
@@ -441,12 +393,12 @@ abstract class BaseUsuario extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(UsuarioPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(LogAcessoPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = UsuarioQuery::create()
+            $deleteQuery = LogAcessoQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -484,7 +436,7 @@ abstract class BaseUsuario extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(UsuarioPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(LogAcessoPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
@@ -504,7 +456,7 @@ abstract class BaseUsuario extends BaseObject implements Persistent
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                UsuarioPeer::addInstanceToPool($this);
+                LogAcessoPeer::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -539,11 +491,11 @@ abstract class BaseUsuario extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aPerfil !== null) {
-                if ($this->aPerfil->isModified() || $this->aPerfil->isNew()) {
-                    $affectedRows += $this->aPerfil->save($con);
+            if ($this->aUsuario !== null) {
+                if ($this->aUsuario->isModified() || $this->aUsuario->isNew()) {
+                    $affectedRows += $this->aUsuario->save($con);
                 }
-                $this->setPerfil($this->aPerfil);
+                $this->setUsuario($this->aUsuario);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -555,23 +507,6 @@ abstract class BaseUsuario extends BaseObject implements Persistent
                 }
                 $affectedRows += 1;
                 $this->resetModified();
-            }
-
-            if ($this->logAcessosScheduledForDeletion !== null) {
-                if (!$this->logAcessosScheduledForDeletion->isEmpty()) {
-                    LogAcessoQuery::create()
-                        ->filterByPrimaryKeys($this->logAcessosScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->logAcessosScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collLogAcessos !== null) {
-                foreach ($this->collLogAcessos as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
             }
 
             $this->alreadyInSave = false;
@@ -594,33 +529,27 @@ abstract class BaseUsuario extends BaseObject implements Persistent
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[] = UsuarioPeer::ID;
+        $this->modifiedColumns[] = LogAcessoPeer::ID;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . UsuarioPeer::ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . LogAcessoPeer::ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(UsuarioPeer::ID)) {
+        if ($this->isColumnModified(LogAcessoPeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
-        if ($this->isColumnModified(UsuarioPeer::NOME)) {
-            $modifiedColumns[':p' . $index++]  = '`nome`';
+        if ($this->isColumnModified(LogAcessoPeer::USUARIO_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`usuario_id`';
         }
-        if ($this->isColumnModified(UsuarioPeer::DESCRICAO)) {
-            $modifiedColumns[':p' . $index++]  = '`descricao`';
+        if ($this->isColumnModified(LogAcessoPeer::NONCE)) {
+            $modifiedColumns[':p' . $index++]  = '`nonce`';
         }
-        if ($this->isColumnModified(UsuarioPeer::SECRET)) {
-            $modifiedColumns[':p' . $index++]  = '`secret`';
-        }
-        if ($this->isColumnModified(UsuarioPeer::ATIVO)) {
-            $modifiedColumns[':p' . $index++]  = '`ativo`';
-        }
-        if ($this->isColumnModified(UsuarioPeer::PERFIL_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`perfil_id`';
+        if ($this->isColumnModified(LogAcessoPeer::DATA)) {
+            $modifiedColumns[':p' . $index++]  = '`data`';
         }
 
         $sql = sprintf(
-            'INSERT INTO `usuario` (%s) VALUES (%s)',
+            'INSERT INTO `log_acesso` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -632,20 +561,14 @@ abstract class BaseUsuario extends BaseObject implements Persistent
                     case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case '`nome`':
-                        $stmt->bindValue($identifier, $this->nome, PDO::PARAM_STR);
+                    case '`usuario_id`':
+                        $stmt->bindValue($identifier, $this->usuario_id, PDO::PARAM_INT);
                         break;
-                    case '`descricao`':
-                        $stmt->bindValue($identifier, $this->descricao, PDO::PARAM_STR);
+                    case '`nonce`':
+                        $stmt->bindValue($identifier, $this->nonce, PDO::PARAM_STR);
                         break;
-                    case '`secret`':
-                        $stmt->bindValue($identifier, $this->secret, PDO::PARAM_STR);
-                        break;
-                    case '`ativo`':
-                        $stmt->bindValue($identifier, (int) $this->ativo, PDO::PARAM_INT);
-                        break;
-                    case '`perfil_id`':
-                        $stmt->bindValue($identifier, $this->perfil_id, PDO::PARAM_INT);
+                    case '`data`':
+                        $stmt->bindValue($identifier, $this->data, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -746,25 +669,17 @@ abstract class BaseUsuario extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aPerfil !== null) {
-                if (!$this->aPerfil->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aPerfil->getValidationFailures());
+            if ($this->aUsuario !== null) {
+                if (!$this->aUsuario->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aUsuario->getValidationFailures());
                 }
             }
 
 
-            if (($retval = UsuarioPeer::doValidate($this, $columns)) !== true) {
+            if (($retval = LogAcessoPeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
             }
 
-
-                if ($this->collLogAcessos !== null) {
-                    foreach ($this->collLogAcessos as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
 
 
             $this->alreadyInValidation = false;
@@ -785,7 +700,7 @@ abstract class BaseUsuario extends BaseObject implements Persistent
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = UsuarioPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = LogAcessoPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -805,19 +720,13 @@ abstract class BaseUsuario extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getNome();
+                return $this->getUsuarioId();
                 break;
             case 2:
-                return $this->getDescricao();
+                return $this->getNonce();
                 break;
             case 3:
-                return $this->getSecret();
-                break;
-            case 4:
-                return $this->getAtivo();
-                break;
-            case 5:
-                return $this->getPerfilId();
+                return $this->getData();
                 break;
             default:
                 return null;
@@ -842,18 +751,16 @@ abstract class BaseUsuario extends BaseObject implements Persistent
      */
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['Usuario'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['LogAcesso'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['Usuario'][$this->getPrimaryKey()] = true;
-        $keys = UsuarioPeer::getFieldNames($keyType);
+        $alreadyDumpedObjects['LogAcesso'][$this->getPrimaryKey()] = true;
+        $keys = LogAcessoPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getNome(),
-            $keys[2] => $this->getDescricao(),
-            $keys[3] => $this->getSecret(),
-            $keys[4] => $this->getAtivo(),
-            $keys[5] => $this->getPerfilId(),
+            $keys[1] => $this->getUsuarioId(),
+            $keys[2] => $this->getNonce(),
+            $keys[3] => $this->getData(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -861,11 +768,8 @@ abstract class BaseUsuario extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->aPerfil) {
-                $result['Perfil'] = $this->aPerfil->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->collLogAcessos) {
-                $result['LogAcessos'] = $this->collLogAcessos->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->aUsuario) {
+                $result['Usuario'] = $this->aUsuario->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -885,7 +789,7 @@ abstract class BaseUsuario extends BaseObject implements Persistent
      */
     public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = UsuarioPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = LogAcessoPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 
         $this->setByPosition($pos, $value);
     }
@@ -905,19 +809,13 @@ abstract class BaseUsuario extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setNome($value);
+                $this->setUsuarioId($value);
                 break;
             case 2:
-                $this->setDescricao($value);
+                $this->setNonce($value);
                 break;
             case 3:
-                $this->setSecret($value);
-                break;
-            case 4:
-                $this->setAtivo($value);
-                break;
-            case 5:
-                $this->setPerfilId($value);
+                $this->setData($value);
                 break;
         } // switch()
     }
@@ -941,14 +839,12 @@ abstract class BaseUsuario extends BaseObject implements Persistent
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
     {
-        $keys = UsuarioPeer::getFieldNames($keyType);
+        $keys = LogAcessoPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setNome($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setDescricao($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setSecret($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setAtivo($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setPerfilId($arr[$keys[5]]);
+        if (array_key_exists($keys[1], $arr)) $this->setUsuarioId($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setNonce($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setData($arr[$keys[3]]);
     }
 
     /**
@@ -958,14 +854,12 @@ abstract class BaseUsuario extends BaseObject implements Persistent
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(UsuarioPeer::DATABASE_NAME);
+        $criteria = new Criteria(LogAcessoPeer::DATABASE_NAME);
 
-        if ($this->isColumnModified(UsuarioPeer::ID)) $criteria->add(UsuarioPeer::ID, $this->id);
-        if ($this->isColumnModified(UsuarioPeer::NOME)) $criteria->add(UsuarioPeer::NOME, $this->nome);
-        if ($this->isColumnModified(UsuarioPeer::DESCRICAO)) $criteria->add(UsuarioPeer::DESCRICAO, $this->descricao);
-        if ($this->isColumnModified(UsuarioPeer::SECRET)) $criteria->add(UsuarioPeer::SECRET, $this->secret);
-        if ($this->isColumnModified(UsuarioPeer::ATIVO)) $criteria->add(UsuarioPeer::ATIVO, $this->ativo);
-        if ($this->isColumnModified(UsuarioPeer::PERFIL_ID)) $criteria->add(UsuarioPeer::PERFIL_ID, $this->perfil_id);
+        if ($this->isColumnModified(LogAcessoPeer::ID)) $criteria->add(LogAcessoPeer::ID, $this->id);
+        if ($this->isColumnModified(LogAcessoPeer::USUARIO_ID)) $criteria->add(LogAcessoPeer::USUARIO_ID, $this->usuario_id);
+        if ($this->isColumnModified(LogAcessoPeer::NONCE)) $criteria->add(LogAcessoPeer::NONCE, $this->nonce);
+        if ($this->isColumnModified(LogAcessoPeer::DATA)) $criteria->add(LogAcessoPeer::DATA, $this->data);
 
         return $criteria;
     }
@@ -980,8 +874,8 @@ abstract class BaseUsuario extends BaseObject implements Persistent
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(UsuarioPeer::DATABASE_NAME);
-        $criteria->add(UsuarioPeer::ID, $this->id);
+        $criteria = new Criteria(LogAcessoPeer::DATABASE_NAME);
+        $criteria->add(LogAcessoPeer::ID, $this->id);
 
         return $criteria;
     }
@@ -1022,18 +916,16 @@ abstract class BaseUsuario extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param object $copyObj An object of Usuario (or compatible) type.
+     * @param object $copyObj An object of LogAcesso (or compatible) type.
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setNome($this->getNome());
-        $copyObj->setDescricao($this->getDescricao());
-        $copyObj->setSecret($this->getSecret());
-        $copyObj->setAtivo($this->getAtivo());
-        $copyObj->setPerfilId($this->getPerfilId());
+        $copyObj->setUsuarioId($this->getUsuarioId());
+        $copyObj->setNonce($this->getNonce());
+        $copyObj->setData($this->getData());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1041,12 +933,6 @@ abstract class BaseUsuario extends BaseObject implements Persistent
             $copyObj->setNew(false);
             // store object hash to prevent cycle
             $this->startCopy = true;
-
-            foreach ($this->getLogAcessos() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addLogAcesso($relObj->copy($deepCopy));
-                }
-            }
 
             //unflag object copy
             $this->startCopy = false;
@@ -1067,7 +953,7 @@ abstract class BaseUsuario extends BaseObject implements Persistent
      * objects.
      *
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return Usuario Clone of current object.
+     * @return LogAcesso Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1087,38 +973,38 @@ abstract class BaseUsuario extends BaseObject implements Persistent
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return UsuarioPeer
+     * @return LogAcessoPeer
      */
     public function getPeer()
     {
         if (self::$peer === null) {
-            self::$peer = new UsuarioPeer();
+            self::$peer = new LogAcessoPeer();
         }
 
         return self::$peer;
     }
 
     /**
-     * Declares an association between this object and a Perfil object.
+     * Declares an association between this object and a Usuario object.
      *
-     * @param                  Perfil $v
-     * @return Usuario The current object (for fluent API support)
+     * @param                  Usuario $v
+     * @return LogAcesso The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setPerfil(Perfil $v = null)
+    public function setUsuario(Usuario $v = null)
     {
         if ($v === null) {
-            $this->setPerfilId(NULL);
+            $this->setUsuarioId(NULL);
         } else {
-            $this->setPerfilId($v->getId());
+            $this->setUsuarioId($v->getId());
         }
 
-        $this->aPerfil = $v;
+        $this->aUsuario = $v;
 
         // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the Perfil object, it will not be re-added.
+        // If this object has already been added to the Usuario object, it will not be re-added.
         if ($v !== null) {
-            $v->addUsuario($this);
+            $v->addLogAcesso($this);
         }
 
 
@@ -1127,268 +1013,27 @@ abstract class BaseUsuario extends BaseObject implements Persistent
 
 
     /**
-     * Get the associated Perfil object
+     * Get the associated Usuario object
      *
      * @param PropelPDO $con Optional Connection object.
      * @param $doQuery Executes a query to get the object if required
-     * @return Perfil The associated Perfil object.
+     * @return Usuario The associated Usuario object.
      * @throws PropelException
      */
-    public function getPerfil(PropelPDO $con = null, $doQuery = true)
+    public function getUsuario(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aPerfil === null && ($this->perfil_id !== null) && $doQuery) {
-            $this->aPerfil = PerfilQuery::create()->findPk($this->perfil_id, $con);
+        if ($this->aUsuario === null && ($this->usuario_id !== null) && $doQuery) {
+            $this->aUsuario = UsuarioQuery::create()->findPk($this->usuario_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aPerfil->addUsuarios($this);
+                $this->aUsuario->addLogAcessos($this);
              */
         }
 
-        return $this->aPerfil;
-    }
-
-
-    /**
-     * Initializes a collection based on the name of a relation.
-     * Avoids crafting an 'init[$relationName]s' method name
-     * that wouldn't work when StandardEnglishPluralizer is used.
-     *
-     * @param string $relationName The name of the relation to initialize
-     * @return void
-     */
-    public function initRelation($relationName)
-    {
-        if ('LogAcesso' == $relationName) {
-            $this->initLogAcessos();
-        }
-    }
-
-    /**
-     * Clears out the collLogAcessos collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return Usuario The current object (for fluent API support)
-     * @see        addLogAcessos()
-     */
-    public function clearLogAcessos()
-    {
-        $this->collLogAcessos = null; // important to set this to null since that means it is uninitialized
-        $this->collLogAcessosPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * reset is the collLogAcessos collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialLogAcessos($v = true)
-    {
-        $this->collLogAcessosPartial = $v;
-    }
-
-    /**
-     * Initializes the collLogAcessos collection.
-     *
-     * By default this just sets the collLogAcessos collection to an empty array (like clearcollLogAcessos());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initLogAcessos($overrideExisting = true)
-    {
-        if (null !== $this->collLogAcessos && !$overrideExisting) {
-            return;
-        }
-        $this->collLogAcessos = new PropelObjectCollection();
-        $this->collLogAcessos->setModel('LogAcesso');
-    }
-
-    /**
-     * Gets an array of LogAcesso objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Usuario is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|LogAcesso[] List of LogAcesso objects
-     * @throws PropelException
-     */
-    public function getLogAcessos($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collLogAcessosPartial && !$this->isNew();
-        if (null === $this->collLogAcessos || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collLogAcessos) {
-                // return empty collection
-                $this->initLogAcessos();
-            } else {
-                $collLogAcessos = LogAcessoQuery::create(null, $criteria)
-                    ->filterByUsuario($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collLogAcessosPartial && count($collLogAcessos)) {
-                      $this->initLogAcessos(false);
-
-                      foreach ($collLogAcessos as $obj) {
-                        if (false == $this->collLogAcessos->contains($obj)) {
-                          $this->collLogAcessos->append($obj);
-                        }
-                      }
-
-                      $this->collLogAcessosPartial = true;
-                    }
-
-                    $collLogAcessos->getInternalIterator()->rewind();
-
-                    return $collLogAcessos;
-                }
-
-                if ($partial && $this->collLogAcessos) {
-                    foreach ($this->collLogAcessos as $obj) {
-                        if ($obj->isNew()) {
-                            $collLogAcessos[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collLogAcessos = $collLogAcessos;
-                $this->collLogAcessosPartial = false;
-            }
-        }
-
-        return $this->collLogAcessos;
-    }
-
-    /**
-     * Sets a collection of LogAcesso objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $logAcessos A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return Usuario The current object (for fluent API support)
-     */
-    public function setLogAcessos(PropelCollection $logAcessos, PropelPDO $con = null)
-    {
-        $logAcessosToDelete = $this->getLogAcessos(new Criteria(), $con)->diff($logAcessos);
-
-
-        $this->logAcessosScheduledForDeletion = $logAcessosToDelete;
-
-        foreach ($logAcessosToDelete as $logAcessoRemoved) {
-            $logAcessoRemoved->setUsuario(null);
-        }
-
-        $this->collLogAcessos = null;
-        foreach ($logAcessos as $logAcesso) {
-            $this->addLogAcesso($logAcesso);
-        }
-
-        $this->collLogAcessos = $logAcessos;
-        $this->collLogAcessosPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related LogAcesso objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related LogAcesso objects.
-     * @throws PropelException
-     */
-    public function countLogAcessos(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collLogAcessosPartial && !$this->isNew();
-        if (null === $this->collLogAcessos || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collLogAcessos) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getLogAcessos());
-            }
-            $query = LogAcessoQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByUsuario($this)
-                ->count($con);
-        }
-
-        return count($this->collLogAcessos);
-    }
-
-    /**
-     * Method called to associate a LogAcesso object to this object
-     * through the LogAcesso foreign key attribute.
-     *
-     * @param    LogAcesso $l LogAcesso
-     * @return Usuario The current object (for fluent API support)
-     */
-    public function addLogAcesso(LogAcesso $l)
-    {
-        if ($this->collLogAcessos === null) {
-            $this->initLogAcessos();
-            $this->collLogAcessosPartial = true;
-        }
-
-        if (!in_array($l, $this->collLogAcessos->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddLogAcesso($l);
-
-            if ($this->logAcessosScheduledForDeletion and $this->logAcessosScheduledForDeletion->contains($l)) {
-                $this->logAcessosScheduledForDeletion->remove($this->logAcessosScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	LogAcesso $logAcesso The logAcesso object to add.
-     */
-    protected function doAddLogAcesso($logAcesso)
-    {
-        $this->collLogAcessos[]= $logAcesso;
-        $logAcesso->setUsuario($this);
-    }
-
-    /**
-     * @param	LogAcesso $logAcesso The logAcesso object to remove.
-     * @return Usuario The current object (for fluent API support)
-     */
-    public function removeLogAcesso($logAcesso)
-    {
-        if ($this->getLogAcessos()->contains($logAcesso)) {
-            $this->collLogAcessos->remove($this->collLogAcessos->search($logAcesso));
-            if (null === $this->logAcessosScheduledForDeletion) {
-                $this->logAcessosScheduledForDeletion = clone $this->collLogAcessos;
-                $this->logAcessosScheduledForDeletion->clear();
-            }
-            $this->logAcessosScheduledForDeletion[]= clone $logAcesso;
-            $logAcesso->setUsuario(null);
-        }
-
-        return $this;
+        return $this->aUsuario;
     }
 
     /**
@@ -1397,15 +1042,14 @@ abstract class BaseUsuario extends BaseObject implements Persistent
     public function clear()
     {
         $this->id = null;
-        $this->nome = null;
-        $this->descricao = null;
-        $this->secret = null;
-        $this->ativo = null;
-        $this->perfil_id = null;
+        $this->usuario_id = null;
+        $this->nonce = null;
+        $this->data = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);
@@ -1424,23 +1068,14 @@ abstract class BaseUsuario extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
-            if ($this->collLogAcessos) {
-                foreach ($this->collLogAcessos as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->aPerfil instanceof Persistent) {
-              $this->aPerfil->clearAllReferences($deep);
+            if ($this->aUsuario instanceof Persistent) {
+              $this->aUsuario->clearAllReferences($deep);
             }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
-        if ($this->collLogAcessos instanceof PropelCollection) {
-            $this->collLogAcessos->clearIterator();
-        }
-        $this->collLogAcessos = null;
-        $this->aPerfil = null;
+        $this->aUsuario = null;
     }
 
     /**
@@ -1450,7 +1085,7 @@ abstract class BaseUsuario extends BaseObject implements Persistent
      */
     public function __toString()
     {
-        return (string) $this->exportTo(UsuarioPeer::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(LogAcessoPeer::DEFAULT_STRING_FORMAT);
     }
 
     /**
