@@ -14,6 +14,7 @@ $app = new \Slim\Slim(array(
     'debug' => false,
     'mode' => 'development'
 ));
+
 // Middleware de autenticação
 $app->add(new \Autenticacao());
 // setando headers de resposta para json

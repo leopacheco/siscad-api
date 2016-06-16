@@ -1,6 +1,6 @@
 <?php
 require 'utils/Utils.php';
-require 'controller/Autenticacao.php';
+require 'middleware/Autenticacao.php';
 require 'controller/Correio.php';
 require 'controller/Endereco.php';
 require 'controller/Graduacao.php';
