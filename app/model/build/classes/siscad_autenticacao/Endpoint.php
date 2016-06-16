@@ -15,4 +15,59 @@
  */
 class Endpoint extends BaseEndpoint
 {
+  private $_hasAccess = true;
+
+  /*
+
+  */
+  public function validateEndpointAccess($userRole, $method, $uri){
+
+    $pattern = $this->_parsePattern($uri);
+    $endpoint = $this->getEndpoint($method, $pattern);
+
+    if(!is_null($endpoint)){
+      if($endpoint->getRestrito()){
+        $query = PerfilEndpointQuery::create()
+                                    ->filterByPerfilId($userRole)
+                                    ->filterByEndpointId($endpoint->getId())
+                                    ->findOne();
+        if(is_null($query)){
+          //usuário não autorizado
+          $this->validUri = false;
+        }
+      }
+    }
+  }
+
+  /*
+
+  */
+  public function getEndpoint($method, $uri){
+    return EndpointQuery::create()
+                          ->filterByUri($uri)
+                          ->filterByMethod($method)
+                          ->filterByAtivo(1)
+                          ->findOne();
+  }
+
+  /*
+
+  */
+  private function _parsePattern($uri){
+    $uriPieces = preg_split('/\//', $uri, 0, PREG_SPLIT_NO_EMPTY);
+    $pattern = '';
+    if(count($uriPieces) == 0){
+      $pattern = '/';
+    }elseif(count($uriPieces) == 1){
+      $pattern = '/'.$uriPieces[0];
+    }else{
+      $pattern = '/'.$uriPieces[0].'/'.$uriPieces[1];
+    }
+    return $pattern;
+  }
+
+  public function hasAccess(){
+    return $this->_hasAccess;
+  }
+
 }

@@ -18,7 +18,7 @@ $app = new \Slim\Slim(array(
 // Middleware de autenticação
 $app->add(new \Autenticacao());
 // setando headers de resposta para json
-$app->response->headers->set('Content-Type', 'application/json; charset=utf-8');
+//$app->response->headers->set('Content-Type', 'application/json; charset=utf-8');
 
 //routes
 require 'app/route/index.php';

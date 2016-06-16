@@ -7,7 +7,6 @@ class Autenticacao extends \Slim\Middleware{
   private $_providedUser = '';
   private $_providedHash = '';
   private $_providedNonce = '';
-  private $_userId;
 
   public function call(){
     // Get reference to application
@@ -15,16 +14,13 @@ class Autenticacao extends \Slim\Middleware{
     $req = $app->request;
 
     try{
-
       $this->_authenticate($req);
 
     }catch (\Exception $e) {
       die($e->getMessage());
     }
-
       //nenhuma exceção foi lançada
       //prossegue com a requisição
-      $this->_logAccess($this->_userId, $this->_providedNonce);
       $this->next->call();
   }
 
@@ -33,9 +29,8 @@ class Autenticacao extends \Slim\Middleware{
     // hmac [usuario]:[nonce]:[hash]
     if(preg_match('/hmac\s+[\w]{1,30}:[\w]{1,20}:[\w]+/', $header)){
       $headerArray = preg_split('/[\s,]+/', $header);
-      //recupera o par usuário:hash
+      //recupera o conjunto usuário:nonce:hash
       $authArray = explode(':', $headerArray[1]);
-
       $this->_providedUser = $authArray[0]; //[usuario]
       $this->_providedNonce = $authArray[1];//[nonce]
       $this->_providedHash = $authArray[2];//[hash]
@@ -55,24 +50,34 @@ class Autenticacao extends \Slim\Middleware{
     //valida o cabeçalho enviado na requisição
     //se cabeçalho no formato correto, continua a validação
     if($this->_getProvidedCredentials($req->headers->get('Authentication'))){
-
       //$userModel = new Usuario();
       $user = Usuario::getUserByName($this->_providedUser);
+      $this->_method = $req->getMethod();
+      $this->_uri = $req->getResourceUri();
 
-      if((!is_null($user)) && (LogAcesso::validateNonce($user->getId(), $this->_providedNonce))){
+      if(!is_null($user)){
+        $endpoint = new Endpoint();
+        $endpoint->validateEndpointAccess($user->getPerfilId(), $this->_method, $this->_uri);
 
-        $this->_userId = $user->getId();
-        $this->_method = $req->getMethod();
-        $this->_uri = $req->getResourceUri();
-        $hash = $this->_parseHash($user->getSecret());
+        if((LogAcesso::validateNonce($user->getId(), $this->_providedNonce)) && ($endpoint->hasAccess())){
+          $hash = $this->_parseHash($user->getSecret());
 
-        if($hash !== $this->_providedHash){
-          //$app->halt(403, 'hash inválida');
+          if($hash === $this->_providedHash){
+            //acesso permitido
+            //grava o log de acesso
+            $this->_logAccess($user->getId(), $this->_providedNonce);
+          }else{
+            //$app->halt(403, 'hash inválida');
+            throw new Exception('Acesso negado', 403);
+          }
+
+        }else{
+          //throw exception here
+          //$app->halt(403, 'Acesso negado');
           throw new Exception('Acesso negado', 403);
         }
+
       }else{
-        //throw exception here
-        //$app->halt(403, 'Acesso negado');
         throw new Exception('Acesso negado', 403);
       }
     //se não, joga a exceção 403
