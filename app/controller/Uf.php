@@ -14,12 +14,12 @@ class Uf{
   }
 
 
-  public function setUf($id, $fields){
+  public function setUf($id, $fields, $userId){
 
     $ufModel = new TabUf();
 
     if(!empty($fields)){
-      $ufModel->setUf($id, $fields);
+      $ufModel->setUf($id, $fields, $userId);
       $response = 'Atualizado com sucesso';
     }else{
       throw new Exception('Dados inválidos', 400);

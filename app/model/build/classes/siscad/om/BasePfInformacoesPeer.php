@@ -783,6 +783,45 @@ abstract class BasePfInformacoesPeer
         if ($obj->isNew() || $obj->isColumnModified(PfInformacoesPeer::MAE))
             $columns[PfInformacoesPeer::MAE] = $obj->getMae();
 
+        if ($obj->isNew() || $obj->isColumnModified(PfInformacoesPeer::PAI))
+            $columns[PfInformacoesPeer::PAI] = $obj->getPai();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInformacoesPeer::DT_NASCIMENTO))
+            $columns[PfInformacoesPeer::DT_NASCIMENTO] = $obj->getDtNascimento();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInformacoesPeer::NATURALIDADE))
+            $columns[PfInformacoesPeer::NATURALIDADE] = $obj->getNaturalidade();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInformacoesPeer::UF_NATURALIDADE))
+            $columns[PfInformacoesPeer::UF_NATURALIDADE] = $obj->getUfNaturalidade();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInformacoesPeer::SEXO))
+            $columns[PfInformacoesPeer::SEXO] = $obj->getSexo();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInformacoesPeer::RG_NRO))
+            $columns[PfInformacoesPeer::RG_NRO] = $obj->getRgNro();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInformacoesPeer::RG_ORGAO_EXPEDIDOR))
+            $columns[PfInformacoesPeer::RG_ORGAO_EXPEDIDOR] = $obj->getRgOrgaoExpedidor();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInformacoesPeer::RG_DT_EXPEDICAO))
+            $columns[PfInformacoesPeer::RG_DT_EXPEDICAO] = $obj->getRgDtExpedicao();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInformacoesPeer::CERTIFICADO_MILITAR))
+            $columns[PfInformacoesPeer::CERTIFICADO_MILITAR] = $obj->getCertificadoMilitar();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInformacoesPeer::TITULO_ELEITOR))
+            $columns[PfInformacoesPeer::TITULO_ELEITOR] = $obj->getTituloEleitor();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInformacoesPeer::CTPS_NUMERO))
+            $columns[PfInformacoesPeer::CTPS_NUMERO] = $obj->getCtpsNumero();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInformacoesPeer::CTPS_SERIE))
+            $columns[PfInformacoesPeer::CTPS_SERIE] = $obj->getCtpsSerie();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInformacoesPeer::CTPS_DT_EXPEDICAO))
+            $columns[PfInformacoesPeer::CTPS_DT_EXPEDICAO] = $obj->getCtpsDtExpedicao();
+
         }
 
         return BasePeer::doValidate(PfInformacoesPeer::DATABASE_NAME, PfInformacoesPeer::TABLE_NAME, $columns);

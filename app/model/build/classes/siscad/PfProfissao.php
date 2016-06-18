@@ -62,9 +62,15 @@ class PfProfissao extends BasePfProfissao
   /*
 
   */
-  public function setProfissao($id, $fields){
+  public function setProfissao($id, $fields, $userId){
 
     $query = $this->_getById($id);
+
+    $log = new LogAtividade();
+    $log->setValorAnterior(json_encode($query->toArray()));
+    $log->setUsuarioId($userId);
+    $tableName = new PfProfissaoTableMap();
+    $log->setTabelaAtualizada($tableName->getName());
 
     foreach ($fields as $key => $value) {
       //verifica se o  campo existe na tabela
@@ -79,11 +85,17 @@ class PfProfissao extends BasePfProfissao
 
     }
 
-    if($this->_valid){
+    if($query->validate()){
       $query->save();
+      $log->setValorAtual(json_encode($query->toArray()));
+      $log->save();
       return true;
     }else{
-      throw new Exception($this->_errorMessage, 400);
+      $errorMsg = '';
+      foreach ($query->getValidationFailures() as $failure) {
+        $errorMsg .= $failure->getMessage() . "\n";
+      }
+      throw new Exception($errorMsg, 400);
     }
 
   }

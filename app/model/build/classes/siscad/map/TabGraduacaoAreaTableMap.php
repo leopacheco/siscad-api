@@ -41,8 +41,7 @@ class TabGraduacaoAreaTableMap extends TableMap
         $this->addPrimaryKey('id_tab_graduacao_area', 'IdTabGraduacaoArea', 'INTEGER', true, 5, null);
         $this->addColumn('descricao', 'Descricao', 'VARCHAR', false, 50, null);
         // validators
-        $this->addValidator('descricao', 'type', 'propel.validator.TypeValidator', 'string', 'DESCRIÇÃO: deve ser do tipo string');
-        $this->addValidator('descricao', 'maxLength', 'propel.validator.MaxLengthValidator', '50', 'DESCRIÇÃO: tamanho máximo 50');
+        $this->addValidator('descricao', 'maxLength', 'propel.validator.MaxLengthValidator', '50', 'Descricao: tamanho máximo 50');
     } // initialize()
 
     /**

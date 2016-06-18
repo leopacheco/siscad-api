@@ -35,9 +35,9 @@
   <table name="log_atividade" phpName="LogAtividade" idMethod="native">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="usuario_id" phpName="UsuarioId" type="INTEGER" required="true"/>
-    <column name="campo_atualizado" phpName="CampoAtualizado" type="VARCHAR" size="80" required="true"/>
-    <column name="valor_anterior" phpName="ValorAnterior" type="VARCHAR" size="255" required="false"/>
-    <column name="valor_atual" phpName="ValorAtual" type="VARCHAR" size="255" required="false"/>
+    <column name="tabela_atualizada" phpName="TabelaAtualizada" type="VARCHAR" size="80" required="true"/>
+    <column name="valor_anterior" phpName="ValorAnterior" type="LONGVARCHAR" required="false"/>
+    <column name="valor_atual" phpName="ValorAtual" type="LONGVARCHAR" required="false"/>
     <column name="data" phpName="Data" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
     <foreign-key foreignTable="usuario" name="fk_log_atividade_usuario_id" onDelete="RESTRICT" onUpdate="RESTRICT">
       <reference local="usuario_id" foreign="id"/>

@@ -695,6 +695,9 @@ abstract class BaseTabGraduacaoNivelPeer
             }
         } else {
 
+        if ($obj->isNew() || $obj->isColumnModified(TabGraduacaoNivelPeer::DESCRICAO))
+            $columns[TabGraduacaoNivelPeer::DESCRICAO] = $obj->getDescricao();
+
         }
 
         return BasePeer::doValidate(TabGraduacaoNivelPeer::DATABASE_NAME, TabGraduacaoNivelPeer::TABLE_NAME, $columns);

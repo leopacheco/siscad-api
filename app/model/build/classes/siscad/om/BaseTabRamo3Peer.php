@@ -710,6 +710,9 @@ abstract class BaseTabRamo3Peer
             }
         } else {
 
+        if ($obj->isNew() || $obj->isColumnModified(TabRamo3Peer::DESCRICAO))
+            $columns[TabRamo3Peer::DESCRICAO] = $obj->getDescricao();
+
         }
 
         return BasePeer::doValidate(TabRamo3Peer::DATABASE_NAME, TabRamo3Peer::TABLE_NAME, $columns);

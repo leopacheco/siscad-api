@@ -14,12 +14,12 @@ class Graduacao{
   }
 
 
-  public function setGraduacao($id, $fields){
+  public function setGraduacao($id, $fields, $userId){
 
     $model = new PfGraduacao();
 
     if(!empty($fields)){
-      $model->setGraduacao($id, $fields);
+      $model->setGraduacao($id, $fields, $userId='1');
       $response = 'Atualizado com sucesso';
     }else{
       throw new Exception('Dados inválidos', 400);

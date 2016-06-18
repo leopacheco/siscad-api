@@ -790,6 +790,51 @@ abstract class BasePfjEnderecoPeer
             }
         } else {
 
+        if ($obj->isNew() || $obj->isColumnModified(PfjEnderecoPeer::ENDERECO))
+            $columns[PfjEnderecoPeer::ENDERECO] = $obj->getEndereco();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfjEnderecoPeer::BAIRRO))
+            $columns[PfjEnderecoPeer::BAIRRO] = $obj->getBairro();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfjEnderecoPeer::CIDADE))
+            $columns[PfjEnderecoPeer::CIDADE] = $obj->getCidade();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfjEnderecoPeer::CEP))
+            $columns[PfjEnderecoPeer::CEP] = $obj->getCep();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfjEnderecoPeer::UF))
+            $columns[PfjEnderecoPeer::UF] = $obj->getUf();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfjEnderecoPeer::DT_ATUALIZACAO))
+            $columns[PfjEnderecoPeer::DT_ATUALIZACAO] = $obj->getDtAtualizacao();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfjEnderecoPeer::DT_ATUALIZACAO_WEB))
+            $columns[PfjEnderecoPeer::DT_ATUALIZACAO_WEB] = $obj->getDtAtualizacaoWeb();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfjEnderecoPeer::EMAIL))
+            $columns[PfjEnderecoPeer::EMAIL] = $obj->getEmail();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfjEnderecoPeer::DDD_TEL))
+            $columns[PfjEnderecoPeer::DDD_TEL] = $obj->getDddTel();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfjEnderecoPeer::TELEFONE))
+            $columns[PfjEnderecoPeer::TELEFONE] = $obj->getTelefone();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfjEnderecoPeer::RAMAL))
+            $columns[PfjEnderecoPeer::RAMAL] = $obj->getRamal();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfjEnderecoPeer::DDD_CEL))
+            $columns[PfjEnderecoPeer::DDD_CEL] = $obj->getDddCel();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfjEnderecoPeer::CELULAR))
+            $columns[PfjEnderecoPeer::CELULAR] = $obj->getCelular();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfjEnderecoPeer::DDD_FAX))
+            $columns[PfjEnderecoPeer::DDD_FAX] = $obj->getDddFax();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfjEnderecoPeer::FAX))
+            $columns[PfjEnderecoPeer::FAX] = $obj->getFax();
+
         }
 
         return BasePeer::doValidate(PfjEnderecoPeer::DATABASE_NAME, PfjEnderecoPeer::TABLE_NAME, $columns);

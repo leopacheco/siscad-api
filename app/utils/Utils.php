@@ -19,12 +19,13 @@ class Utils{
   }
 
   public static function parseFilters($filters){
+    $rawFilters = array();
+    preg_match_all('/[\w-]+:[\w-]+/', $filters, $rawFilters);
 
-    $rawFilters = array_map('trim',explode(";", $filters));
     $parsedFilters = array();
-    foreach ($rawFilters as $key => $value) {
+    foreach ($rawFilters[0] as $key => $value) {
 
-      list($k, $v) = array_map('trim',explode(":", $rawFilters[$key]));
+      list($k, $v) = array_map('trim',explode(":", $rawFilters[0][$key]));
       $parsedFilters[$k] = $v;
     }
 

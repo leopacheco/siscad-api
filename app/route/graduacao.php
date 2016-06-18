@@ -17,6 +17,11 @@ $app->get('/graduacao/filtrar/:filters', function ($filters = null) use ($app) {
 //atualiza um registro conforme :id
 $app->put('/graduacao/:id', function ($id = null) use ($app) {
   $controller = new Graduacao;
-  $response = $controller->setGraduacao($id, $app->request->params());
+  if($app->request->getMediaType() == 'application/json'){
+    $params = $app->request->getBody();
+  }else{
+    $params = $app->request->params();
+  }
+  $response = $controller->setGraduacao($id, $params, $app->userId);
   $app->response->body($response);
 });

@@ -49,6 +49,14 @@ class PfProfissaoTableMap extends TableMap
         $this->addColumn('fk_id_tab_ramo2', 'FkIdTabRamo2', 'INTEGER', true, 5, 16);
         $this->addColumn('fk_id_tab_ramo3', 'FkIdTabRamo3', 'INTEGER', true, 5, 219);
         // validators
+        $this->addValidator('empresa', 'maxLength', 'propel.validator.MaxLengthValidator', '50', 'Empresa: Tamanho máximo 50');
+        $this->addValidator('cidade', 'maxLength', 'propel.validator.MaxLengthValidator', '40', 'Cidade: Tamanho máximo 40');
+        $this->addValidator('dt_admissao', 'maxLength', 'propel.validator.MaxLengthValidator', '', 'DtAdmissao: Tamanho máximo ');
+        $this->addValidator('dt_admissao', 'type', 'propel.validator.TypeValidator', 'date', 'DtAdmissao: formato inválido');
+        $this->addValidator('dt_demissao', 'maxLength', 'propel.validator.MaxLengthValidator', '', 'DtDemissao: Tamanho máximo ');
+        $this->addValidator('dt_demissao', 'type', 'propel.validator.TypeValidator', 'date', 'DtDemissao: formato inválido');
+        $this->addValidator('carga_horaria', 'maxLength', 'propel.validator.MaxLengthValidator', '3', 'CargaHoraria: Tamanho máximo 3');
+        $this->addValidator('carga_horaria', 'type', 'propel.validator.TypeValidator', 'integer', 'CargaHoraria: formato inválido');
     } // initialize()
 
     /**

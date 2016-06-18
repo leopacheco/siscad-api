@@ -7,21 +7,23 @@ class Autenticacao extends \Slim\Middleware{
   private $_providedUser = '';
   private $_providedHash = '';
   private $_providedNonce = '';
+  private $_userId;
 
   public function call(){
     // Get reference to application
     $app = $this->app;
     $req = $app->request;
 
-    try{
-      $this->_authenticate($req);
-
-    }catch (\Exception $e) {
-      die($e->getMessage());
-    }
+    // try{
+    //   $this->_authenticate($req);
+    //
+    // }catch (\Exception $e) {
+    //   die($e->getMessage());
+    // }
       //nenhuma exceção foi lançada
       //prossegue com a requisição
-      $this->next->call();
+    $app->userId = $this->_userId;
+    $this->next->call();
   }
 
   private function _getProvidedCredentials($header){
@@ -65,7 +67,8 @@ class Autenticacao extends \Slim\Middleware{
           if($hash === $this->_providedHash){
             //acesso permitido
             //grava o log de acesso
-            $this->_logAccess($user->getId(), $this->_providedNonce);
+              $this->_logAccess($user->getId(), $this->_providedNonce, $req->getIp());
+              $this->_userId = $user->getId();
           }else{
             //$app->halt(403, 'hash inválida');
             throw new Exception('Acesso negado', 403);
@@ -87,10 +90,11 @@ class Autenticacao extends \Slim\Middleware{
     }
   }
 
-  private function _logAccess($id, $nonce){
+  private function _logAccess($id, $nonce, $ip){
     $log = new LogAcesso();
     $log->setUsuarioId($id);
     $log->setNonce($nonce);
+    $log->setIp($ip);
     $log->save();
   }
 

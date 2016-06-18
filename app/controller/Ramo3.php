@@ -14,12 +14,12 @@ class Ramo3{
   }
 
 
-  public function setRamo3($id, $fields){
+  public function setRamo3($id, $fields, $userId){
 
     $model = new TabRamo3();
 
     if(!empty($fields)){
-      $model->setRamo3($id, $fields);
+      $model->setRamo3($id, $fields, $userId);
       $response = 'Atualizado com sucesso';
     }else{
       throw new Exception('Dados inválidos', 400);

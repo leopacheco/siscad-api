@@ -14,12 +14,12 @@ class Informacoes{
   }
 
 
-  public function setInformacoes($id, $fields){
+  public function setInformacoes($id, $fields, $userId){
 
     $model = new PfInformacoes();
 
     if(!empty($fields)){
-      $model->setInformacoes($id, $fields);
+      $model->setInformacoes($id, $fields, $userId);
       $response = 'Atualizado com sucesso';
     }else{
       throw new Exception('Dados inválidos', 400);

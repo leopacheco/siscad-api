@@ -46,6 +46,8 @@ class PfGraduacaoTableMap extends TableMap
         $this->addColumn('fk_id_tab_ies', 'FkIdTabIes', 'INTEGER', false, 5, null);
         $this->addColumn('dt_conclusao', 'DtConclusao', 'DATE', false, null, null);
         // validators
+        $this->addValidator('dt_conclusao', 'maxLength', 'propel.validator.MaxLengthValidator', '', 'DtConclusao: Tamanho máximo ');
+        $this->addValidator('dt_conclusao', 'type', 'propel.validator.TypeValidator', 'date', 'DtConclusao: formato inválido');
     } // initialize()
 
     /**

@@ -830,6 +830,78 @@ abstract class BasePfInscricaoPeer
             }
         } else {
 
+        if ($obj->isNew() || $obj->isColumnModified(PfInscricaoPeer::NOME))
+            $columns[PfInscricaoPeer::NOME] = $obj->getNome();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInscricaoPeer::CPF))
+            $columns[PfInscricaoPeer::CPF] = $obj->getCpf();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInscricaoPeer::CARTEIRA_CRMV))
+            $columns[PfInscricaoPeer::CARTEIRA_CRMV] = $obj->getCarteiraCrmv();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInscricaoPeer::DT_CARTEIRA_CRMV))
+            $columns[PfInscricaoPeer::DT_CARTEIRA_CRMV] = $obj->getDtCarteiraCrmv();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInscricaoPeer::DT_INSCRICAO))
+            $columns[PfInscricaoPeer::DT_INSCRICAO] = $obj->getDtInscricao();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInscricaoPeer::ATUANTE))
+            $columns[PfInscricaoPeer::ATUANTE] = $obj->getAtuante();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInscricaoPeer::ISENTO))
+            $columns[PfInscricaoPeer::ISENTO] = $obj->getIsento();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInscricaoPeer::DT_INC_CADIN))
+            $columns[PfInscricaoPeer::DT_INC_CADIN] = $obj->getDtIncCadin();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInscricaoPeer::DT_EXC_CADIN))
+            $columns[PfInscricaoPeer::DT_EXC_CADIN] = $obj->getDtExcCadin();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInscricaoPeer::PROCESSO))
+            $columns[PfInscricaoPeer::PROCESSO] = $obj->getProcesso();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInscricaoPeer::REVISTA_CFMV))
+            $columns[PfInscricaoPeer::REVISTA_CFMV] = $obj->getRevistaCfmv();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInscricaoPeer::REVISTA_CFMV_DT))
+            $columns[PfInscricaoPeer::REVISTA_CFMV_DT] = $obj->getRevistaCfmvDt();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInscricaoPeer::CARTEIRA_VALIDADE))
+            $columns[PfInscricaoPeer::CARTEIRA_VALIDADE] = $obj->getCarteiraValidade();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInscricaoPeer::PROVISORIA))
+            $columns[PfInscricaoPeer::PROVISORIA] = $obj->getProvisoria();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInscricaoPeer::PROVISORIA_NUM))
+            $columns[PfInscricaoPeer::PROVISORIA_NUM] = $obj->getProvisoriaNum();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInscricaoPeer::PROVISORIA_DATA))
+            $columns[PfInscricaoPeer::PROVISORIA_DATA] = $obj->getProvisoriaData();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInscricaoPeer::PROVISORIA_VALIDADE))
+            $columns[PfInscricaoPeer::PROVISORIA_VALIDADE] = $obj->getProvisoriaValidade();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInscricaoPeer::ESPECIALISTA_NUM))
+            $columns[PfInscricaoPeer::ESPECIALISTA_NUM] = $obj->getEspecialistaNum();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInscricaoPeer::ESPECIALISTA_DATA))
+            $columns[PfInscricaoPeer::ESPECIALISTA_DATA] = $obj->getEspecialistaData();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInscricaoPeer::ESPECIALISTA_VALIDADE))
+            $columns[PfInscricaoPeer::ESPECIALISTA_VALIDADE] = $obj->getEspecialistaValidade();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInscricaoPeer::SEGUNDAVIA_NUM))
+            $columns[PfInscricaoPeer::SEGUNDAVIA_NUM] = $obj->getSegundaviaNum();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInscricaoPeer::SEGUNDAVIA_DATA))
+            $columns[PfInscricaoPeer::SEGUNDAVIA_DATA] = $obj->getSegundaviaData();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInscricaoPeer::SEGUNDAVIA_VALIDADE))
+            $columns[PfInscricaoPeer::SEGUNDAVIA_VALIDADE] = $obj->getSegundaviaValidade();
+
+        if ($obj->isNew() || $obj->isColumnModified(PfInscricaoPeer::SENHA))
+            $columns[PfInscricaoPeer::SENHA] = $obj->getSenha();
+
         }
 
         return BasePeer::doValidate(PfInscricaoPeer::DATABASE_NAME, PfInscricaoPeer::TABLE_NAME, $columns);

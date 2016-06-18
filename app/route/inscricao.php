@@ -17,6 +17,11 @@ $app->get('/inscricao/filtrar/:filters', function ($filters = null) use ($app) {
 //atualiza um registro conforme :id
 $app->put('/inscricao/:id', function ($id = null) use ($app) {
   $controller = new Inscricao;
-  $response = $controller->setInscricao($id, $app->request->params());
+  if($app->request->getMediaType() == 'application/json'){
+    $params = $app->request->getBody();
+  }else{
+    $params = $app->request->params();
+  }
+  $response = $controller->setInscricao($id, $params, $app->userId);
   $app->response->body($response);
 });

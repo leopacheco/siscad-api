@@ -42,6 +42,7 @@ class TabRamo1TableMap extends TableMap
         $this->addColumn('cod_ramo1', 'CodRamo1', 'CHAR', false, 2, '0');
         $this->addColumn('descricao', 'Descricao', 'VARCHAR', false, 40, null);
         // validators
+        $this->addValidator('descricao', 'maxLength', 'propel.validator.MaxLengthValidator', '40', 'Descricao: tamanho máximo 40');
     } // initialize()
 
     /**

@@ -14,12 +14,12 @@ class Correio{
   }
 
 
-  public function setCorreio($id, $fields){
+  public function setCorreio($id, $fields, $userId){
 
     $model = new TabCorreio();
 
     if(!empty($fields)){
-      $model->setCorreio($id, $fields);
+      $model->setCorreio($id, $fields, $userId);
       $response = 'Atualizado com sucesso';
     }else{
       throw new Exception('Dados inválidos', 400);

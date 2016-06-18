@@ -750,6 +750,30 @@ abstract class BaseTabIesPeer
             }
         } else {
 
+        if ($obj->isNew() || $obj->isColumnModified(TabIesPeer::NOME))
+            $columns[TabIesPeer::NOME] = $obj->getNome();
+
+        if ($obj->isNew() || $obj->isColumnModified(TabIesPeer::SIGLA))
+            $columns[TabIesPeer::SIGLA] = $obj->getSigla();
+
+        if ($obj->isNew() || $obj->isColumnModified(TabIesPeer::ENDERECO))
+            $columns[TabIesPeer::ENDERECO] = $obj->getEndereco();
+
+        if ($obj->isNew() || $obj->isColumnModified(TabIesPeer::BAIRRO))
+            $columns[TabIesPeer::BAIRRO] = $obj->getBairro();
+
+        if ($obj->isNew() || $obj->isColumnModified(TabIesPeer::CIDADE))
+            $columns[TabIesPeer::CIDADE] = $obj->getCidade();
+
+        if ($obj->isNew() || $obj->isColumnModified(TabIesPeer::CEP))
+            $columns[TabIesPeer::CEP] = $obj->getCep();
+
+        if ($obj->isNew() || $obj->isColumnModified(TabIesPeer::SITE))
+            $columns[TabIesPeer::SITE] = $obj->getSite();
+
+        if ($obj->isNew() || $obj->isColumnModified(TabIesPeer::EMAIL))
+            $columns[TabIesPeer::EMAIL] = $obj->getEmail();
+
         }
 
         return BasePeer::doValidate(TabIesPeer::DATABASE_NAME, TabIesPeer::TABLE_NAME, $columns);

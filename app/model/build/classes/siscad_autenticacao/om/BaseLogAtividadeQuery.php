@@ -2,50 +2,54 @@
 
 
 /**
- * Base class that represents a query for the 'log_acesso' table.
+ * Base class that represents a query for the 'log_atividade' table.
  *
  *
  *
- * @method LogAcessoQuery orderById($order = Criteria::ASC) Order by the id column
- * @method LogAcessoQuery orderByUsuarioId($order = Criteria::ASC) Order by the usuario_id column
- * @method LogAcessoQuery orderByNonce($order = Criteria::ASC) Order by the nonce column
- * @method LogAcessoQuery orderByData($order = Criteria::ASC) Order by the data column
- * @method LogAcessoQuery orderByIp($order = Criteria::ASC) Order by the ip column
+ * @method LogAtividadeQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method LogAtividadeQuery orderByUsuarioId($order = Criteria::ASC) Order by the usuario_id column
+ * @method LogAtividadeQuery orderByTabelaAtualizada($order = Criteria::ASC) Order by the tabela_atualizada column
+ * @method LogAtividadeQuery orderByValorAnterior($order = Criteria::ASC) Order by the valor_anterior column
+ * @method LogAtividadeQuery orderByValorAtual($order = Criteria::ASC) Order by the valor_atual column
+ * @method LogAtividadeQuery orderByData($order = Criteria::ASC) Order by the data column
  *
- * @method LogAcessoQuery groupById() Group by the id column
- * @method LogAcessoQuery groupByUsuarioId() Group by the usuario_id column
- * @method LogAcessoQuery groupByNonce() Group by the nonce column
- * @method LogAcessoQuery groupByData() Group by the data column
- * @method LogAcessoQuery groupByIp() Group by the ip column
+ * @method LogAtividadeQuery groupById() Group by the id column
+ * @method LogAtividadeQuery groupByUsuarioId() Group by the usuario_id column
+ * @method LogAtividadeQuery groupByTabelaAtualizada() Group by the tabela_atualizada column
+ * @method LogAtividadeQuery groupByValorAnterior() Group by the valor_anterior column
+ * @method LogAtividadeQuery groupByValorAtual() Group by the valor_atual column
+ * @method LogAtividadeQuery groupByData() Group by the data column
  *
- * @method LogAcessoQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method LogAcessoQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method LogAcessoQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method LogAtividadeQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method LogAtividadeQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method LogAtividadeQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method LogAcessoQuery leftJoinUsuario($relationAlias = null) Adds a LEFT JOIN clause to the query using the Usuario relation
- * @method LogAcessoQuery rightJoinUsuario($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Usuario relation
- * @method LogAcessoQuery innerJoinUsuario($relationAlias = null) Adds a INNER JOIN clause to the query using the Usuario relation
+ * @method LogAtividadeQuery leftJoinUsuario($relationAlias = null) Adds a LEFT JOIN clause to the query using the Usuario relation
+ * @method LogAtividadeQuery rightJoinUsuario($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Usuario relation
+ * @method LogAtividadeQuery innerJoinUsuario($relationAlias = null) Adds a INNER JOIN clause to the query using the Usuario relation
  *
- * @method LogAcesso findOne(PropelPDO $con = null) Return the first LogAcesso matching the query
- * @method LogAcesso findOneOrCreate(PropelPDO $con = null) Return the first LogAcesso matching the query, or a new LogAcesso object populated from the query conditions when no match is found
+ * @method LogAtividade findOne(PropelPDO $con = null) Return the first LogAtividade matching the query
+ * @method LogAtividade findOneOrCreate(PropelPDO $con = null) Return the first LogAtividade matching the query, or a new LogAtividade object populated from the query conditions when no match is found
  *
- * @method LogAcesso findOneByUsuarioId(int $usuario_id) Return the first LogAcesso filtered by the usuario_id column
- * @method LogAcesso findOneByNonce(string $nonce) Return the first LogAcesso filtered by the nonce column
- * @method LogAcesso findOneByData(string $data) Return the first LogAcesso filtered by the data column
- * @method LogAcesso findOneByIp(string $ip) Return the first LogAcesso filtered by the ip column
+ * @method LogAtividade findOneByUsuarioId(int $usuario_id) Return the first LogAtividade filtered by the usuario_id column
+ * @method LogAtividade findOneByTabelaAtualizada(string $tabela_atualizada) Return the first LogAtividade filtered by the tabela_atualizada column
+ * @method LogAtividade findOneByValorAnterior(string $valor_anterior) Return the first LogAtividade filtered by the valor_anterior column
+ * @method LogAtividade findOneByValorAtual(string $valor_atual) Return the first LogAtividade filtered by the valor_atual column
+ * @method LogAtividade findOneByData(string $data) Return the first LogAtividade filtered by the data column
  *
- * @method array findById(int $id) Return LogAcesso objects filtered by the id column
- * @method array findByUsuarioId(int $usuario_id) Return LogAcesso objects filtered by the usuario_id column
- * @method array findByNonce(string $nonce) Return LogAcesso objects filtered by the nonce column
- * @method array findByData(string $data) Return LogAcesso objects filtered by the data column
- * @method array findByIp(string $ip) Return LogAcesso objects filtered by the ip column
+ * @method array findById(int $id) Return LogAtividade objects filtered by the id column
+ * @method array findByUsuarioId(int $usuario_id) Return LogAtividade objects filtered by the usuario_id column
+ * @method array findByTabelaAtualizada(string $tabela_atualizada) Return LogAtividade objects filtered by the tabela_atualizada column
+ * @method array findByValorAnterior(string $valor_anterior) Return LogAtividade objects filtered by the valor_anterior column
+ * @method array findByValorAtual(string $valor_atual) Return LogAtividade objects filtered by the valor_atual column
+ * @method array findByData(string $data) Return LogAtividade objects filtered by the data column
  *
  * @package    propel.generator.siscad_autenticacao.om
  */
-abstract class BaseLogAcessoQuery extends ModelCriteria
+abstract class BaseLogAtividadeQuery extends ModelCriteria
 {
     /**
-     * Initializes internal state of BaseLogAcessoQuery object.
+     * Initializes internal state of BaseLogAtividadeQuery object.
      *
      * @param     string $dbName The dabase name
      * @param     string $modelName The phpName of a model, e.g. 'Book'
@@ -57,25 +61,25 @@ abstract class BaseLogAcessoQuery extends ModelCriteria
             $dbName = 'siscad_autenticacao';
         }
         if (null === $modelName) {
-            $modelName = 'LogAcesso';
+            $modelName = 'LogAtividade';
         }
         parent::__construct($dbName, $modelName, $modelAlias);
     }
 
     /**
-     * Returns a new LogAcessoQuery object.
+     * Returns a new LogAtividadeQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
-     * @param   LogAcessoQuery|Criteria $criteria Optional Criteria to build the query from
+     * @param   LogAtividadeQuery|Criteria $criteria Optional Criteria to build the query from
      *
-     * @return LogAcessoQuery
+     * @return LogAtividadeQuery
      */
     public static function create($modelAlias = null, $criteria = null)
     {
-        if ($criteria instanceof LogAcessoQuery) {
+        if ($criteria instanceof LogAtividadeQuery) {
             return $criteria;
         }
-        $query = new LogAcessoQuery(null, null, $modelAlias);
+        $query = new LogAtividadeQuery(null, null, $modelAlias);
 
         if ($criteria instanceof Criteria) {
             $query->mergeWith($criteria);
@@ -96,19 +100,19 @@ abstract class BaseLogAcessoQuery extends ModelCriteria
      * @param mixed $key Primary key to use for the query
      * @param     PropelPDO $con an optional connection object
      *
-     * @return   LogAcesso|LogAcesso[]|mixed the result, formatted by the current formatter
+     * @return   LogAtividade|LogAtividade[]|mixed the result, formatted by the current formatter
      */
     public function findPk($key, $con = null)
     {
         if ($key === null) {
             return null;
         }
-        if ((null !== ($obj = LogAcessoPeer::getInstanceFromPool((string) $key))) && !$this->formatter) {
+        if ((null !== ($obj = LogAtividadePeer::getInstanceFromPool((string) $key))) && !$this->formatter) {
             // the object is already in the instance pool
             return $obj;
         }
         if ($con === null) {
-            $con = Propel::getConnection(LogAcessoPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(LogAtividadePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
         $this->basePreSelect($con);
         if ($this->formatter || $this->modelAlias || $this->with || $this->select
@@ -126,7 +130,7 @@ abstract class BaseLogAcessoQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return                 LogAcesso A model object, or null if the key is not found
+     * @return                 LogAtividade A model object, or null if the key is not found
      * @throws PropelException
      */
      public function findOneById($key, $con = null)
@@ -141,12 +145,12 @@ abstract class BaseLogAcessoQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return                 LogAcesso A model object, or null if the key is not found
+     * @return                 LogAtividade A model object, or null if the key is not found
      * @throws PropelException
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `usuario_id`, `nonce`, `data`, `ip` FROM `log_acesso` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `usuario_id`, `tabela_atualizada`, `valor_anterior`, `valor_atual`, `data` FROM `log_atividade` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -157,9 +161,9 @@ abstract class BaseLogAcessoQuery extends ModelCriteria
         }
         $obj = null;
         if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $obj = new LogAcesso();
+            $obj = new LogAtividade();
             $obj->hydrate($row);
-            LogAcessoPeer::addInstanceToPool($obj, (string) $key);
+            LogAtividadePeer::addInstanceToPool($obj, (string) $key);
         }
         $stmt->closeCursor();
 
@@ -172,7 +176,7 @@ abstract class BaseLogAcessoQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return LogAcesso|LogAcesso[]|mixed the result, formatted by the current formatter
+     * @return LogAtividade|LogAtividade[]|mixed the result, formatted by the current formatter
      */
     protected function findPkComplex($key, $con)
     {
@@ -193,7 +197,7 @@ abstract class BaseLogAcessoQuery extends ModelCriteria
      * @param     array $keys Primary keys to use for the query
      * @param     PropelPDO $con an optional connection object
      *
-     * @return PropelObjectCollection|LogAcesso[]|mixed the list of results, formatted by the current formatter
+     * @return PropelObjectCollection|LogAtividade[]|mixed the list of results, formatted by the current formatter
      */
     public function findPks($keys, $con = null)
     {
@@ -214,12 +218,12 @@ abstract class BaseLogAcessoQuery extends ModelCriteria
      *
      * @param     mixed $key Primary key to use for the query
      *
-     * @return LogAcessoQuery The current query, for fluid interface
+     * @return LogAtividadeQuery The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
 
-        return $this->addUsingAlias(LogAcessoPeer::ID, $key, Criteria::EQUAL);
+        return $this->addUsingAlias(LogAtividadePeer::ID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -227,12 +231,12 @@ abstract class BaseLogAcessoQuery extends ModelCriteria
      *
      * @param     array $keys The list of primary key to use for the query
      *
-     * @return LogAcessoQuery The current query, for fluid interface
+     * @return LogAtividadeQuery The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
 
-        return $this->addUsingAlias(LogAcessoPeer::ID, $keys, Criteria::IN);
+        return $this->addUsingAlias(LogAtividadePeer::ID, $keys, Criteria::IN);
     }
 
     /**
@@ -252,18 +256,18 @@ abstract class BaseLogAcessoQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return LogAcessoQuery The current query, for fluid interface
+     * @return LogAtividadeQuery The current query, for fluid interface
      */
     public function filterById($id = null, $comparison = null)
     {
         if (is_array($id)) {
             $useMinMax = false;
             if (isset($id['min'])) {
-                $this->addUsingAlias(LogAcessoPeer::ID, $id['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(LogAtividadePeer::ID, $id['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($id['max'])) {
-                $this->addUsingAlias(LogAcessoPeer::ID, $id['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(LogAtividadePeer::ID, $id['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -274,7 +278,7 @@ abstract class BaseLogAcessoQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(LogAcessoPeer::ID, $id, $comparison);
+        return $this->addUsingAlias(LogAtividadePeer::ID, $id, $comparison);
     }
 
     /**
@@ -296,18 +300,18 @@ abstract class BaseLogAcessoQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return LogAcessoQuery The current query, for fluid interface
+     * @return LogAtividadeQuery The current query, for fluid interface
      */
     public function filterByUsuarioId($usuarioId = null, $comparison = null)
     {
         if (is_array($usuarioId)) {
             $useMinMax = false;
             if (isset($usuarioId['min'])) {
-                $this->addUsingAlias(LogAcessoPeer::USUARIO_ID, $usuarioId['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(LogAtividadePeer::USUARIO_ID, $usuarioId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($usuarioId['max'])) {
-                $this->addUsingAlias(LogAcessoPeer::USUARIO_ID, $usuarioId['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(LogAtividadePeer::USUARIO_ID, $usuarioId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -318,36 +322,94 @@ abstract class BaseLogAcessoQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(LogAcessoPeer::USUARIO_ID, $usuarioId, $comparison);
+        return $this->addUsingAlias(LogAtividadePeer::USUARIO_ID, $usuarioId, $comparison);
     }
 
     /**
-     * Filter the query on the nonce column
+     * Filter the query on the tabela_atualizada column
      *
      * Example usage:
      * <code>
-     * $query->filterByNonce('fooValue');   // WHERE nonce = 'fooValue'
-     * $query->filterByNonce('%fooValue%'); // WHERE nonce LIKE '%fooValue%'
+     * $query->filterByTabelaAtualizada('fooValue');   // WHERE tabela_atualizada = 'fooValue'
+     * $query->filterByTabelaAtualizada('%fooValue%'); // WHERE tabela_atualizada LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $nonce The value to use as filter.
+     * @param     string $tabelaAtualizada The value to use as filter.
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return LogAcessoQuery The current query, for fluid interface
+     * @return LogAtividadeQuery The current query, for fluid interface
      */
-    public function filterByNonce($nonce = null, $comparison = null)
+    public function filterByTabelaAtualizada($tabelaAtualizada = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($nonce)) {
+            if (is_array($tabelaAtualizada)) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $nonce)) {
-                $nonce = str_replace('*', '%', $nonce);
+            } elseif (preg_match('/[\%\*]/', $tabelaAtualizada)) {
+                $tabelaAtualizada = str_replace('*', '%', $tabelaAtualizada);
                 $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(LogAcessoPeer::NONCE, $nonce, $comparison);
+        return $this->addUsingAlias(LogAtividadePeer::TABELA_ATUALIZADA, $tabelaAtualizada, $comparison);
+    }
+
+    /**
+     * Filter the query on the valor_anterior column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByValorAnterior('fooValue');   // WHERE valor_anterior = 'fooValue'
+     * $query->filterByValorAnterior('%fooValue%'); // WHERE valor_anterior LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $valorAnterior The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return LogAtividadeQuery The current query, for fluid interface
+     */
+    public function filterByValorAnterior($valorAnterior = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($valorAnterior)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $valorAnterior)) {
+                $valorAnterior = str_replace('*', '%', $valorAnterior);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(LogAtividadePeer::VALOR_ANTERIOR, $valorAnterior, $comparison);
+    }
+
+    /**
+     * Filter the query on the valor_atual column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByValorAtual('fooValue');   // WHERE valor_atual = 'fooValue'
+     * $query->filterByValorAtual('%fooValue%'); // WHERE valor_atual LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $valorAtual The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return LogAtividadeQuery The current query, for fluid interface
+     */
+    public function filterByValorAtual($valorAtual = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($valorAtual)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $valorAtual)) {
+                $valorAtual = str_replace('*', '%', $valorAtual);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(LogAtividadePeer::VALOR_ATUAL, $valorAtual, $comparison);
     }
 
     /**
@@ -368,18 +430,18 @@ abstract class BaseLogAcessoQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return LogAcessoQuery The current query, for fluid interface
+     * @return LogAtividadeQuery The current query, for fluid interface
      */
     public function filterByData($data = null, $comparison = null)
     {
         if (is_array($data)) {
             $useMinMax = false;
             if (isset($data['min'])) {
-                $this->addUsingAlias(LogAcessoPeer::DATA, $data['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(LogAtividadePeer::DATA, $data['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($data['max'])) {
-                $this->addUsingAlias(LogAcessoPeer::DATA, $data['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(LogAtividadePeer::DATA, $data['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -390,36 +452,7 @@ abstract class BaseLogAcessoQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(LogAcessoPeer::DATA, $data, $comparison);
-    }
-
-    /**
-     * Filter the query on the ip column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByIp('fooValue');   // WHERE ip = 'fooValue'
-     * $query->filterByIp('%fooValue%'); // WHERE ip LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $ip The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return LogAcessoQuery The current query, for fluid interface
-     */
-    public function filterByIp($ip = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($ip)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $ip)) {
-                $ip = str_replace('*', '%', $ip);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(LogAcessoPeer::IP, $ip, $comparison);
+        return $this->addUsingAlias(LogAtividadePeer::DATA, $data, $comparison);
     }
 
     /**
@@ -428,21 +461,21 @@ abstract class BaseLogAcessoQuery extends ModelCriteria
      * @param   Usuario|PropelObjectCollection $usuario The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return                 LogAcessoQuery The current query, for fluid interface
+     * @return                 LogAtividadeQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByUsuario($usuario, $comparison = null)
     {
         if ($usuario instanceof Usuario) {
             return $this
-                ->addUsingAlias(LogAcessoPeer::USUARIO_ID, $usuario->getId(), $comparison);
+                ->addUsingAlias(LogAtividadePeer::USUARIO_ID, $usuario->getId(), $comparison);
         } elseif ($usuario instanceof PropelObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(LogAcessoPeer::USUARIO_ID, $usuario->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(LogAtividadePeer::USUARIO_ID, $usuario->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
             throw new PropelException('filterByUsuario() only accepts arguments of type Usuario or PropelCollection');
         }
@@ -454,7 +487,7 @@ abstract class BaseLogAcessoQuery extends ModelCriteria
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return LogAcessoQuery The current query, for fluid interface
+     * @return LogAtividadeQuery The current query, for fluid interface
      */
     public function joinUsuario($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
@@ -501,14 +534,14 @@ abstract class BaseLogAcessoQuery extends ModelCriteria
     /**
      * Exclude object from result
      *
-     * @param   LogAcesso $logAcesso Object to remove from the list of results
+     * @param   LogAtividade $logAtividade Object to remove from the list of results
      *
-     * @return LogAcessoQuery The current query, for fluid interface
+     * @return LogAtividadeQuery The current query, for fluid interface
      */
-    public function prune($logAcesso = null)
+    public function prune($logAtividade = null)
     {
-        if ($logAcesso) {
-            $this->addUsingAlias(LogAcessoPeer::ID, $logAcesso->getId(), Criteria::NOT_EQUAL);
+        if ($logAtividade) {
+            $this->addUsingAlias(LogAtividadePeer::ID, $logAtividade->getId(), Criteria::NOT_EQUAL);
         }
 
         return $this;

@@ -40,7 +40,6 @@ class PfjEndereco extends BasePfjEndereco
                           );
 
   private $_valid = false;
-  private $_errorMessage = '';
   /*
   */
   public function getEnderecoM($id){
@@ -74,9 +73,15 @@ class PfjEndereco extends BasePfjEndereco
   /*
 
   */
-  public function setEnderecoM($id, $fields){
+  public function setEnderecoM($id, $fields, $userId){
 
     $query = $this->_getById($id);
+
+    $log = new LogAtividade();
+    $log->setValorAnterior(json_encode($query->toArray()));
+    $log->setUsuarioId($userId);
+    $tableName = new PfjEnderecoTableMap();
+    $log->setTabelaAtualizada($tableName->getName());
 
     foreach ($fields as $key => $value) {
       //verifica se o  campo existe na tabela
@@ -91,11 +96,17 @@ class PfjEndereco extends BasePfjEndereco
 
     }
 
-    if($this->_valid){
+    if($query->validate()){
       $query->save();
+      $log->setValorAtual(json_encode($query->toArray()));
+      $log->save();
       return true;
     }else{
-      throw new Exception($this->_errorMessage, 400);
+      $errorMsg = '';
+      foreach ($query->getValidationFailures() as $failure) {
+        $errorMsg .= $failure->getMessage() . "\n";
+      }
+      throw new Exception($errorMsg, 400);
     }
 
   }

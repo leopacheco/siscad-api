@@ -41,6 +41,7 @@ class TabGraduacaoNivelTableMap extends TableMap
         $this->addPrimaryKey('id_tab_graduacao_nivel', 'IdTabGraduacaoNivel', 'INTEGER', true, 5, null);
         $this->addColumn('descricao', 'Descricao', 'VARCHAR', false, 15, null);
         // validators
+        $this->addValidator('descricao', 'maxLength', 'propel.validator.MaxLengthValidator', '15', 'Descricao: tamanho máximo 15');
     } // initialize()
 
     /**

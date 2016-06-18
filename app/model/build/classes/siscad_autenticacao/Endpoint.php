@@ -33,7 +33,7 @@ class Endpoint extends BaseEndpoint
                                     ->findOne();
         if(is_null($query)){
           //usuário não autorizado
-          $this->validUri = false;
+          $this->_hasAccess = false;
         }
       }
     }
@@ -60,8 +60,10 @@ class Endpoint extends BaseEndpoint
       $pattern = '/';
     }elseif(count($uriPieces) == 1){
       $pattern = '/'.$uriPieces[0];
-    }else{
+    }elseif($uriPieces[1]=='filtrar'){
       $pattern = '/'.$uriPieces[0].'/'.$uriPieces[1];
+    }else{
+      $pattern = '/'.$uriPieces[0];
     }
     return $pattern;
   }

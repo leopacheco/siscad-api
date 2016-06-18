@@ -17,6 +17,12 @@ $app->get('/endereco/filtrar/:filters', function ($filters = null) use ($app) {
 //atualiza um registro conforme :id
 $app->put('/endereco/:id', function ($id = null) use ($app) {
   $controller = new Endereco;
-  $response = $controller->setEndereco($id, $app->request->params());
+  $params = array();
+  if($app->request->getMediaType() == 'application/json'){
+    $params = $app->request->getBody();
+  }else{
+    $params = $app->request->params();
+  }
+  $response = $controller->setEndereco($id, $params, $app->userId);
   $app->response->body($response);
 });

@@ -17,6 +17,11 @@ $app->get('/ramo2/filtrar/:filters', function ($filters = null) use ($app) {
 //atualiza um registro conforme :id
 $app->put('/ramo2/:id', function ($id = null) use ($app) {
   $controller = new Ramo2;
-  $response = $controller->setRamo2($id, $app->request->params());
+  if($app->request->getMediaType() == 'application/json'){
+    $params = $app->request->getBody();
+  }else{
+    $params = $app->request->params();
+  }
+  $response = $controller->setRamo2($id, $params, $app->userId);
   $app->response->body($response);
 });

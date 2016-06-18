@@ -14,12 +14,12 @@ class Ies{
   }
 
 
-  public function setIes($id, $fields){
+  public function setIes($id, $fields, $userId){
 
     $model = new TabIes();
 
     if(!empty($fields)){
-      $model->setIes($id, $fields);
+      $model->setIes($id, $fields, $userId);
       $response = 'Atualizado com sucesso';
     }else{
       throw new Exception('Dados inválidos', 400);

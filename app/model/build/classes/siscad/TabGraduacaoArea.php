@@ -39,10 +39,16 @@ class TabGraduacaoArea extends BaseTabGraduacaoArea
   /*
 
   */
-  public function setGraduacaoArea($id, $fields){
+  public function setGraduacaoArea($id, $fields, $userId){
 
     $graduacaoArea = $this->getById($id);
-    //var_dump($graduacaoArea);
+
+    $log = new LogAtividade();
+    $log->setValorAnterior(json_encode($query->toArray()));
+    $log->setUsuarioId($userId);
+    $tableName = new TabGraduacaoAreaTableMap();
+    $log->setTabelaAtualizada($tableName->getName());
+
     foreach ($fields as $key => $value) {
       //verifica se o  campo existe na tabela
       if(array_key_exists($key, $this->_columns)){
@@ -56,11 +62,17 @@ class TabGraduacaoArea extends BaseTabGraduacaoArea
 
     }
 
-    if($this->_valid){
-      $graduacaoArea->save();
+    if($query->validate()){
+      $query->save();
+      $log->setValorAtual(json_encode($query->toArray()));
+      $log->save();
       return true;
     }else{
-      throw new Exception($this->_errorMessage, 400);
+      $errorMsg = '';
+      foreach ($query->getValidationFailures() as $failure) {
+        $errorMsg .= $failure->getMessage() . "\n";
+      }
+      throw new Exception($errorMsg, 400);
     }
 
   }

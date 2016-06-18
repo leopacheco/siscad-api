@@ -54,6 +54,7 @@ class UsuarioTableMap extends TableMap
     {
         $this->addRelation('Perfil', 'Perfil', RelationMap::MANY_TO_ONE, array('perfil_id' => 'id', ), null, null);
         $this->addRelation('LogAcesso', 'LogAcesso', RelationMap::ONE_TO_MANY, array('id' => 'usuario_id', ), null, null, 'LogAcessos');
+        $this->addRelation('LogAtividade', 'LogAtividade', RelationMap::ONE_TO_MANY, array('id' => 'usuario_id', ), null, null, 'LogAtividades');
     } // buildRelations()
 
 } // UsuarioTableMap

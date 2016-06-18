@@ -52,6 +52,15 @@ class TabIesTableMap extends TableMap
         $this->addColumn('email', 'Email', 'VARCHAR', false, 80, null);
         $this->addColumn('condicao', 'Condicao', 'LONGVARCHAR', false, null, null);
         // validators
+        $this->addValidator('nome', 'maxLength', 'propel.validator.MaxLengthValidator', '60', 'Nome: tamanho máximo 60');
+        $this->addValidator('sigla', 'maxLength', 'propel.validator.MaxLengthValidator', '20', 'Sigla: tamanho máximo 20');
+        $this->addValidator('endereco', 'maxLength', 'propel.validator.MaxLengthValidator', '50', 'Endereco: tamanho máximo 50');
+        $this->addValidator('bairro', 'maxLength', 'propel.validator.MaxLengthValidator', '40', 'Bairro: tamanho máximo 40');
+        $this->addValidator('cidade', 'maxLength', 'propel.validator.MaxLengthValidator', '40', 'Cidade: tamanho máximo 40');
+        $this->addValidator('cep', 'maxLength', 'propel.validator.MaxLengthValidator', '9', 'Cep: tamanho máximo 9');
+        $this->addValidator('site', 'maxLength', 'propel.validator.MaxLengthValidator', '80', 'Site: tamanho máximo 80');
+        $this->addValidator('email', 'maxLength', 'propel.validator.MaxLengthValidator', '80', 'Email: tamanho máximo 80');
+        $this->addValidator('email', 'match', 'propel.validator.MatchValidator', '/^([a-zA-Z0-9])+([\.a-zA-Z0-9_-])*@([a-zA-Z0-9])+(\.[a-zA-Z0-9_-]+)+$/', 'Email: formato inválido');
     } // initialize()
 
     /**

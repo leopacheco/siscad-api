@@ -15,12 +15,12 @@ class Inscricao{
   }
 
 
-  public function setInscricao($id, $fields){
+  public function setInscricao($id, $fields, $userId){
 
     $model = new PfInscricao();
 
     if(!empty($fields)){
-      $model->setInscricao($id, $fields);
+      $model->setInscricao($id, $fields, $userId);
       $response = 'Atualizado com sucesso';
     }else{
       throw new Exception('Dados inválidos', 400);

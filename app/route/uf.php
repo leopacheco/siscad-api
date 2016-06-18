@@ -17,6 +17,11 @@ $app->get('/uf/filtrar/:filters', function ($filters = null) use ($app) {
 //atualiza um registro conforme :id
 $app->put('/uf/:id', function ($id = null) use ($app) {
   $controller = new Uf;
-  $response = $controller->setUf($id, $app->request->params());
+  if($app->request->getMediaType() == 'application/json'){
+    $params = $app->request->getBody();
+  }else{
+    $params = $app->request->params();
+  }
+  $response = $controller->setUf($id, $params, $app->userId);
   $app->response->body($response);
 });

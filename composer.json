@@ -1,7 +1,7 @@
 {
     "require": {
         "slim/slim": "~2.0",
-        "bshaffer/oauth2-server-php": "~0.9",
-        "propel/propel1": "~1.6"
+        "propel/propel1": "~1.6",
+        "slim/middleware": "^1.0"
     }
 }

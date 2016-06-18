@@ -17,6 +17,11 @@ $app->get('/profissao/filtrar/:filters', function ($filters = null) use ($app) {
 //atualiza um registro conforme :id
 $app->put('/profissao/:id', function ($id = null) use ($app) {
   $controller = new Profissao;
-  $response = $controller->setProfissao($id, $app->request->params());
+  if($app->request->getMediaType() == 'application/json'){
+    $params = $app->request->getBody();
+  }else{
+    $params = $app->request->params();
+  }
+  $response = $controller->setProfissao($id, $params, $app->userId);
   $app->response->body($response);
 });

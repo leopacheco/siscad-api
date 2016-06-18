@@ -720,6 +720,9 @@ abstract class BasePfGraduacaoPeer
             }
         } else {
 
+        if ($obj->isNew() || $obj->isColumnModified(PfGraduacaoPeer::DT_CONCLUSAO))
+            $columns[PfGraduacaoPeer::DT_CONCLUSAO] = $obj->getDtConclusao();
+
         }
 
         return BasePeer::doValidate(PfGraduacaoPeer::DATABASE_NAME, PfGraduacaoPeer::TABLE_NAME, $columns);

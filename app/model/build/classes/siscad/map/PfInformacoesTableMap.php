@@ -58,7 +58,23 @@ class PfInformacoesTableMap extends TableMap
         $this->addColumn('ctps_serie', 'CtpsSerie', 'VARCHAR', false, 10, null);
         $this->addColumn('ctps_dt_expedicao', 'CtpsDtExpedicao', 'DATE', false, null, null);
         // validators
-        $this->addValidator('mae', 'type', 'propel.validator.TypeValidator', 'string', 'A coluna MAE deve ser do tipo texto');
+        $this->addValidator('mae', 'maxLength', 'propel.validator.MaxLengthValidator', '60', 'Mae: Tamanho máximo 60');
+        $this->addValidator('pai', 'maxLength', 'propel.validator.MaxLengthValidator', '60', 'Pai: Tamanho máximo 60');
+        $this->addValidator('dt_nascimento', 'maxLength', 'propel.validator.MaxLengthValidator', '', 'DtNascimento: Tamanho máximo ');
+        $this->addValidator('dt_nascimento', 'type', 'propel.validator.TypeValidator', 'date', 'DtNascimento: formato inválido');
+        $this->addValidator('naturalidade', 'maxLength', 'propel.validator.MaxLengthValidator', '50', 'Naturalidade: Tamanho máximo 50');
+        $this->addValidator('uf_naturalidade', 'maxLength', 'propel.validator.MaxLengthValidator', '2', 'UfNaturalidade: Tamanho máximo 2');
+        $this->addValidator('sexo', 'maxLength', 'propel.validator.MaxLengthValidator', '', 'Sexo: Tamanho máximo ');
+        $this->addValidator('rg_nro', 'maxLength', 'propel.validator.MaxLengthValidator', '20', 'RgNro: Tamanho máximo 20');
+        $this->addValidator('rg_orgao_expedidor', 'maxLength', 'propel.validator.MaxLengthValidator', '50', 'RgOrgaoExpedidor: Tamanho máximo 50');
+        $this->addValidator('rg_dt_expedicao', 'type', 'propel.validator.TypeValidator', 'date', 'RgDtExpedicao: formato inválido');
+        $this->addValidator('rg_dt_expedicao', 'maxLength', 'propel.validator.MaxLengthValidator', '', 'RgDtExpedicao: Tamanho máximo ');
+        $this->addValidator('certificado_militar', 'maxLength', 'propel.validator.MaxLengthValidator', '50', 'CertificadoMilitar: Tamanho máximo 50');
+        $this->addValidator('titulo_eleitor', 'maxLength', 'propel.validator.MaxLengthValidator', '50', 'TituloEleitor: Tamanho máximo 50');
+        $this->addValidator('ctps_numero', 'maxLength', 'propel.validator.MaxLengthValidator', '10', 'CtpsNumero: Tamanho máximo 10');
+        $this->addValidator('ctps_serie', 'maxLength', 'propel.validator.MaxLengthValidator', '10', 'CtpsSerie: Tamanho máximo 10');
+        $this->addValidator('ctps_dt_expedicao', 'maxLength', 'propel.validator.MaxLengthValidator', '', 'CtpsDtExpedicao: Tamanho máximo ');
+        $this->addValidator('ctps_dt_expedicao', 'type', 'propel.validator.TypeValidator', 'date', 'CtpsDtExpedicao: formato inválido');
     } // initialize()
 
     /**

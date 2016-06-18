@@ -14,12 +14,12 @@ class GraduacaoArea{
   }
 
 
-  public function setGraduacaoArea($id, $fields){
+  public function setGraduacaoArea($id, $fields, $userId){
 
     $graduacaoModel = new TabGraduacaoArea();
 
     if(!empty($fields)){
-      $graduacaoModel->setGraduacaoArea($id, $fields);
+      $graduacaoModel->setGraduacaoArea($id, $fields, $userId);
       $response = 'Atualizado com sucesso';
     }else{
       throw new Exception('Dados inválidos', 400);

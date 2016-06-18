@@ -14,12 +14,12 @@ class Profissao{
   }
 
 
-  public function setProfissao($id, $fields){
+  public function setProfissao($id, $fields, $userId){
 
     $model = new PfProfissao();
 
     if(!empty($fields)){
-      $model->setProfissao($id, $fields);
+      $model->setProfissao($id, $fields, $userId);
       $response = 'Atualizado com sucesso';
     }else{
       throw new Exception('Dados inválidos', 400);

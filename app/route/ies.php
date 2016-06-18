@@ -17,6 +17,11 @@ $app->get('/ies/filtrar/:filters', function ($filters = null) use ($app) {
 //atualiza um registro conforme :id
 $app->put('/ies/:id', function ($id = null) use ($app) {
   $controller = new Ies;
-  $response = $controller->setIes($id, $app->request->params());
+  if($app->request->getMediaType() == 'application/json'){
+    $params = $app->request->getBody();
+  }else{
+    $params = $app->request->params();
+  }
+  $response = $controller->setIes($id, $params, $app->userId);
   $app->response->body($response);
 });

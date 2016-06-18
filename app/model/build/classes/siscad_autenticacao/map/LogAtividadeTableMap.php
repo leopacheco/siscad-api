@@ -3,7 +3,7 @@
 
 
 /**
- * This class defines the structure of the 'log_acesso' table.
+ * This class defines the structure of the 'log_atividade' table.
  *
  *
  *
@@ -14,13 +14,13 @@
  *
  * @package    propel.generator.siscad_autenticacao.map
  */
-class LogAcessoTableMap extends TableMap
+class LogAtividadeTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'siscad_autenticacao.map.LogAcessoTableMap';
+    const CLASS_NAME = 'siscad_autenticacao.map.LogAtividadeTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -32,17 +32,18 @@ class LogAcessoTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('log_acesso');
-        $this->setPhpName('LogAcesso');
-        $this->setClassname('LogAcesso');
+        $this->setName('log_atividade');
+        $this->setPhpName('LogAtividade');
+        $this->setClassname('LogAtividade');
         $this->setPackage('siscad_autenticacao');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('usuario_id', 'UsuarioId', 'INTEGER', 'usuario', 'id', true, null, null);
-        $this->addColumn('nonce', 'Nonce', 'VARCHAR', true, 20, null);
+        $this->addColumn('tabela_atualizada', 'TabelaAtualizada', 'VARCHAR', true, 80, null);
+        $this->addColumn('valor_anterior', 'ValorAnterior', 'LONGVARCHAR', false, null, null);
+        $this->addColumn('valor_atual', 'ValorAtual', 'LONGVARCHAR', false, null, null);
         $this->addColumn('data', 'Data', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
-        $this->addColumn('ip', 'Ip', 'VARCHAR', false, 20, null);
         // validators
     } // initialize()
 
@@ -54,4 +55,4 @@ class LogAcessoTableMap extends TableMap
         $this->addRelation('Usuario', 'Usuario', RelationMap::MANY_TO_ONE, array('usuario_id' => 'id', ), null, null);
     } // buildRelations()
 
-} // LogAcessoTableMap
+} // LogAtividadeTableMap

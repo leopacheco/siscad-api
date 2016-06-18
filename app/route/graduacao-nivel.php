@@ -17,6 +17,11 @@ $app->get('/graduacao-nivel/filtrar/:filters', function ($filters = null) use ($
 //atualiza um registro conforme :id
 $app->put('/graduacao-nivel/:id', function ($id = null) use ($app) {
   $controller = new GraduacaoNivel;
-  $response = $controller->setGraduacaoNivel($id, $app->request->params());
+  if($app->request->getMediaType() == 'application/json'){
+    $params = $app->request->getBody();
+  }else{
+    $params = $app->request->params();
+  }
+  $response = $controller->setGraduacaoNivel($id, $params, $app->userId);
   $app->response->body($response);
 });

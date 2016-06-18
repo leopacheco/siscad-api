@@ -41,6 +41,7 @@ class TabCorreioTableMap extends TableMap
         $this->addPrimaryKey('id_tab_correio', 'IdTabCorreio', 'INTEGER', true, 5, 0);
         $this->addColumn('descricao', 'Descricao', 'VARCHAR', false, 30, null);
         // validators
+        $this->addValidator('descricao', 'maxLength', 'propel.validator.MaxLengthValidator', '30', 'Descricao: Tamanho máximo 30');
     } // initialize()
 
     /**

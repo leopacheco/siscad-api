@@ -17,6 +17,11 @@ $app->get('/informacoes/filtrar/:filters', function ($filters = null) use ($app)
 //atualiza um registro conforme :id
 $app->put('/informacoes/:id', function ($id = null) use ($app) {
   $controller = new Informacoes;
-  $response = $controller->setInformacoes($id, $app->request->params());
+  if($app->request->getMediaType() == 'application/json'){
+    $params = $app->request->getBody();
+  }else{
+    $params = $app->request->params();
+  }
+  $response = $controller->setInformacoes($id, $params, $app->userId);
   $app->response->body($response);
 });

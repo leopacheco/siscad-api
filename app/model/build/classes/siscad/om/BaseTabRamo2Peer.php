@@ -705,6 +705,9 @@ abstract class BaseTabRamo2Peer
             }
         } else {
 
+        if ($obj->isNew() || $obj->isColumnModified(TabRamo2Peer::DESCRICAO))
+            $columns[TabRamo2Peer::DESCRICAO] = $obj->getDescricao();
+
         }
 
         return BasePeer::doValidate(TabRamo2Peer::DATABASE_NAME, TabRamo2Peer::TABLE_NAME, $columns);

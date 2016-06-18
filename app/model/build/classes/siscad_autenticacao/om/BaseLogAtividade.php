@@ -2,24 +2,24 @@
 
 
 /**
- * Base class that represents a row from the 'log_acesso' table.
+ * Base class that represents a row from the 'log_atividade' table.
  *
  *
  *
  * @package    propel.generator.siscad_autenticacao.om
  */
-abstract class BaseLogAcesso extends BaseObject implements Persistent
+abstract class BaseLogAtividade extends BaseObject implements Persistent
 {
     /**
      * Peer class name
      */
-    const PEER = 'LogAcessoPeer';
+    const PEER = 'LogAtividadePeer';
 
     /**
      * The Peer class.
      * Instance provides a convenient way of calling static methods on a class
      * that calling code may not be able to identify.
-     * @var        LogAcessoPeer
+     * @var        LogAtividadePeer
      */
     protected static $peer;
 
@@ -42,10 +42,22 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
     protected $usuario_id;
 
     /**
-     * The value for the nonce field.
+     * The value for the tabela_atualizada field.
      * @var        string
      */
-    protected $nonce;
+    protected $tabela_atualizada;
+
+    /**
+     * The value for the valor_anterior field.
+     * @var        string
+     */
+    protected $valor_anterior;
+
+    /**
+     * The value for the valor_atual field.
+     * @var        string
+     */
+    protected $valor_atual;
 
     /**
      * The value for the data field.
@@ -53,12 +65,6 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
      * @var        string
      */
     protected $data;
-
-    /**
-     * The value for the ip field.
-     * @var        string
-     */
-    protected $ip;
 
     /**
      * @var        Usuario
@@ -96,7 +102,7 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
     }
 
     /**
-     * Initializes internal state of BaseLogAcesso object.
+     * Initializes internal state of BaseLogAtividade object.
      * @see        applyDefaults()
      */
     public function __construct()
@@ -128,14 +134,36 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [nonce] column value.
+     * Get the [tabela_atualizada] column value.
      *
      * @return string
      */
-    public function getNonce()
+    public function getTabelaAtualizada()
     {
 
-        return $this->nonce;
+        return $this->tabela_atualizada;
+    }
+
+    /**
+     * Get the [valor_anterior] column value.
+     *
+     * @return string
+     */
+    public function getValorAnterior()
+    {
+
+        return $this->valor_anterior;
+    }
+
+    /**
+     * Get the [valor_atual] column value.
+     *
+     * @return string
+     */
+    public function getValorAtual()
+    {
+
+        return $this->valor_atual;
     }
 
     /**
@@ -179,21 +207,10 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [ip] column value.
-     *
-     * @return string
-     */
-    public function getIp()
-    {
-
-        return $this->ip;
-    }
-
-    /**
      * Set the value of [id] column.
      *
      * @param  int $v new value
-     * @return LogAcesso The current object (for fluent API support)
+     * @return LogAtividade The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -203,7 +220,7 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[] = LogAcessoPeer::ID;
+            $this->modifiedColumns[] = LogAtividadePeer::ID;
         }
 
 
@@ -214,7 +231,7 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
      * Set the value of [usuario_id] column.
      *
      * @param  int $v new value
-     * @return LogAcesso The current object (for fluent API support)
+     * @return LogAtividade The current object (for fluent API support)
      */
     public function setUsuarioId($v)
     {
@@ -224,7 +241,7 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
 
         if ($this->usuario_id !== $v) {
             $this->usuario_id = $v;
-            $this->modifiedColumns[] = LogAcessoPeer::USUARIO_ID;
+            $this->modifiedColumns[] = LogAtividadePeer::USUARIO_ID;
         }
 
         if ($this->aUsuario !== null && $this->aUsuario->getId() !== $v) {
@@ -236,32 +253,74 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
     } // setUsuarioId()
 
     /**
-     * Set the value of [nonce] column.
+     * Set the value of [tabela_atualizada] column.
      *
      * @param  string $v new value
-     * @return LogAcesso The current object (for fluent API support)
+     * @return LogAtividade The current object (for fluent API support)
      */
-    public function setNonce($v)
+    public function setTabelaAtualizada($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->nonce !== $v) {
-            $this->nonce = $v;
-            $this->modifiedColumns[] = LogAcessoPeer::NONCE;
+        if ($this->tabela_atualizada !== $v) {
+            $this->tabela_atualizada = $v;
+            $this->modifiedColumns[] = LogAtividadePeer::TABELA_ATUALIZADA;
         }
 
 
         return $this;
-    } // setNonce()
+    } // setTabelaAtualizada()
+
+    /**
+     * Set the value of [valor_anterior] column.
+     *
+     * @param  string $v new value
+     * @return LogAtividade The current object (for fluent API support)
+     */
+    public function setValorAnterior($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->valor_anterior !== $v) {
+            $this->valor_anterior = $v;
+            $this->modifiedColumns[] = LogAtividadePeer::VALOR_ANTERIOR;
+        }
+
+
+        return $this;
+    } // setValorAnterior()
+
+    /**
+     * Set the value of [valor_atual] column.
+     *
+     * @param  string $v new value
+     * @return LogAtividade The current object (for fluent API support)
+     */
+    public function setValorAtual($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->valor_atual !== $v) {
+            $this->valor_atual = $v;
+            $this->modifiedColumns[] = LogAtividadePeer::VALOR_ATUAL;
+        }
+
+
+        return $this;
+    } // setValorAtual()
 
     /**
      * Sets the value of [data] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
      *               Empty strings are treated as null.
-     * @return LogAcesso The current object (for fluent API support)
+     * @return LogAtividade The current object (for fluent API support)
      */
     public function setData($v)
     {
@@ -271,34 +330,13 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
             $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->data = $newDateAsString;
-                $this->modifiedColumns[] = LogAcessoPeer::DATA;
+                $this->modifiedColumns[] = LogAtividadePeer::DATA;
             }
         } // if either are not null
 
 
         return $this;
     } // setData()
-
-    /**
-     * Set the value of [ip] column.
-     *
-     * @param  string $v new value
-     * @return LogAcesso The current object (for fluent API support)
-     */
-    public function setIp($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->ip !== $v) {
-            $this->ip = $v;
-            $this->modifiedColumns[] = LogAcessoPeer::IP;
-        }
-
-
-        return $this;
-    } // setIp()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -334,9 +372,10 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->usuario_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->nonce = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->data = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->ip = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->tabela_atualizada = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+            $this->valor_anterior = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->valor_atual = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->data = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -346,10 +385,10 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 5; // 5 = LogAcessoPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = LogAtividadePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating LogAcesso object", $e);
+            throw new PropelException("Error populating LogAtividade object", $e);
         }
     }
 
@@ -395,13 +434,13 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(LogAcessoPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(LogAtividadePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $stmt = LogAcessoPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+        $stmt = LogAtividadePeer::doSelectStmt($this->buildPkeyCriteria(), $con);
         $row = $stmt->fetch(PDO::FETCH_NUM);
         $stmt->closeCursor();
         if (!$row) {
@@ -432,12 +471,12 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(LogAcessoPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(LogAtividadePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = LogAcessoQuery::create()
+            $deleteQuery = LogAtividadeQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -475,7 +514,7 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(LogAcessoPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(LogAtividadePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
@@ -495,7 +534,7 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                LogAcessoPeer::addInstanceToPool($this);
+                LogAtividadePeer::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -568,30 +607,33 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[] = LogAcessoPeer::ID;
+        $this->modifiedColumns[] = LogAtividadePeer::ID;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . LogAcessoPeer::ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . LogAtividadePeer::ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(LogAcessoPeer::ID)) {
+        if ($this->isColumnModified(LogAtividadePeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
-        if ($this->isColumnModified(LogAcessoPeer::USUARIO_ID)) {
+        if ($this->isColumnModified(LogAtividadePeer::USUARIO_ID)) {
             $modifiedColumns[':p' . $index++]  = '`usuario_id`';
         }
-        if ($this->isColumnModified(LogAcessoPeer::NONCE)) {
-            $modifiedColumns[':p' . $index++]  = '`nonce`';
+        if ($this->isColumnModified(LogAtividadePeer::TABELA_ATUALIZADA)) {
+            $modifiedColumns[':p' . $index++]  = '`tabela_atualizada`';
         }
-        if ($this->isColumnModified(LogAcessoPeer::DATA)) {
+        if ($this->isColumnModified(LogAtividadePeer::VALOR_ANTERIOR)) {
+            $modifiedColumns[':p' . $index++]  = '`valor_anterior`';
+        }
+        if ($this->isColumnModified(LogAtividadePeer::VALOR_ATUAL)) {
+            $modifiedColumns[':p' . $index++]  = '`valor_atual`';
+        }
+        if ($this->isColumnModified(LogAtividadePeer::DATA)) {
             $modifiedColumns[':p' . $index++]  = '`data`';
-        }
-        if ($this->isColumnModified(LogAcessoPeer::IP)) {
-            $modifiedColumns[':p' . $index++]  = '`ip`';
         }
 
         $sql = sprintf(
-            'INSERT INTO `log_acesso` (%s) VALUES (%s)',
+            'INSERT INTO `log_atividade` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -606,14 +648,17 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
                     case '`usuario_id`':
                         $stmt->bindValue($identifier, $this->usuario_id, PDO::PARAM_INT);
                         break;
-                    case '`nonce`':
-                        $stmt->bindValue($identifier, $this->nonce, PDO::PARAM_STR);
+                    case '`tabela_atualizada`':
+                        $stmt->bindValue($identifier, $this->tabela_atualizada, PDO::PARAM_STR);
+                        break;
+                    case '`valor_anterior`':
+                        $stmt->bindValue($identifier, $this->valor_anterior, PDO::PARAM_STR);
+                        break;
+                    case '`valor_atual`':
+                        $stmt->bindValue($identifier, $this->valor_atual, PDO::PARAM_STR);
                         break;
                     case '`data`':
                         $stmt->bindValue($identifier, $this->data, PDO::PARAM_STR);
-                        break;
-                    case '`ip`':
-                        $stmt->bindValue($identifier, $this->ip, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -721,7 +766,7 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
             }
 
 
-            if (($retval = LogAcessoPeer::doValidate($this, $columns)) !== true) {
+            if (($retval = LogAtividadePeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
             }
 
@@ -745,7 +790,7 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = LogAcessoPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = LogAtividadePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -768,13 +813,16 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
                 return $this->getUsuarioId();
                 break;
             case 2:
-                return $this->getNonce();
+                return $this->getTabelaAtualizada();
                 break;
             case 3:
-                return $this->getData();
+                return $this->getValorAnterior();
                 break;
             case 4:
-                return $this->getIp();
+                return $this->getValorAtual();
+                break;
+            case 5:
+                return $this->getData();
                 break;
             default:
                 return null;
@@ -799,17 +847,18 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
      */
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['LogAcesso'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['LogAtividade'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['LogAcesso'][$this->getPrimaryKey()] = true;
-        $keys = LogAcessoPeer::getFieldNames($keyType);
+        $alreadyDumpedObjects['LogAtividade'][$this->getPrimaryKey()] = true;
+        $keys = LogAtividadePeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getUsuarioId(),
-            $keys[2] => $this->getNonce(),
-            $keys[3] => $this->getData(),
-            $keys[4] => $this->getIp(),
+            $keys[2] => $this->getTabelaAtualizada(),
+            $keys[3] => $this->getValorAnterior(),
+            $keys[4] => $this->getValorAtual(),
+            $keys[5] => $this->getData(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -838,7 +887,7 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
      */
     public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = LogAcessoPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = LogAtividadePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 
         $this->setByPosition($pos, $value);
     }
@@ -861,13 +910,16 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
                 $this->setUsuarioId($value);
                 break;
             case 2:
-                $this->setNonce($value);
+                $this->setTabelaAtualizada($value);
                 break;
             case 3:
-                $this->setData($value);
+                $this->setValorAnterior($value);
                 break;
             case 4:
-                $this->setIp($value);
+                $this->setValorAtual($value);
+                break;
+            case 5:
+                $this->setData($value);
                 break;
         } // switch()
     }
@@ -891,13 +943,14 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
     {
-        $keys = LogAcessoPeer::getFieldNames($keyType);
+        $keys = LogAtividadePeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setUsuarioId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setNonce($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setData($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setIp($arr[$keys[4]]);
+        if (array_key_exists($keys[2], $arr)) $this->setTabelaAtualizada($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setValorAnterior($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setValorAtual($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setData($arr[$keys[5]]);
     }
 
     /**
@@ -907,13 +960,14 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(LogAcessoPeer::DATABASE_NAME);
+        $criteria = new Criteria(LogAtividadePeer::DATABASE_NAME);
 
-        if ($this->isColumnModified(LogAcessoPeer::ID)) $criteria->add(LogAcessoPeer::ID, $this->id);
-        if ($this->isColumnModified(LogAcessoPeer::USUARIO_ID)) $criteria->add(LogAcessoPeer::USUARIO_ID, $this->usuario_id);
-        if ($this->isColumnModified(LogAcessoPeer::NONCE)) $criteria->add(LogAcessoPeer::NONCE, $this->nonce);
-        if ($this->isColumnModified(LogAcessoPeer::DATA)) $criteria->add(LogAcessoPeer::DATA, $this->data);
-        if ($this->isColumnModified(LogAcessoPeer::IP)) $criteria->add(LogAcessoPeer::IP, $this->ip);
+        if ($this->isColumnModified(LogAtividadePeer::ID)) $criteria->add(LogAtividadePeer::ID, $this->id);
+        if ($this->isColumnModified(LogAtividadePeer::USUARIO_ID)) $criteria->add(LogAtividadePeer::USUARIO_ID, $this->usuario_id);
+        if ($this->isColumnModified(LogAtividadePeer::TABELA_ATUALIZADA)) $criteria->add(LogAtividadePeer::TABELA_ATUALIZADA, $this->tabela_atualizada);
+        if ($this->isColumnModified(LogAtividadePeer::VALOR_ANTERIOR)) $criteria->add(LogAtividadePeer::VALOR_ANTERIOR, $this->valor_anterior);
+        if ($this->isColumnModified(LogAtividadePeer::VALOR_ATUAL)) $criteria->add(LogAtividadePeer::VALOR_ATUAL, $this->valor_atual);
+        if ($this->isColumnModified(LogAtividadePeer::DATA)) $criteria->add(LogAtividadePeer::DATA, $this->data);
 
         return $criteria;
     }
@@ -928,8 +982,8 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(LogAcessoPeer::DATABASE_NAME);
-        $criteria->add(LogAcessoPeer::ID, $this->id);
+        $criteria = new Criteria(LogAtividadePeer::DATABASE_NAME);
+        $criteria->add(LogAtividadePeer::ID, $this->id);
 
         return $criteria;
     }
@@ -970,7 +1024,7 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param object $copyObj An object of LogAcesso (or compatible) type.
+     * @param object $copyObj An object of LogAtividade (or compatible) type.
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
@@ -978,9 +1032,10 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setUsuarioId($this->getUsuarioId());
-        $copyObj->setNonce($this->getNonce());
+        $copyObj->setTabelaAtualizada($this->getTabelaAtualizada());
+        $copyObj->setValorAnterior($this->getValorAnterior());
+        $copyObj->setValorAtual($this->getValorAtual());
         $copyObj->setData($this->getData());
-        $copyObj->setIp($this->getIp());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1008,7 +1063,7 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
      * objects.
      *
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return LogAcesso Clone of current object.
+     * @return LogAtividade Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1028,12 +1083,12 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return LogAcessoPeer
+     * @return LogAtividadePeer
      */
     public function getPeer()
     {
         if (self::$peer === null) {
-            self::$peer = new LogAcessoPeer();
+            self::$peer = new LogAtividadePeer();
         }
 
         return self::$peer;
@@ -1043,7 +1098,7 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
      * Declares an association between this object and a Usuario object.
      *
      * @param                  Usuario $v
-     * @return LogAcesso The current object (for fluent API support)
+     * @return LogAtividade The current object (for fluent API support)
      * @throws PropelException
      */
     public function setUsuario(Usuario $v = null)
@@ -1059,7 +1114,7 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the Usuario object, it will not be re-added.
         if ($v !== null) {
-            $v->addLogAcesso($this);
+            $v->addLogAtividade($this);
         }
 
 
@@ -1084,7 +1139,7 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aUsuario->addLogAcessos($this);
+                $this->aUsuario->addLogAtividades($this);
              */
         }
 
@@ -1098,9 +1153,10 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
     {
         $this->id = null;
         $this->usuario_id = null;
-        $this->nonce = null;
+        $this->tabela_atualizada = null;
+        $this->valor_anterior = null;
+        $this->valor_atual = null;
         $this->data = null;
-        $this->ip = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -1141,7 +1197,7 @@ abstract class BaseLogAcesso extends BaseObject implements Persistent
      */
     public function __toString()
     {
-        return (string) $this->exportTo(LogAcessoPeer::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(LogAtividadePeer::DEFAULT_STRING_FORMAT);
     }
 
     /**

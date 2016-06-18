@@ -56,6 +56,20 @@ class TabUfTableMap extends TableMap
         $this->addColumn('regiao', 'Regiao', 'VARCHAR', false, 12, null);
         $this->addColumn('res1102', 'Res1102', 'INTEGER', false, 2, null);
         // validators
+        $this->addValidator('sigla', 'maxLength', 'propel.validator.MaxLengthValidator', '2', 'Sigla: tamanho máximo 2');
+        $this->addValidator('tratamento', 'maxLength', 'propel.validator.MaxLengthValidator', '2', 'Tratamento: tamanho máximo 2');
+        $this->addValidator('estado', 'maxLength', 'propel.validator.MaxLengthValidator', '30', 'Estado: tamanho máximo 30');
+        $this->addValidator('capital', 'maxLength', 'propel.validator.MaxLengthValidator', '20', 'Capital: tamanho máximo 20');
+        $this->addValidator('rua', 'maxLength', 'propel.validator.MaxLengthValidator', '100', 'Rua: tamanho máximo 100');
+        $this->addValidator('bairro', 'maxLength', 'propel.validator.MaxLengthValidator', '50', 'Bairro: tamanho máximo 50');
+        $this->addValidator('cep', 'maxLength', 'propel.validator.MaxLengthValidator', '9', 'Cep: tamanho máximo 9');
+        $this->addValidator('ddd', 'maxLength', 'propel.validator.MaxLengthValidator', '2', 'Ddd: tamanho máximo 2');
+        $this->addValidator('telefone', 'maxLength', 'propel.validator.MaxLengthValidator', '15', 'Telefone: tamanho máximo 15');
+        $this->addValidator('fax', 'maxLength', 'propel.validator.MaxLengthValidator', '15', 'Fax: tamanho máximo 15');
+        $this->addValidator('email', 'maxLength', 'propel.validator.MaxLengthValidator', '50', 'Email: tamanho máximo 50');
+        $this->addValidator('email', 'match', 'propel.validator.MatchValidator', '/^([a-zA-Z0-9])+([\.a-zA-Z0-9_-])*@([a-zA-Z0-9])+(\.[a-zA-Z0-9_-]+)+$/', 'Email: formato inválido');
+        $this->addValidator('ano', 'maxLength', 'propel.validator.MaxLengthValidator', '4', 'Ano: tamanho máximo 4');
+        $this->addValidator('regiao', 'maxLength', 'propel.validator.MaxLengthValidator', '12', 'Regiao: tamanho máximo 12');
     } // initialize()
 
     /**

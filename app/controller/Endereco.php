@@ -14,12 +14,12 @@ class Endereco{
   }
 
 
-  public function setEndereco($id, $fields){
+  public function setEndereco($id, $fields, $userId){
 
     $model = new PfjEndereco();
 
     if(!empty($fields)){
-      $model->setEnderecoM($id, $fields);
+      $model->setEnderecoM($id, $fields, $userId);
       $response = 'Atualizado com sucesso';
     }else{
       throw new Exception('Dados inválidos', 400);

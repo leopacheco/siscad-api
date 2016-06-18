@@ -691,6 +691,9 @@ abstract class BaseTabCorreioPeer
             }
         } else {
 
+        if ($obj->isNew() || $obj->isColumnModified(TabCorreioPeer::DESCRICAO))
+            $columns[TabCorreioPeer::DESCRICAO] = $obj->getDescricao();
+
         }
 
         return BasePeer::doValidate(TabCorreioPeer::DATABASE_NAME, TabCorreioPeer::TABLE_NAME, $columns);

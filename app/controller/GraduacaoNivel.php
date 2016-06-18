@@ -14,12 +14,12 @@ class GraduacaoNivel{
   }
 
 
-  public function setGraduacaoNivel($id, $fields){
+  public function setGraduacaoNivel($id, $fields, $userId){
 
     $graduacaoModel = new TabGraduacaoNivel();
 
     if(!empty($fields)){
-      $graduacaoModel->setGraduacaoNivel($id, $fields);
+      $graduacaoModel->setGraduacaoNivel($id, $fields, $userId);
       $response = 'Atualizado com sucesso';
     }else{
       throw new Exception('Dados inválidos', 400);

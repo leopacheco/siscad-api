@@ -24,13 +24,13 @@ abstract class BaseLogAcessoPeer
     const TM_CLASS = 'LogAcessoTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 4;
+    const NUM_COLUMNS = 5;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 4;
+    const NUM_HYDRATE_COLUMNS = 5;
 
     /** the column name for the id field */
     const ID = 'log_acesso.id';
@@ -43,6 +43,9 @@ abstract class BaseLogAcessoPeer
 
     /** the column name for the data field */
     const DATA = 'log_acesso.data';
+
+    /** the column name for the ip field */
+    const IP = 'log_acesso.ip';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -63,12 +66,12 @@ abstract class BaseLogAcessoPeer
      * e.g. LogAcessoPeer::$fieldNames[LogAcessoPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'UsuarioId', 'Nonce', 'Data', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'usuarioId', 'nonce', 'data', ),
-        BasePeer::TYPE_COLNAME => array (LogAcessoPeer::ID, LogAcessoPeer::USUARIO_ID, LogAcessoPeer::NONCE, LogAcessoPeer::DATA, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USUARIO_ID', 'NONCE', 'DATA', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'usuario_id', 'nonce', 'data', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'UsuarioId', 'Nonce', 'Data', 'Ip', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'usuarioId', 'nonce', 'data', 'ip', ),
+        BasePeer::TYPE_COLNAME => array (LogAcessoPeer::ID, LogAcessoPeer::USUARIO_ID, LogAcessoPeer::NONCE, LogAcessoPeer::DATA, LogAcessoPeer::IP, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USUARIO_ID', 'NONCE', 'DATA', 'IP', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'usuario_id', 'nonce', 'data', 'ip', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -78,12 +81,12 @@ abstract class BaseLogAcessoPeer
      * e.g. LogAcessoPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UsuarioId' => 1, 'Nonce' => 2, 'Data' => 3, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'usuarioId' => 1, 'nonce' => 2, 'data' => 3, ),
-        BasePeer::TYPE_COLNAME => array (LogAcessoPeer::ID => 0, LogAcessoPeer::USUARIO_ID => 1, LogAcessoPeer::NONCE => 2, LogAcessoPeer::DATA => 3, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USUARIO_ID' => 1, 'NONCE' => 2, 'DATA' => 3, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'usuario_id' => 1, 'nonce' => 2, 'data' => 3, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UsuarioId' => 1, 'Nonce' => 2, 'Data' => 3, 'Ip' => 4, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'usuarioId' => 1, 'nonce' => 2, 'data' => 3, 'ip' => 4, ),
+        BasePeer::TYPE_COLNAME => array (LogAcessoPeer::ID => 0, LogAcessoPeer::USUARIO_ID => 1, LogAcessoPeer::NONCE => 2, LogAcessoPeer::DATA => 3, LogAcessoPeer::IP => 4, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USUARIO_ID' => 1, 'NONCE' => 2, 'DATA' => 3, 'IP' => 4, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'usuario_id' => 1, 'nonce' => 2, 'data' => 3, 'ip' => 4, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -161,11 +164,13 @@ abstract class BaseLogAcessoPeer
             $criteria->addSelectColumn(LogAcessoPeer::USUARIO_ID);
             $criteria->addSelectColumn(LogAcessoPeer::NONCE);
             $criteria->addSelectColumn(LogAcessoPeer::DATA);
+            $criteria->addSelectColumn(LogAcessoPeer::IP);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.usuario_id');
             $criteria->addSelectColumn($alias . '.nonce');
             $criteria->addSelectColumn($alias . '.data');
+            $criteria->addSelectColumn($alias . '.ip');
         }
     }
 

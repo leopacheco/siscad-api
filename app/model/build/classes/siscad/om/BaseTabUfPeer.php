@@ -770,6 +770,45 @@ abstract class BaseTabUfPeer
             }
         } else {
 
+        if ($obj->isNew() || $obj->isColumnModified(TabUfPeer::SIGLA))
+            $columns[TabUfPeer::SIGLA] = $obj->getSigla();
+
+        if ($obj->isNew() || $obj->isColumnModified(TabUfPeer::TRATAMENTO))
+            $columns[TabUfPeer::TRATAMENTO] = $obj->getTratamento();
+
+        if ($obj->isNew() || $obj->isColumnModified(TabUfPeer::ESTADO))
+            $columns[TabUfPeer::ESTADO] = $obj->getEstado();
+
+        if ($obj->isNew() || $obj->isColumnModified(TabUfPeer::CAPITAL))
+            $columns[TabUfPeer::CAPITAL] = $obj->getCapital();
+
+        if ($obj->isNew() || $obj->isColumnModified(TabUfPeer::RUA))
+            $columns[TabUfPeer::RUA] = $obj->getRua();
+
+        if ($obj->isNew() || $obj->isColumnModified(TabUfPeer::BAIRRO))
+            $columns[TabUfPeer::BAIRRO] = $obj->getBairro();
+
+        if ($obj->isNew() || $obj->isColumnModified(TabUfPeer::CEP))
+            $columns[TabUfPeer::CEP] = $obj->getCep();
+
+        if ($obj->isNew() || $obj->isColumnModified(TabUfPeer::DDD))
+            $columns[TabUfPeer::DDD] = $obj->getDdd();
+
+        if ($obj->isNew() || $obj->isColumnModified(TabUfPeer::TELEFONE))
+            $columns[TabUfPeer::TELEFONE] = $obj->getTelefone();
+
+        if ($obj->isNew() || $obj->isColumnModified(TabUfPeer::FAX))
+            $columns[TabUfPeer::FAX] = $obj->getFax();
+
+        if ($obj->isNew() || $obj->isColumnModified(TabUfPeer::EMAIL))
+            $columns[TabUfPeer::EMAIL] = $obj->getEmail();
+
+        if ($obj->isNew() || $obj->isColumnModified(TabUfPeer::ANO))
+            $columns[TabUfPeer::ANO] = $obj->getAno();
+
+        if ($obj->isNew() || $obj->isColumnModified(TabUfPeer::REGIAO))
+            $columns[TabUfPeer::REGIAO] = $obj->getRegiao();
+
         }
 
         return BasePeer::doValidate(TabUfPeer::DATABASE_NAME, TabUfPeer::TABLE_NAME, $columns);

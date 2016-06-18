@@ -77,6 +77,12 @@ abstract class BaseUsuario extends BaseObject implements Persistent
     protected $collLogAcessosPartial;
 
     /**
+     * @var        PropelObjectCollection|LogAtividade[] Collection to store aggregation of LogAtividade objects.
+     */
+    protected $collLogAtividades;
+    protected $collLogAtividadesPartial;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      * @var        boolean
@@ -101,6 +107,12 @@ abstract class BaseUsuario extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $logAcessosScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $logAtividadesScheduledForDeletion = null;
 
     /**
      * Get the [id] column value.
@@ -421,6 +433,8 @@ abstract class BaseUsuario extends BaseObject implements Persistent
             $this->aPerfil = null;
             $this->collLogAcessos = null;
 
+            $this->collLogAtividades = null;
+
         } // if (deep)
     }
 
@@ -568,6 +582,23 @@ abstract class BaseUsuario extends BaseObject implements Persistent
 
             if ($this->collLogAcessos !== null) {
                 foreach ($this->collLogAcessos as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->logAtividadesScheduledForDeletion !== null) {
+                if (!$this->logAtividadesScheduledForDeletion->isEmpty()) {
+                    LogAtividadeQuery::create()
+                        ->filterByPrimaryKeys($this->logAtividadesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->logAtividadesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collLogAtividades !== null) {
+                foreach ($this->collLogAtividades as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -766,6 +797,14 @@ abstract class BaseUsuario extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collLogAtividades !== null) {
+                    foreach ($this->collLogAtividades as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
 
             $this->alreadyInValidation = false;
         }
@@ -866,6 +905,9 @@ abstract class BaseUsuario extends BaseObject implements Persistent
             }
             if (null !== $this->collLogAcessos) {
                 $result['LogAcessos'] = $this->collLogAcessos->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collLogAtividades) {
+                $result['LogAtividades'] = $this->collLogAtividades->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1048,6 +1090,12 @@ abstract class BaseUsuario extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getLogAtividades() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addLogAtividade($relObj->copy($deepCopy));
+                }
+            }
+
             //unflag object copy
             $this->startCopy = false;
         } // if ($deepCopy)
@@ -1163,6 +1211,9 @@ abstract class BaseUsuario extends BaseObject implements Persistent
     {
         if ('LogAcesso' == $relationName) {
             $this->initLogAcessos();
+        }
+        if ('LogAtividade' == $relationName) {
+            $this->initLogAtividades();
         }
     }
 
@@ -1392,6 +1443,231 @@ abstract class BaseUsuario extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collLogAtividades collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Usuario The current object (for fluent API support)
+     * @see        addLogAtividades()
+     */
+    public function clearLogAtividades()
+    {
+        $this->collLogAtividades = null; // important to set this to null since that means it is uninitialized
+        $this->collLogAtividadesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collLogAtividades collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialLogAtividades($v = true)
+    {
+        $this->collLogAtividadesPartial = $v;
+    }
+
+    /**
+     * Initializes the collLogAtividades collection.
+     *
+     * By default this just sets the collLogAtividades collection to an empty array (like clearcollLogAtividades());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initLogAtividades($overrideExisting = true)
+    {
+        if (null !== $this->collLogAtividades && !$overrideExisting) {
+            return;
+        }
+        $this->collLogAtividades = new PropelObjectCollection();
+        $this->collLogAtividades->setModel('LogAtividade');
+    }
+
+    /**
+     * Gets an array of LogAtividade objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Usuario is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|LogAtividade[] List of LogAtividade objects
+     * @throws PropelException
+     */
+    public function getLogAtividades($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collLogAtividadesPartial && !$this->isNew();
+        if (null === $this->collLogAtividades || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collLogAtividades) {
+                // return empty collection
+                $this->initLogAtividades();
+            } else {
+                $collLogAtividades = LogAtividadeQuery::create(null, $criteria)
+                    ->filterByUsuario($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collLogAtividadesPartial && count($collLogAtividades)) {
+                      $this->initLogAtividades(false);
+
+                      foreach ($collLogAtividades as $obj) {
+                        if (false == $this->collLogAtividades->contains($obj)) {
+                          $this->collLogAtividades->append($obj);
+                        }
+                      }
+
+                      $this->collLogAtividadesPartial = true;
+                    }
+
+                    $collLogAtividades->getInternalIterator()->rewind();
+
+                    return $collLogAtividades;
+                }
+
+                if ($partial && $this->collLogAtividades) {
+                    foreach ($this->collLogAtividades as $obj) {
+                        if ($obj->isNew()) {
+                            $collLogAtividades[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collLogAtividades = $collLogAtividades;
+                $this->collLogAtividadesPartial = false;
+            }
+        }
+
+        return $this->collLogAtividades;
+    }
+
+    /**
+     * Sets a collection of LogAtividade objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $logAtividades A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Usuario The current object (for fluent API support)
+     */
+    public function setLogAtividades(PropelCollection $logAtividades, PropelPDO $con = null)
+    {
+        $logAtividadesToDelete = $this->getLogAtividades(new Criteria(), $con)->diff($logAtividades);
+
+
+        $this->logAtividadesScheduledForDeletion = $logAtividadesToDelete;
+
+        foreach ($logAtividadesToDelete as $logAtividadeRemoved) {
+            $logAtividadeRemoved->setUsuario(null);
+        }
+
+        $this->collLogAtividades = null;
+        foreach ($logAtividades as $logAtividade) {
+            $this->addLogAtividade($logAtividade);
+        }
+
+        $this->collLogAtividades = $logAtividades;
+        $this->collLogAtividadesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related LogAtividade objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related LogAtividade objects.
+     * @throws PropelException
+     */
+    public function countLogAtividades(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collLogAtividadesPartial && !$this->isNew();
+        if (null === $this->collLogAtividades || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collLogAtividades) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getLogAtividades());
+            }
+            $query = LogAtividadeQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByUsuario($this)
+                ->count($con);
+        }
+
+        return count($this->collLogAtividades);
+    }
+
+    /**
+     * Method called to associate a LogAtividade object to this object
+     * through the LogAtividade foreign key attribute.
+     *
+     * @param    LogAtividade $l LogAtividade
+     * @return Usuario The current object (for fluent API support)
+     */
+    public function addLogAtividade(LogAtividade $l)
+    {
+        if ($this->collLogAtividades === null) {
+            $this->initLogAtividades();
+            $this->collLogAtividadesPartial = true;
+        }
+
+        if (!in_array($l, $this->collLogAtividades->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddLogAtividade($l);
+
+            if ($this->logAtividadesScheduledForDeletion and $this->logAtividadesScheduledForDeletion->contains($l)) {
+                $this->logAtividadesScheduledForDeletion->remove($this->logAtividadesScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	LogAtividade $logAtividade The logAtividade object to add.
+     */
+    protected function doAddLogAtividade($logAtividade)
+    {
+        $this->collLogAtividades[]= $logAtividade;
+        $logAtividade->setUsuario($this);
+    }
+
+    /**
+     * @param	LogAtividade $logAtividade The logAtividade object to remove.
+     * @return Usuario The current object (for fluent API support)
+     */
+    public function removeLogAtividade($logAtividade)
+    {
+        if ($this->getLogAtividades()->contains($logAtividade)) {
+            $this->collLogAtividades->remove($this->collLogAtividades->search($logAtividade));
+            if (null === $this->logAtividadesScheduledForDeletion) {
+                $this->logAtividadesScheduledForDeletion = clone $this->collLogAtividades;
+                $this->logAtividadesScheduledForDeletion->clear();
+            }
+            $this->logAtividadesScheduledForDeletion[]= clone $logAtividade;
+            $logAtividade->setUsuario(null);
+        }
+
+        return $this;
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -1429,6 +1705,11 @@ abstract class BaseUsuario extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collLogAtividades) {
+                foreach ($this->collLogAtividades as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->aPerfil instanceof Persistent) {
               $this->aPerfil->clearAllReferences($deep);
             }
@@ -1440,6 +1721,10 @@ abstract class BaseUsuario extends BaseObject implements Persistent
             $this->collLogAcessos->clearIterator();
         }
         $this->collLogAcessos = null;
+        if ($this->collLogAtividades instanceof PropelCollection) {
+            $this->collLogAtividades->clearIterator();
+        }
+        $this->collLogAtividades = null;
         $this->aPerfil = null;
     }
 

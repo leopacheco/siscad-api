@@ -17,6 +17,11 @@ $app->get('/correio/filtrar/:filters', function ($filters = null) use ($app) {
 //atualiza um registro conforme :id
 $app->put('/correio/:id', function ($id = null) use ($app) {
   $controller = new Correio;
-  $response = $controller->setCorreio($id, $app->request->params());
+  if($app->request->getMediaType() == 'application/json'){
+    $params = $app->request->getBody();
+  }else{
+    $params = $app->request->params();
+  }
+  $response = $controller->setCorreio($id, $params, $app->userId);
   $app->response->body($response);
 });
