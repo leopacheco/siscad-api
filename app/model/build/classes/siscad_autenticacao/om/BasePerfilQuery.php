@@ -1,5 +1,22 @@
 <?php
 
+namespace Model\om;
+
+use \Criteria;
+use \Exception;
+use \ModelCriteria;
+use \ModelJoin;
+use \PDO;
+use \Propel;
+use \PropelCollection;
+use \PropelException;
+use \PropelObjectCollection;
+use \PropelPDO;
+use Model\Perfil;
+use Model\PerfilEndpoint;
+use Model\PerfilPeer;
+use Model\PerfilQuery;
+use Model\Usuario;
 
 /**
  * Base class that represents a query for the 'perfil' table.
@@ -53,7 +70,7 @@ abstract class BasePerfilQuery extends ModelCriteria
             $dbName = 'siscad_autenticacao';
         }
         if (null === $modelName) {
-            $modelName = 'Perfil';
+            $modelName = 'Model\\Perfil';
         }
         parent::__construct($dbName, $modelName, $modelAlias);
     }
@@ -396,13 +413,13 @@ abstract class BasePerfilQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   PerfilEndpointQuery A secondary query class using the current class as primary query
+     * @return   \Model\PerfilEndpointQuery A secondary query class using the current class as primary query
      */
     public function usePerfilEndpointQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
             ->joinPerfilEndpoint($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PerfilEndpoint', 'PerfilEndpointQuery');
+            ->useQuery($relationAlias ? $relationAlias : 'PerfilEndpoint', '\Model\PerfilEndpointQuery');
     }
 
     /**
@@ -470,13 +487,13 @@ abstract class BasePerfilQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   UsuarioQuery A secondary query class using the current class as primary query
+     * @return   \Model\UsuarioQuery A secondary query class using the current class as primary query
      */
     public function useUsuarioQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
             ->joinUsuario($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Usuario', 'UsuarioQuery');
+            ->useQuery($relationAlias ? $relationAlias : 'Usuario', '\Model\UsuarioQuery');
     }
 
     /**

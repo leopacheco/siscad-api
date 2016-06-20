@@ -1,9 +1,12 @@
 <?php
 
+namespace Model;
+
+use Model\om\BaseLogRequisicaoPeer;
 
 
 /**
- * Skeleton subclass for performing query and update operations on the 'log_acesso' table.
+ * Skeleton subclass for performing query and update operations on the 'log_requisicao' table.
  *
  *
  *
@@ -13,6 +16,6 @@
  *
  * @package    propel.generator.siscad_autenticacao
  */
-class LogAcessoPeer extends BaseLogAcessoPeer
+class LogRequisicaoPeer extends BaseLogRequisicaoPeer
 {
 }

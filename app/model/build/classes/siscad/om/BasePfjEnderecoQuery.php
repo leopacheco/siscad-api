@@ -1,5 +1,18 @@
 <?php
 
+namespace Model\om;
+
+use \Criteria;
+use \Exception;
+use \ModelCriteria;
+use \PDO;
+use \Propel;
+use \PropelException;
+use \PropelObjectCollection;
+use \PropelPDO;
+use Model\PfjEndereco;
+use Model\PfjEnderecoPeer;
+use Model\PfjEnderecoQuery;
 
 /**
  * Base class that represents a query for the 'pfj_endereco' table.
@@ -117,7 +130,7 @@ abstract class BasePfjEnderecoQuery extends ModelCriteria
             $dbName = 'siscad';
         }
         if (null === $modelName) {
-            $modelName = 'PfjEndereco';
+            $modelName = 'Model\\PfjEndereco';
         }
         parent::__construct($dbName, $modelName, $modelAlias);
     }

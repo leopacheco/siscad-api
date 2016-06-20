@@ -1,5 +1,19 @@
 <?php
 
+namespace Model\om;
+
+use \BaseObject;
+use \BasePeer;
+use \Criteria;
+use \Exception;
+use \PDO;
+use \Persistent;
+use \Propel;
+use \PropelException;
+use \PropelPDO;
+use Model\TabUf;
+use Model\TabUfPeer;
+use Model\TabUfQuery;
 
 /**
  * Base class that represents a row from the 'tab_uf' table.
@@ -13,7 +27,7 @@ abstract class BaseTabUf extends BaseObject implements Persistent
     /**
      * Peer class name
      */
-    const PEER = 'TabUfPeer';
+    const PEER = 'Model\\TabUfPeer';
 
     /**
      * The Peer class.

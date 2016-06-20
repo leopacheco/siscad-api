@@ -1,4 +1,8 @@
 <?php
+namespace Model;
+
+use Model\om\BaseTabGraduacaoArea;
+
 /**
  * Skeleton subclass for representing a row from the 'tab_graduacao_area' table.
  *
@@ -32,22 +36,20 @@ class TabGraduacaoArea extends BaseTabGraduacaoArea
     if(!is_null($graduacaoArea)){
       return $graduacaoArea->toArray();
     }else{
-      throw new Exception('Nenhum resultado encontrado', 400);
+      throw new \Exception('Nenhum resultado encontrado', 400);
     }
   }
 
   /*
 
   */
-  public function setGraduacaoArea($id, $fields, $userId){
+  public function setGraduacaoArea($id, $fields, $logId){
 
     $graduacaoArea = $this->getById($id);
 
     $log = new LogAtividade();
     $log->setValorAnterior(json_encode($query->toArray()));
-    $log->setUsuarioId($userId);
-    $tableName = new TabGraduacaoAreaTableMap();
-    $log->setTabelaAtualizada($tableName->getName());
+    $log->setLogRequisicaoId($logId);
 
     foreach ($fields as $key => $value) {
       //verifica se o  campo existe na tabela
@@ -55,7 +57,7 @@ class TabGraduacaoArea extends BaseTabGraduacaoArea
           $value = $this->_sanitize($key, $value);
 
         if($this->_validate($key, $value)){
-          $column = 'set'.Utils::dashesToCamelCase($key);
+          $column = 'set'.\Utils\Utils::dashesToCamelCase($key);
           $graduacaoArea->$column($value);
         }
       }
@@ -72,7 +74,7 @@ class TabGraduacaoArea extends BaseTabGraduacaoArea
       foreach ($query->getValidationFailures() as $failure) {
         $errorMsg .= $failure->getMessage() . "\n";
       }
-      throw new Exception($errorMsg, 400);
+      throw new \Exception($errorMsg, 400);
     }
 
   }
@@ -83,7 +85,7 @@ class TabGraduacaoArea extends BaseTabGraduacaoArea
   */
   public function getGraduacaoAreaWithFilters($filters){
 
-    $parsedFilters = Utils::parseFilters($filters);
+    $parsedFilters = \Utils\Utils::parseFilters($filters);
 
     if(is_array($parsedFilters)){
       //compara os filtos enviados com as colunas da tabela
@@ -99,11 +101,11 @@ class TabGraduacaoArea extends BaseTabGraduacaoArea
         if(count($graduacaoArea) > 0){
           return $graduacaoArea->toArray();
         }else{
-          throw new Exception('Nenhum resultado encontrado', 400);
+          throw new \Exception('Nenhum resultado encontrado', 400);
         }
 
       }else{
-        throw new Exception('Parâmetros de busca inválidos', 400);
+        throw new \Exception('Parâmetros de busca inválidos', 400);
       }
     }
   }

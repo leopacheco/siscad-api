@@ -1,6 +1,7 @@
 <?php
+namespace Model;
 
-
+use Model\om\BasePfGraduacao;
 
 /**
  * Skeleton subclass for representing a row from the 'pf_graduacao' table.
@@ -13,6 +14,7 @@
  *
  * @package    propel.generator.siscad-api
  */
+
 class PfGraduacao extends BasePfGraduacao
 {
   private $_columns = array("fk_id_tab_uf"             => array("sanitize" => FILTER_SANITIZE_NUMBER_INT, "size" => "5" ),
@@ -40,7 +42,7 @@ class PfGraduacao extends BasePfGraduacao
 
         return $response;
       }else{
-        throw new Exception('Nenhum resultado encontrado', 400);
+        throw new \Exception('Nenhum resultado encontrado', 400);
       }
 
     }else{
@@ -49,7 +51,7 @@ class PfGraduacao extends BasePfGraduacao
       if(!is_null($query)){
         return $query->toArray();
       }else{
-        throw new Exception('Nenhum resultado encontrado', 400);
+        throw new \Exception('Nenhum resultado encontrado', 400);
       }
     }
 
@@ -58,15 +60,13 @@ class PfGraduacao extends BasePfGraduacao
   /*
 
   */
-  public function setGraduacao($id, $fields, $userId){
+  public function setGraduacao($id, $fields, $logId){
 
     $query = $this->_getById($id);
 
     $log = new LogAtividade();
     $log->setValorAnterior(json_encode($query->toArray()));
-    $log->setUsuarioId($userId);
-    $tableName = new PfGraduacaoTableMap();
-    $log->setTabelaAtualizada($tableName->getName());
+    $log->setLogRequisicaoId($logId);
 
     foreach ($fields as $key => $value) {
       //verifica se o  campo existe na tabela
@@ -74,7 +74,7 @@ class PfGraduacao extends BasePfGraduacao
           $value = $this->_sanitize($key, $value);
 
         if($this->_validate($key, $value)){
-          $column = 'set'.Utils::dashesToCamelCase($key);
+          $column = 'set'.\Utils\Utils::dashesToCamelCase($key);
           $query->$column($value);
         }
       }
@@ -91,7 +91,7 @@ class PfGraduacao extends BasePfGraduacao
       foreach ($query->getValidationFailures() as $failure) {
         $errorMsg .= $failure->getMessage() . "\n";
       }
-      throw new Exception($errorMsg, 400);
+      throw new \Exception($errorMsg, 400);
     }
 
   }
@@ -102,7 +102,7 @@ class PfGraduacao extends BasePfGraduacao
   */
   public function getGraduacaoWithFilters($filters){
 
-    $parsedFilters = Utils::parseFilters($filters);
+    $parsedFilters = \Utils\Utils::parseFilters($filters);
 
     if(is_array($parsedFilters)){
       //compara os filtos enviados com as colunas da tabela
@@ -118,11 +118,11 @@ class PfGraduacao extends BasePfGraduacao
         if(count($query) > 0){
           return $query->toArray();
         }else{
-          throw new Exception('Nenhum resultado encontrado', 400);
+          throw new \Exception('Nenhum resultado encontrado', 400);
         }
 
       }else{
-        throw new Exception('Parâmetros de busca inválidos', 400);
+        throw new \Exception('Parâmetros de busca inválidos', 400);
       }
     }
   }

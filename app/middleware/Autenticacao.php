@@ -1,4 +1,5 @@
 <?php
+namespace Middleware;
 
 class Autenticacao extends \Slim\Middleware{
 
@@ -7,7 +8,6 @@ class Autenticacao extends \Slim\Middleware{
   private $_providedUser = '';
   private $_providedHash = '';
   private $_providedNonce = '';
-  private $_userId;
 
   public function call(){
     // Get reference to application
@@ -22,7 +22,6 @@ class Autenticacao extends \Slim\Middleware{
     // }
       //nenhuma exceção foi lançada
       //prossegue com a requisição
-    $app->userId = $this->_userId;
     $this->next->call();
   }
 
@@ -33,9 +32,9 @@ class Autenticacao extends \Slim\Middleware{
       $headerArray = preg_split('/[\s,]+/', $header);
       //recupera o conjunto usuário:nonce:hash
       $authArray = explode(':', $headerArray[1]);
-      $this->_providedUser = $authArray[0]; //[usuario]
-      $this->_providedNonce = $authArray[1];//[nonce]
-      $this->_providedHash = $authArray[2];//[hash]
+      $this->_providedUser = filter_var($authArray[0], FILTER_SANITIZE_STRING); //[usuario]
+      $this->_providedNonce = filter_var($authArray[1], FILTER_SANITIZE_STRING);//[nonce]
+      $this->_providedHash = filter_var($authArray[2], FILTER_SANITIZE_STRING);//[hash]
 
       return true;
 
@@ -45,6 +44,7 @@ class Autenticacao extends \Slim\Middleware{
   }
 
   private function _parseHash($secret){
+    //gera o hash para comparação com o fornecido pela requisição
     return base64_encode(hash_hmac("sha256", $this->_method.'+'.$this->_uri.'+'.$this->_providedNonce, $secret ));
   }
 
@@ -52,48 +52,50 @@ class Autenticacao extends \Slim\Middleware{
     //valida o cabeçalho enviado na requisição
     //se cabeçalho no formato correto, continua a validação
     if($this->_getProvidedCredentials($req->headers->get('Authentication'))){
-      //$userModel = new Usuario();
-      $user = Usuario::getUserByName($this->_providedUser);
+      $user = \Model\Usuario::getUserByName($this->_providedUser);
       $this->_method = $req->getMethod();
       $this->_uri = $req->getResourceUri();
 
       if(!is_null($user)){
-        $endpoint = new Endpoint();
+        $endpoint = new \Model\Endpoint();
         $endpoint->validateEndpointAccess($user->getPerfilId(), $this->_method, $this->_uri);
 
-        if((LogAcesso::validateNonce($user->getId(), $this->_providedNonce)) && ($endpoint->hasAccess())){
+        if((\Model\LogRequisicao::validateNonce($user->getId(), $this->_providedNonce)) && ($endpoint->hasAccess())){
           $hash = $this->_parseHash($user->getSecret());
 
           if($hash === $this->_providedHash){
             //acesso permitido
-            //grava o log de acesso
-              $this->_logAccess($user->getId(), $this->_providedNonce, $req->getIp());
-              $this->_userId = $user->getId();
+            //grava o log da requisição
+              $this->_log($user->getId(), $req->getIp());
+
           }else{
             //$app->halt(403, 'hash inválida');
-            throw new Exception('Acesso negado', 403);
+            throw new \Exception('Acesso negado', 403);
           }
 
         }else{
           //throw exception here
           //$app->halt(403, 'Acesso negado');
-          throw new Exception('Acesso negado', 403);
+          throw new \Exception('Acesso negado', 403);
         }
 
       }else{
-        throw new Exception('Acesso negado', 403);
+        throw new \Exception('Acesso negado', 403);
       }
     //se não, joga a exceção 403
     }else{
       //throw new Exception('Nenhum resultado encontrado', 400);
-      throw new Exception('Credenciais de acesso não informadas', 403);
+      throw new \Exception('Credenciais de acesso não informadas', 403);
     }
   }
 
-  private function _logAccess($id, $nonce, $ip){
-    $log = new LogAcesso();
-    $log->setUsuarioId($id);
-    $log->setNonce($nonce);
+  private function _log($userId, $ip){
+    $log = //new \Model\LogRequisicao();
+    //recuperando o singleton de log injetado na aplicação
+    $log = $this->app->log;
+    $log->setUsuarioId($userId);
+    $log->setRequisicao($this->_method.' '.$this->_uri);
+    $log->setNonce($this->_providedNonce);
     $log->setIp($ip);
     $log->save();
   }

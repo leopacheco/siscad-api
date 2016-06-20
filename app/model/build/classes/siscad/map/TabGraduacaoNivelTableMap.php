@@ -1,5 +1,9 @@
 <?php
 
+namespace Model\map;
+
+use \RelationMap;
+use \TableMap;
 
 
 /**
@@ -34,7 +38,7 @@ class TabGraduacaoNivelTableMap extends TableMap
         // attributes
         $this->setName('tab_graduacao_nivel');
         $this->setPhpName('TabGraduacaoNivel');
-        $this->setClassname('TabGraduacaoNivel');
+        $this->setClassname('Model\\TabGraduacaoNivel');
         $this->setPackage('siscad');
         $this->setUseIdGenerator(true);
         // columns

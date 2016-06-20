@@ -1,6 +1,7 @@
 <?php
+namespace Model;
 
-
+use Model\om\BasePfGraduacaoPeer;
 
 /**
  * Skeleton subclass for performing query and update operations on the 'pf_graduacao' table.

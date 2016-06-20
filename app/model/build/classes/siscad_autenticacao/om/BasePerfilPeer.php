@@ -1,5 +1,17 @@
 <?php
 
+namespace Model\om;
+
+use \BasePeer;
+use \Criteria;
+use \PDO;
+use \PDOStatement;
+use \Propel;
+use \PropelException;
+use \PropelPDO;
+use Model\Perfil;
+use Model\PerfilPeer;
+use Model\map\PerfilTableMap;
 
 /**
  * Base static class for performing query and update operations on the 'perfil' table.
@@ -18,10 +30,10 @@ abstract class BasePerfilPeer
     const TABLE_NAME = 'perfil';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'Perfil';
+    const OM_CLASS = 'Model\\Perfil';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'PerfilTableMap';
+    const TM_CLASS = 'Model\\map\\PerfilTableMap';
 
     /** The total number of columns. */
     const NUM_COLUMNS = 3;
@@ -480,7 +492,7 @@ abstract class BasePerfilPeer
     {
       $dbMap = Propel::getDatabaseMap(BasePerfilPeer::DATABASE_NAME);
       if (!$dbMap->hasTable(BasePerfilPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new \PerfilTableMap());
+        $dbMap->addTableObject(new \Model\map\PerfilTableMap());
       }
     }
 
@@ -699,6 +711,12 @@ abstract class BasePerfilPeer
                 }
             }
         } else {
+
+        if ($obj->isNew() || $obj->isColumnModified(PerfilPeer::NOME))
+            $columns[PerfilPeer::NOME] = $obj->getNome();
+
+        if ($obj->isNew() || $obj->isColumnModified(PerfilPeer::DESCRICAO))
+            $columns[PerfilPeer::DESCRICAO] = $obj->getDescricao();
 
         }
 

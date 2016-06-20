@@ -1,5 +1,7 @@
 <?php
+namespace Model;
 
+use Model\om\BaseTabRamo2;
 
 
 /**
@@ -13,9 +15,9 @@
  *
  * @package    propel.generator.siscad-api
  */
+
 class TabRamo2 extends BaseTabRamo2
 {
-
 
     private $_columns = array("id_tab_ramo2" => array("sanitize" => FILTER_SANITIZE_NUMBER_INT, "size" => "5"),
                               "cod_ramo1"    => array("sanitize" => FILTER_SANITIZE_STRING,     "size" => "2"),
@@ -39,22 +41,20 @@ class TabRamo2 extends BaseTabRamo2
       if(!is_null($query)){
         return $query->toArray();
       }else{
-        throw new Exception('Nenhum resultado encontrado', 400);
+        throw new \Exception('Nenhum resultado encontrado', 400);
       }
     }
 
     /*
 
     */
-    public function setRamo2($id, $fields, $userId){
+    public function setRamo2($id, $fields, $logId){
 
       $query = $this->getById($id);
 
       $log = new LogAtividade();
       $log->setValorAnterior(json_encode($query->toArray()));
-      $log->setUsuarioId($userId);
-      $tableName = new TabRamo2TableMap();
-      $log->setTabelaAtualizada($tableName->getName());
+      $log->setLogRequisicaoId($logId);
 
       foreach ($fields as $key => $value) {
         //verifica se o  campo existe na tabela
@@ -62,7 +62,7 @@ class TabRamo2 extends BaseTabRamo2
             $value = $this->_sanitize($key, $value);
 
           if($this->_validate($key, $value)){
-            $column = 'set'.Utils::dashesToCamelCase($key);
+            $column = 'set'.\Utils\Utils::dashesToCamelCase($key);
             $query->$column($value);
           }
         }
@@ -79,7 +79,7 @@ class TabRamo2 extends BaseTabRamo2
         foreach ($query->getValidationFailures() as $failure) {
           $errorMsg .= $failure->getMessage() . "\n";
         }
-        throw new Exception($errorMsg, 400);
+        throw new \Exception($errorMsg, 400);
       }
 
     }
@@ -90,7 +90,7 @@ class TabRamo2 extends BaseTabRamo2
     */
     public function getRamo2WithFilters($filters){
 
-      $parsedFilters = Utils::parseFilters($filters);
+      $parsedFilters = \Utils\Utils::parseFilters($filters);
 
       if(is_array($parsedFilters)){
         //compara os filtos enviados com as colunas da tabela
@@ -106,11 +106,11 @@ class TabRamo2 extends BaseTabRamo2
           if(count($query) > 0){
             return $query->toArray();
           }else{
-            throw new Exception('Nenhum resultado encontrado', 400);
+            throw new \Exception('Nenhum resultado encontrado', 400);
           }
 
         }else{
-          throw new Exception('Parâmetros de busca inválidos', 400);
+          throw new \Exception('Parâmetros de busca inválidos', 400);
         }
       }
     }

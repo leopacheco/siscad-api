@@ -1,5 +1,18 @@
 <?php
 
+namespace Model\om;
+
+use \Criteria;
+use \Exception;
+use \ModelCriteria;
+use \PDO;
+use \Propel;
+use \PropelException;
+use \PropelObjectCollection;
+use \PropelPDO;
+use Model\PfInscricao;
+use Model\PfInscricaoPeer;
+use Model\PfInscricaoQuery;
 
 /**
  * Base class that represents a query for the 'pf_inscricao' table.
@@ -149,7 +162,7 @@ abstract class BasePfInscricaoQuery extends ModelCriteria
             $dbName = 'siscad';
         }
         if (null === $modelName) {
-            $modelName = 'PfInscricao';
+            $modelName = 'Model\\PfInscricao';
         }
         parent::__construct($dbName, $modelName, $modelAlias);
     }

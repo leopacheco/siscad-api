@@ -1,5 +1,21 @@
 <?php
 
+namespace Model\om;
+
+use \Criteria;
+use \Exception;
+use \ModelCriteria;
+use \ModelJoin;
+use \PDO;
+use \Propel;
+use \PropelCollection;
+use \PropelException;
+use \PropelObjectCollection;
+use \PropelPDO;
+use Model\LogAtividade;
+use Model\LogAtividadePeer;
+use Model\LogAtividadeQuery;
+use Model\LogRequisicao;
 
 /**
  * Base class that represents a query for the 'log_atividade' table.
@@ -7,42 +23,34 @@
  *
  *
  * @method LogAtividadeQuery orderById($order = Criteria::ASC) Order by the id column
- * @method LogAtividadeQuery orderByUsuarioId($order = Criteria::ASC) Order by the usuario_id column
- * @method LogAtividadeQuery orderByTabelaAtualizada($order = Criteria::ASC) Order by the tabela_atualizada column
+ * @method LogAtividadeQuery orderByLogRequisicaoId($order = Criteria::ASC) Order by the log_requisicao_id column
  * @method LogAtividadeQuery orderByValorAnterior($order = Criteria::ASC) Order by the valor_anterior column
  * @method LogAtividadeQuery orderByValorAtual($order = Criteria::ASC) Order by the valor_atual column
- * @method LogAtividadeQuery orderByData($order = Criteria::ASC) Order by the data column
  *
  * @method LogAtividadeQuery groupById() Group by the id column
- * @method LogAtividadeQuery groupByUsuarioId() Group by the usuario_id column
- * @method LogAtividadeQuery groupByTabelaAtualizada() Group by the tabela_atualizada column
+ * @method LogAtividadeQuery groupByLogRequisicaoId() Group by the log_requisicao_id column
  * @method LogAtividadeQuery groupByValorAnterior() Group by the valor_anterior column
  * @method LogAtividadeQuery groupByValorAtual() Group by the valor_atual column
- * @method LogAtividadeQuery groupByData() Group by the data column
  *
  * @method LogAtividadeQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method LogAtividadeQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method LogAtividadeQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method LogAtividadeQuery leftJoinUsuario($relationAlias = null) Adds a LEFT JOIN clause to the query using the Usuario relation
- * @method LogAtividadeQuery rightJoinUsuario($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Usuario relation
- * @method LogAtividadeQuery innerJoinUsuario($relationAlias = null) Adds a INNER JOIN clause to the query using the Usuario relation
+ * @method LogAtividadeQuery leftJoinLogRequisicao($relationAlias = null) Adds a LEFT JOIN clause to the query using the LogRequisicao relation
+ * @method LogAtividadeQuery rightJoinLogRequisicao($relationAlias = null) Adds a RIGHT JOIN clause to the query using the LogRequisicao relation
+ * @method LogAtividadeQuery innerJoinLogRequisicao($relationAlias = null) Adds a INNER JOIN clause to the query using the LogRequisicao relation
  *
  * @method LogAtividade findOne(PropelPDO $con = null) Return the first LogAtividade matching the query
  * @method LogAtividade findOneOrCreate(PropelPDO $con = null) Return the first LogAtividade matching the query, or a new LogAtividade object populated from the query conditions when no match is found
  *
- * @method LogAtividade findOneByUsuarioId(int $usuario_id) Return the first LogAtividade filtered by the usuario_id column
- * @method LogAtividade findOneByTabelaAtualizada(string $tabela_atualizada) Return the first LogAtividade filtered by the tabela_atualizada column
+ * @method LogAtividade findOneByLogRequisicaoId(int $log_requisicao_id) Return the first LogAtividade filtered by the log_requisicao_id column
  * @method LogAtividade findOneByValorAnterior(string $valor_anterior) Return the first LogAtividade filtered by the valor_anterior column
  * @method LogAtividade findOneByValorAtual(string $valor_atual) Return the first LogAtividade filtered by the valor_atual column
- * @method LogAtividade findOneByData(string $data) Return the first LogAtividade filtered by the data column
  *
  * @method array findById(int $id) Return LogAtividade objects filtered by the id column
- * @method array findByUsuarioId(int $usuario_id) Return LogAtividade objects filtered by the usuario_id column
- * @method array findByTabelaAtualizada(string $tabela_atualizada) Return LogAtividade objects filtered by the tabela_atualizada column
+ * @method array findByLogRequisicaoId(int $log_requisicao_id) Return LogAtividade objects filtered by the log_requisicao_id column
  * @method array findByValorAnterior(string $valor_anterior) Return LogAtividade objects filtered by the valor_anterior column
  * @method array findByValorAtual(string $valor_atual) Return LogAtividade objects filtered by the valor_atual column
- * @method array findByData(string $data) Return LogAtividade objects filtered by the data column
  *
  * @package    propel.generator.siscad_autenticacao.om
  */
@@ -61,7 +69,7 @@ abstract class BaseLogAtividadeQuery extends ModelCriteria
             $dbName = 'siscad_autenticacao';
         }
         if (null === $modelName) {
-            $modelName = 'LogAtividade';
+            $modelName = 'Model\\LogAtividade';
         }
         parent::__construct($dbName, $modelName, $modelAlias);
     }
@@ -150,7 +158,7 @@ abstract class BaseLogAtividadeQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `usuario_id`, `tabela_atualizada`, `valor_anterior`, `valor_atual`, `data` FROM `log_atividade` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `log_requisicao_id`, `valor_anterior`, `valor_atual` FROM `log_atividade` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -282,19 +290,19 @@ abstract class BaseLogAtividadeQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the usuario_id column
+     * Filter the query on the log_requisicao_id column
      *
      * Example usage:
      * <code>
-     * $query->filterByUsuarioId(1234); // WHERE usuario_id = 1234
-     * $query->filterByUsuarioId(array(12, 34)); // WHERE usuario_id IN (12, 34)
-     * $query->filterByUsuarioId(array('min' => 12)); // WHERE usuario_id >= 12
-     * $query->filterByUsuarioId(array('max' => 12)); // WHERE usuario_id <= 12
+     * $query->filterByLogRequisicaoId(1234); // WHERE log_requisicao_id = 1234
+     * $query->filterByLogRequisicaoId(array(12, 34)); // WHERE log_requisicao_id IN (12, 34)
+     * $query->filterByLogRequisicaoId(array('min' => 12)); // WHERE log_requisicao_id >= 12
+     * $query->filterByLogRequisicaoId(array('max' => 12)); // WHERE log_requisicao_id <= 12
      * </code>
      *
-     * @see       filterByUsuario()
+     * @see       filterByLogRequisicao()
      *
-     * @param     mixed $usuarioId The value to use as filter.
+     * @param     mixed $logRequisicaoId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -302,16 +310,16 @@ abstract class BaseLogAtividadeQuery extends ModelCriteria
      *
      * @return LogAtividadeQuery The current query, for fluid interface
      */
-    public function filterByUsuarioId($usuarioId = null, $comparison = null)
+    public function filterByLogRequisicaoId($logRequisicaoId = null, $comparison = null)
     {
-        if (is_array($usuarioId)) {
+        if (is_array($logRequisicaoId)) {
             $useMinMax = false;
-            if (isset($usuarioId['min'])) {
-                $this->addUsingAlias(LogAtividadePeer::USUARIO_ID, $usuarioId['min'], Criteria::GREATER_EQUAL);
+            if (isset($logRequisicaoId['min'])) {
+                $this->addUsingAlias(LogAtividadePeer::LOG_REQUISICAO_ID, $logRequisicaoId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($usuarioId['max'])) {
-                $this->addUsingAlias(LogAtividadePeer::USUARIO_ID, $usuarioId['max'], Criteria::LESS_EQUAL);
+            if (isset($logRequisicaoId['max'])) {
+                $this->addUsingAlias(LogAtividadePeer::LOG_REQUISICAO_ID, $logRequisicaoId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -322,36 +330,7 @@ abstract class BaseLogAtividadeQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(LogAtividadePeer::USUARIO_ID, $usuarioId, $comparison);
-    }
-
-    /**
-     * Filter the query on the tabela_atualizada column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByTabelaAtualizada('fooValue');   // WHERE tabela_atualizada = 'fooValue'
-     * $query->filterByTabelaAtualizada('%fooValue%'); // WHERE tabela_atualizada LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $tabelaAtualizada The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return LogAtividadeQuery The current query, for fluid interface
-     */
-    public function filterByTabelaAtualizada($tabelaAtualizada = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($tabelaAtualizada)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $tabelaAtualizada)) {
-                $tabelaAtualizada = str_replace('*', '%', $tabelaAtualizada);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(LogAtividadePeer::TABELA_ATUALIZADA, $tabelaAtualizada, $comparison);
+        return $this->addUsingAlias(LogAtividadePeer::LOG_REQUISICAO_ID, $logRequisicaoId, $comparison);
     }
 
     /**
@@ -413,86 +392,43 @@ abstract class BaseLogAtividadeQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the data column
+     * Filter the query by a related LogRequisicao object
      *
-     * Example usage:
-     * <code>
-     * $query->filterByData('2011-03-14'); // WHERE data = '2011-03-14'
-     * $query->filterByData('now'); // WHERE data = '2011-03-14'
-     * $query->filterByData(array('max' => 'yesterday')); // WHERE data < '2011-03-13'
-     * </code>
-     *
-     * @param     mixed $data The value to use as filter.
-     *              Values can be integers (unix timestamps), DateTime objects, or strings.
-     *              Empty strings are treated as NULL.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return LogAtividadeQuery The current query, for fluid interface
-     */
-    public function filterByData($data = null, $comparison = null)
-    {
-        if (is_array($data)) {
-            $useMinMax = false;
-            if (isset($data['min'])) {
-                $this->addUsingAlias(LogAtividadePeer::DATA, $data['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($data['max'])) {
-                $this->addUsingAlias(LogAtividadePeer::DATA, $data['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(LogAtividadePeer::DATA, $data, $comparison);
-    }
-
-    /**
-     * Filter the query by a related Usuario object
-     *
-     * @param   Usuario|PropelObjectCollection $usuario The related object(s) to use as filter
+     * @param   LogRequisicao|PropelObjectCollection $logRequisicao The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return                 LogAtividadeQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByUsuario($usuario, $comparison = null)
+    public function filterByLogRequisicao($logRequisicao, $comparison = null)
     {
-        if ($usuario instanceof Usuario) {
+        if ($logRequisicao instanceof LogRequisicao) {
             return $this
-                ->addUsingAlias(LogAtividadePeer::USUARIO_ID, $usuario->getId(), $comparison);
-        } elseif ($usuario instanceof PropelObjectCollection) {
+                ->addUsingAlias(LogAtividadePeer::LOG_REQUISICAO_ID, $logRequisicao->getId(), $comparison);
+        } elseif ($logRequisicao instanceof PropelObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(LogAtividadePeer::USUARIO_ID, $usuario->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(LogAtividadePeer::LOG_REQUISICAO_ID, $logRequisicao->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterByUsuario() only accepts arguments of type Usuario or PropelCollection');
+            throw new PropelException('filterByLogRequisicao() only accepts arguments of type LogRequisicao or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the Usuario relation
+     * Adds a JOIN clause to the query using the LogRequisicao relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return LogAtividadeQuery The current query, for fluid interface
      */
-    public function joinUsuario($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinLogRequisicao($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Usuario');
+        $relationMap = $tableMap->getRelation('LogRequisicao');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -507,14 +443,14 @@ abstract class BaseLogAtividadeQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'Usuario');
+            $this->addJoinObject($join, 'LogRequisicao');
         }
 
         return $this;
     }
 
     /**
-     * Use the Usuario relation Usuario object
+     * Use the LogRequisicao relation LogRequisicao object
      *
      * @see       useQuery()
      *
@@ -522,13 +458,13 @@ abstract class BaseLogAtividadeQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   UsuarioQuery A secondary query class using the current class as primary query
+     * @return   \Model\LogRequisicaoQuery A secondary query class using the current class as primary query
      */
-    public function useUsuarioQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useLogRequisicaoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinUsuario($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Usuario', 'UsuarioQuery');
+            ->joinLogRequisicao($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'LogRequisicao', '\Model\LogRequisicaoQuery');
     }
 
     /**

@@ -1,6 +1,8 @@
 <?php
 
+namespace Model;
 
+use Model\om\BaseUsuario;
 
 /**
  * Skeleton subclass for representing a row from the 'usuario' table.

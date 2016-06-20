@@ -1,5 +1,21 @@
 <?php
 
+namespace Model\om;
+
+use \Criteria;
+use \Exception;
+use \ModelCriteria;
+use \ModelJoin;
+use \PDO;
+use \Propel;
+use \PropelCollection;
+use \PropelException;
+use \PropelObjectCollection;
+use \PropelPDO;
+use Model\Endpoint;
+use Model\EndpointPeer;
+use Model\EndpointQuery;
+use Model\PerfilEndpoint;
 
 /**
  * Base class that represents a query for the 'endpoint' table.
@@ -61,7 +77,7 @@ abstract class BaseEndpointQuery extends ModelCriteria
             $dbName = 'siscad_autenticacao';
         }
         if (null === $modelName) {
-            $modelName = 'Endpoint';
+            $modelName = 'Model\\Endpoint';
         }
         parent::__construct($dbName, $modelName, $modelAlias);
     }
@@ -487,13 +503,13 @@ abstract class BaseEndpointQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   PerfilEndpointQuery A secondary query class using the current class as primary query
+     * @return   \Model\PerfilEndpointQuery A secondary query class using the current class as primary query
      */
     public function usePerfilEndpointQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
             ->joinPerfilEndpoint($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PerfilEndpoint', 'PerfilEndpointQuery');
+            ->useQuery($relationAlias ? $relationAlias : 'PerfilEndpoint', '\Model\PerfilEndpointQuery');
     }
 
     /**

@@ -1,5 +1,19 @@
 <?php
 
+namespace Model\om;
+
+use \BaseObject;
+use \BasePeer;
+use \Criteria;
+use \Exception;
+use \PDO;
+use \Persistent;
+use \Propel;
+use \PropelException;
+use \PropelPDO;
+use Model\TabIes;
+use Model\TabIesPeer;
+use Model\TabIesQuery;
 
 /**
  * Base class that represents a row from the 'tab_ies' table.
@@ -13,7 +27,7 @@ abstract class BaseTabIes extends BaseObject implements Persistent
     /**
      * Peer class name
      */
-    const PEER = 'TabIesPeer';
+    const PEER = 'Model\\TabIesPeer';
 
     /**
      * The Peer class.

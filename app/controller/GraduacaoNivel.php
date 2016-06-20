@@ -1,25 +1,26 @@
 <?php
+namespace Controller;
 
 class GraduacaoNivel{
 
 
   public function getGraduacaoNivel($id){
 
-    $graduacaoModel = new TabGraduacaoNivel();
+    $graduacaoModel = new \Model\TabGraduacaoNivel();
 
     $response = $graduacaoModel->getGraduacaoNivel($id);
-    $response = Utils::utf8_converter($response);
+    $response = \Utils\Utils::utf8_converter($response);
 
     return json_encode($response);
   }
 
 
-  public function setGraduacaoNivel($id, $fields, $userId){
+  public function setGraduacaoNivel($id, $fields, $logId){
 
-    $graduacaoModel = new TabGraduacaoNivel();
+    $graduacaoModel = new \Model\TabGraduacaoNivel();
 
     if(!empty($fields)){
-      $graduacaoModel->setGraduacaoNivel($id, $fields, $userId);
+      $graduacaoModel->setGraduacaoNivel($id, $fields, $logId);
       $response = 'Atualizado com sucesso';
     }else{
       throw new Exception('Dados inválidos', 400);
@@ -30,10 +31,10 @@ class GraduacaoNivel{
 
   public function getGraduacaoNivelWithFilters($filters){
 
-    $graduacaoModel = new TabGraduacaoNivel();
+    $graduacaoModel = new \Model\TabGraduacaoNivel();
     if(!empty($filters)){
       $response = $graduacaoModel->getGraduacaoNivelWithFilters($filters);
-      $response = Utils::utf8_converter($response);
+      $response = \Utils\Utils::utf8_converter($response);
     }
     return json_encode($response);
   }

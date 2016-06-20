@@ -1,5 +1,17 @@
 <?php
 
+namespace Model\om;
+
+use \BasePeer;
+use \Criteria;
+use \PDO;
+use \PDOStatement;
+use \Propel;
+use \PropelException;
+use \PropelPDO;
+use Model\TabGraduacaoNivel;
+use Model\TabGraduacaoNivelPeer;
+use Model\map\TabGraduacaoNivelTableMap;
 
 /**
  * Base static class for performing query and update operations on the 'tab_graduacao_nivel' table.
@@ -18,10 +30,10 @@ abstract class BaseTabGraduacaoNivelPeer
     const TABLE_NAME = 'tab_graduacao_nivel';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'TabGraduacaoNivel';
+    const OM_CLASS = 'Model\\TabGraduacaoNivel';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'TabGraduacaoNivelTableMap';
+    const TM_CLASS = 'Model\\map\\TabGraduacaoNivelTableMap';
 
     /** The total number of columns. */
     const NUM_COLUMNS = 2;
@@ -475,7 +487,7 @@ abstract class BaseTabGraduacaoNivelPeer
     {
       $dbMap = Propel::getDatabaseMap(BaseTabGraduacaoNivelPeer::DATABASE_NAME);
       if (!$dbMap->hasTable(BaseTabGraduacaoNivelPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new \TabGraduacaoNivelTableMap());
+        $dbMap->addTableObject(new \Model\map\TabGraduacaoNivelTableMap());
       }
     }
 

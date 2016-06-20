@@ -5,37 +5,43 @@ namespace Model\om;
 use \BaseObject;
 use \BasePeer;
 use \Criteria;
+use \DateTime;
 use \Exception;
 use \PDO;
 use \Persistent;
 use \Propel;
+use \PropelCollection;
+use \PropelDateTime;
 use \PropelException;
+use \PropelObjectCollection;
 use \PropelPDO;
 use Model\LogAtividade;
-use Model\LogAtividadePeer;
 use Model\LogAtividadeQuery;
 use Model\LogRequisicao;
+use Model\LogRequisicaoPeer;
 use Model\LogRequisicaoQuery;
+use Model\Usuario;
+use Model\UsuarioQuery;
 
 /**
- * Base class that represents a row from the 'log_atividade' table.
+ * Base class that represents a row from the 'log_requisicao' table.
  *
  *
  *
  * @package    propel.generator.siscad_autenticacao.om
  */
-abstract class BaseLogAtividade extends BaseObject implements Persistent
+abstract class BaseLogRequisicao extends BaseObject implements Persistent
 {
     /**
      * Peer class name
      */
-    const PEER = 'Model\\LogAtividadePeer';
+    const PEER = 'Model\\LogRequisicaoPeer';
 
     /**
      * The Peer class.
      * Instance provides a convenient way of calling static methods on a class
      * that calling code may not be able to identify.
-     * @var        LogAtividadePeer
+     * @var        LogRequisicaoPeer
      */
     protected static $peer;
 
@@ -52,27 +58,46 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
     protected $id;
 
     /**
-     * The value for the log_requisicao_id field.
+     * The value for the usuario_id field.
      * @var        int
      */
-    protected $log_requisicao_id;
+    protected $usuario_id;
 
     /**
-     * The value for the valor_anterior field.
+     * The value for the requisicao field.
      * @var        string
      */
-    protected $valor_anterior;
+    protected $requisicao;
 
     /**
-     * The value for the valor_atual field.
+     * The value for the nonce field.
      * @var        string
      */
-    protected $valor_atual;
+    protected $nonce;
 
     /**
-     * @var        LogRequisicao
+     * The value for the data field.
+     * Note: this column has a database default value of: (expression) CURRENT_TIMESTAMP
+     * @var        string
      */
-    protected $aLogRequisicao;
+    protected $data;
+
+    /**
+     * The value for the ip field.
+     * @var        string
+     */
+    protected $ip;
+
+    /**
+     * @var        Usuario
+     */
+    protected $aUsuario;
+
+    /**
+     * @var        PropelObjectCollection|LogAtividade[] Collection to store aggregation of LogAtividade objects.
+     */
+    protected $collLogAtividades;
+    protected $collLogAtividadesPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -95,6 +120,32 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
     protected $alreadyInClearAllReferencesDeep = false;
 
     /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $logAtividadesScheduledForDeletion = null;
+
+    /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see        __construct()
+     */
+    public function applyDefaultValues()
+    {
+    }
+
+    /**
+     * Initializes internal state of BaseLogRequisicao object.
+     * @see        applyDefaults()
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->applyDefaultValues();
+    }
+
+    /**
      * Get the [id] column value.
      *
      * @return int
@@ -106,43 +157,94 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [log_requisicao_id] column value.
+     * Get the [usuario_id] column value.
      *
      * @return int
      */
-    public function getLogRequisicaoId()
+    public function getUsuarioId()
     {
 
-        return $this->log_requisicao_id;
+        return $this->usuario_id;
     }
 
     /**
-     * Get the [valor_anterior] column value.
+     * Get the [requisicao] column value.
      *
      * @return string
      */
-    public function getValorAnterior()
+    public function getRequisicao()
     {
 
-        return $this->valor_anterior;
+        return $this->requisicao;
     }
 
     /**
-     * Get the [valor_atual] column value.
+     * Get the [nonce] column value.
      *
      * @return string
      */
-    public function getValorAtual()
+    public function getNonce()
     {
 
-        return $this->valor_atual;
+        return $this->nonce;
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [data] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getData($format = 'Y-m-d H:i:s')
+    {
+        if ($this->data === null) {
+            return null;
+        }
+
+        if ($this->data === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->data);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->data, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
+    }
+
+    /**
+     * Get the [ip] column value.
+     *
+     * @return string
+     */
+    public function getIp()
+    {
+
+        return $this->ip;
     }
 
     /**
      * Set the value of [id] column.
      *
      * @param  int $v new value
-     * @return LogAtividade The current object (for fluent API support)
+     * @return LogRequisicao The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -152,7 +254,7 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[] = LogAtividadePeer::ID;
+            $this->modifiedColumns[] = LogRequisicaoPeer::ID;
         }
 
 
@@ -160,71 +262,115 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
     } // setId()
 
     /**
-     * Set the value of [log_requisicao_id] column.
+     * Set the value of [usuario_id] column.
      *
      * @param  int $v new value
-     * @return LogAtividade The current object (for fluent API support)
+     * @return LogRequisicao The current object (for fluent API support)
      */
-    public function setLogRequisicaoId($v)
+    public function setUsuarioId($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
-        if ($this->log_requisicao_id !== $v) {
-            $this->log_requisicao_id = $v;
-            $this->modifiedColumns[] = LogAtividadePeer::LOG_REQUISICAO_ID;
+        if ($this->usuario_id !== $v) {
+            $this->usuario_id = $v;
+            $this->modifiedColumns[] = LogRequisicaoPeer::USUARIO_ID;
         }
 
-        if ($this->aLogRequisicao !== null && $this->aLogRequisicao->getId() !== $v) {
-            $this->aLogRequisicao = null;
+        if ($this->aUsuario !== null && $this->aUsuario->getId() !== $v) {
+            $this->aUsuario = null;
         }
 
 
         return $this;
-    } // setLogRequisicaoId()
+    } // setUsuarioId()
 
     /**
-     * Set the value of [valor_anterior] column.
+     * Set the value of [requisicao] column.
      *
      * @param  string $v new value
-     * @return LogAtividade The current object (for fluent API support)
+     * @return LogRequisicao The current object (for fluent API support)
      */
-    public function setValorAnterior($v)
+    public function setRequisicao($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->valor_anterior !== $v) {
-            $this->valor_anterior = $v;
-            $this->modifiedColumns[] = LogAtividadePeer::VALOR_ANTERIOR;
+        if ($this->requisicao !== $v) {
+            $this->requisicao = $v;
+            $this->modifiedColumns[] = LogRequisicaoPeer::REQUISICAO;
         }
 
 
         return $this;
-    } // setValorAnterior()
+    } // setRequisicao()
 
     /**
-     * Set the value of [valor_atual] column.
+     * Set the value of [nonce] column.
      *
      * @param  string $v new value
-     * @return LogAtividade The current object (for fluent API support)
+     * @return LogRequisicao The current object (for fluent API support)
      */
-    public function setValorAtual($v)
+    public function setNonce($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->valor_atual !== $v) {
-            $this->valor_atual = $v;
-            $this->modifiedColumns[] = LogAtividadePeer::VALOR_ATUAL;
+        if ($this->nonce !== $v) {
+            $this->nonce = $v;
+            $this->modifiedColumns[] = LogRequisicaoPeer::NONCE;
         }
 
 
         return $this;
-    } // setValorAtual()
+    } // setNonce()
+
+    /**
+     * Sets the value of [data] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return LogRequisicao The current object (for fluent API support)
+     */
+    public function setData($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->data !== null || $dt !== null) {
+            $currentDateAsString = ($this->data !== null && $tmpDt = new DateTime($this->data)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->data = $newDateAsString;
+                $this->modifiedColumns[] = LogRequisicaoPeer::DATA;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setData()
+
+    /**
+     * Set the value of [ip] column.
+     *
+     * @param  string $v new value
+     * @return LogRequisicao The current object (for fluent API support)
+     */
+    public function setIp($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->ip !== $v) {
+            $this->ip = $v;
+            $this->modifiedColumns[] = LogRequisicaoPeer::IP;
+        }
+
+
+        return $this;
+    } // setIp()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -259,9 +405,11 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->log_requisicao_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->valor_anterior = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->valor_atual = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->usuario_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+            $this->requisicao = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+            $this->nonce = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->data = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->ip = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -271,10 +419,10 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 4; // 4 = LogAtividadePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = LogRequisicaoPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating LogAtividade object", $e);
+            throw new PropelException("Error populating LogRequisicao object", $e);
         }
     }
 
@@ -294,8 +442,8 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
-        if ($this->aLogRequisicao !== null && $this->log_requisicao_id !== $this->aLogRequisicao->getId()) {
-            $this->aLogRequisicao = null;
+        if ($this->aUsuario !== null && $this->usuario_id !== $this->aUsuario->getId()) {
+            $this->aUsuario = null;
         }
     } // ensureConsistency
 
@@ -320,13 +468,13 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(LogAtividadePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(LogRequisicaoPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $stmt = LogAtividadePeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+        $stmt = LogRequisicaoPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
         $row = $stmt->fetch(PDO::FETCH_NUM);
         $stmt->closeCursor();
         if (!$row) {
@@ -336,7 +484,9 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aLogRequisicao = null;
+            $this->aUsuario = null;
+            $this->collLogAtividades = null;
+
         } // if (deep)
     }
 
@@ -357,12 +507,12 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(LogAtividadePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(LogRequisicaoPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = LogAtividadeQuery::create()
+            $deleteQuery = LogRequisicaoQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -400,7 +550,7 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(LogAtividadePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(LogRequisicaoPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
@@ -420,7 +570,7 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                LogAtividadePeer::addInstanceToPool($this);
+                LogRequisicaoPeer::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -455,11 +605,11 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aLogRequisicao !== null) {
-                if ($this->aLogRequisicao->isModified() || $this->aLogRequisicao->isNew()) {
-                    $affectedRows += $this->aLogRequisicao->save($con);
+            if ($this->aUsuario !== null) {
+                if ($this->aUsuario->isModified() || $this->aUsuario->isNew()) {
+                    $affectedRows += $this->aUsuario->save($con);
                 }
-                $this->setLogRequisicao($this->aLogRequisicao);
+                $this->setUsuario($this->aUsuario);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -471,6 +621,23 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
                 }
                 $affectedRows += 1;
                 $this->resetModified();
+            }
+
+            if ($this->logAtividadesScheduledForDeletion !== null) {
+                if (!$this->logAtividadesScheduledForDeletion->isEmpty()) {
+                    LogAtividadeQuery::create()
+                        ->filterByPrimaryKeys($this->logAtividadesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->logAtividadesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collLogAtividades !== null) {
+                foreach ($this->collLogAtividades as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             $this->alreadyInSave = false;
@@ -493,27 +660,33 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[] = LogAtividadePeer::ID;
+        $this->modifiedColumns[] = LogRequisicaoPeer::ID;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . LogAtividadePeer::ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . LogRequisicaoPeer::ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(LogAtividadePeer::ID)) {
+        if ($this->isColumnModified(LogRequisicaoPeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
-        if ($this->isColumnModified(LogAtividadePeer::LOG_REQUISICAO_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`log_requisicao_id`';
+        if ($this->isColumnModified(LogRequisicaoPeer::USUARIO_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`usuario_id`';
         }
-        if ($this->isColumnModified(LogAtividadePeer::VALOR_ANTERIOR)) {
-            $modifiedColumns[':p' . $index++]  = '`valor_anterior`';
+        if ($this->isColumnModified(LogRequisicaoPeer::REQUISICAO)) {
+            $modifiedColumns[':p' . $index++]  = '`requisicao`';
         }
-        if ($this->isColumnModified(LogAtividadePeer::VALOR_ATUAL)) {
-            $modifiedColumns[':p' . $index++]  = '`valor_atual`';
+        if ($this->isColumnModified(LogRequisicaoPeer::NONCE)) {
+            $modifiedColumns[':p' . $index++]  = '`nonce`';
+        }
+        if ($this->isColumnModified(LogRequisicaoPeer::DATA)) {
+            $modifiedColumns[':p' . $index++]  = '`data`';
+        }
+        if ($this->isColumnModified(LogRequisicaoPeer::IP)) {
+            $modifiedColumns[':p' . $index++]  = '`ip`';
         }
 
         $sql = sprintf(
-            'INSERT INTO `log_atividade` (%s) VALUES (%s)',
+            'INSERT INTO `log_requisicao` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -525,14 +698,20 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
                     case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case '`log_requisicao_id`':
-                        $stmt->bindValue($identifier, $this->log_requisicao_id, PDO::PARAM_INT);
+                    case '`usuario_id`':
+                        $stmt->bindValue($identifier, $this->usuario_id, PDO::PARAM_INT);
                         break;
-                    case '`valor_anterior`':
-                        $stmt->bindValue($identifier, $this->valor_anterior, PDO::PARAM_STR);
+                    case '`requisicao`':
+                        $stmt->bindValue($identifier, $this->requisicao, PDO::PARAM_STR);
                         break;
-                    case '`valor_atual`':
-                        $stmt->bindValue($identifier, $this->valor_atual, PDO::PARAM_STR);
+                    case '`nonce`':
+                        $stmt->bindValue($identifier, $this->nonce, PDO::PARAM_STR);
+                        break;
+                    case '`data`':
+                        $stmt->bindValue($identifier, $this->data, PDO::PARAM_STR);
+                        break;
+                    case '`ip`':
+                        $stmt->bindValue($identifier, $this->ip, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -633,17 +812,25 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aLogRequisicao !== null) {
-                if (!$this->aLogRequisicao->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aLogRequisicao->getValidationFailures());
+            if ($this->aUsuario !== null) {
+                if (!$this->aUsuario->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aUsuario->getValidationFailures());
                 }
             }
 
 
-            if (($retval = LogAtividadePeer::doValidate($this, $columns)) !== true) {
+            if (($retval = LogRequisicaoPeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
             }
 
+
+                if ($this->collLogAtividades !== null) {
+                    foreach ($this->collLogAtividades as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
 
 
             $this->alreadyInValidation = false;
@@ -664,7 +851,7 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = LogAtividadePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = LogRequisicaoPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -684,13 +871,19 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getLogRequisicaoId();
+                return $this->getUsuarioId();
                 break;
             case 2:
-                return $this->getValorAnterior();
+                return $this->getRequisicao();
                 break;
             case 3:
-                return $this->getValorAtual();
+                return $this->getNonce();
+                break;
+            case 4:
+                return $this->getData();
+                break;
+            case 5:
+                return $this->getIp();
                 break;
             default:
                 return null;
@@ -715,16 +908,18 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
      */
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['LogAtividade'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['LogRequisicao'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['LogAtividade'][$this->getPrimaryKey()] = true;
-        $keys = LogAtividadePeer::getFieldNames($keyType);
+        $alreadyDumpedObjects['LogRequisicao'][$this->getPrimaryKey()] = true;
+        $keys = LogRequisicaoPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getLogRequisicaoId(),
-            $keys[2] => $this->getValorAnterior(),
-            $keys[3] => $this->getValorAtual(),
+            $keys[1] => $this->getUsuarioId(),
+            $keys[2] => $this->getRequisicao(),
+            $keys[3] => $this->getNonce(),
+            $keys[4] => $this->getData(),
+            $keys[5] => $this->getIp(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -732,8 +927,11 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->aLogRequisicao) {
-                $result['LogRequisicao'] = $this->aLogRequisicao->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            if (null !== $this->aUsuario) {
+                $result['Usuario'] = $this->aUsuario->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->collLogAtividades) {
+                $result['LogAtividades'] = $this->collLogAtividades->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -753,7 +951,7 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
      */
     public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = LogAtividadePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = LogRequisicaoPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 
         $this->setByPosition($pos, $value);
     }
@@ -773,13 +971,19 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setLogRequisicaoId($value);
+                $this->setUsuarioId($value);
                 break;
             case 2:
-                $this->setValorAnterior($value);
+                $this->setRequisicao($value);
                 break;
             case 3:
-                $this->setValorAtual($value);
+                $this->setNonce($value);
+                break;
+            case 4:
+                $this->setData($value);
+                break;
+            case 5:
+                $this->setIp($value);
                 break;
         } // switch()
     }
@@ -803,12 +1007,14 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
     {
-        $keys = LogAtividadePeer::getFieldNames($keyType);
+        $keys = LogRequisicaoPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setLogRequisicaoId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setValorAnterior($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setValorAtual($arr[$keys[3]]);
+        if (array_key_exists($keys[1], $arr)) $this->setUsuarioId($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setRequisicao($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setNonce($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setData($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setIp($arr[$keys[5]]);
     }
 
     /**
@@ -818,12 +1024,14 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(LogAtividadePeer::DATABASE_NAME);
+        $criteria = new Criteria(LogRequisicaoPeer::DATABASE_NAME);
 
-        if ($this->isColumnModified(LogAtividadePeer::ID)) $criteria->add(LogAtividadePeer::ID, $this->id);
-        if ($this->isColumnModified(LogAtividadePeer::LOG_REQUISICAO_ID)) $criteria->add(LogAtividadePeer::LOG_REQUISICAO_ID, $this->log_requisicao_id);
-        if ($this->isColumnModified(LogAtividadePeer::VALOR_ANTERIOR)) $criteria->add(LogAtividadePeer::VALOR_ANTERIOR, $this->valor_anterior);
-        if ($this->isColumnModified(LogAtividadePeer::VALOR_ATUAL)) $criteria->add(LogAtividadePeer::VALOR_ATUAL, $this->valor_atual);
+        if ($this->isColumnModified(LogRequisicaoPeer::ID)) $criteria->add(LogRequisicaoPeer::ID, $this->id);
+        if ($this->isColumnModified(LogRequisicaoPeer::USUARIO_ID)) $criteria->add(LogRequisicaoPeer::USUARIO_ID, $this->usuario_id);
+        if ($this->isColumnModified(LogRequisicaoPeer::REQUISICAO)) $criteria->add(LogRequisicaoPeer::REQUISICAO, $this->requisicao);
+        if ($this->isColumnModified(LogRequisicaoPeer::NONCE)) $criteria->add(LogRequisicaoPeer::NONCE, $this->nonce);
+        if ($this->isColumnModified(LogRequisicaoPeer::DATA)) $criteria->add(LogRequisicaoPeer::DATA, $this->data);
+        if ($this->isColumnModified(LogRequisicaoPeer::IP)) $criteria->add(LogRequisicaoPeer::IP, $this->ip);
 
         return $criteria;
     }
@@ -838,8 +1046,8 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(LogAtividadePeer::DATABASE_NAME);
-        $criteria->add(LogAtividadePeer::ID, $this->id);
+        $criteria = new Criteria(LogRequisicaoPeer::DATABASE_NAME);
+        $criteria->add(LogRequisicaoPeer::ID, $this->id);
 
         return $criteria;
     }
@@ -880,16 +1088,18 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param object $copyObj An object of LogAtividade (or compatible) type.
+     * @param object $copyObj An object of LogRequisicao (or compatible) type.
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setLogRequisicaoId($this->getLogRequisicaoId());
-        $copyObj->setValorAnterior($this->getValorAnterior());
-        $copyObj->setValorAtual($this->getValorAtual());
+        $copyObj->setUsuarioId($this->getUsuarioId());
+        $copyObj->setRequisicao($this->getRequisicao());
+        $copyObj->setNonce($this->getNonce());
+        $copyObj->setData($this->getData());
+        $copyObj->setIp($this->getIp());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -897,6 +1107,12 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
             $copyObj->setNew(false);
             // store object hash to prevent cycle
             $this->startCopy = true;
+
+            foreach ($this->getLogAtividades() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addLogAtividade($relObj->copy($deepCopy));
+                }
+            }
 
             //unflag object copy
             $this->startCopy = false;
@@ -917,7 +1133,7 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
      * objects.
      *
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return LogAtividade Clone of current object.
+     * @return LogRequisicao Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -937,38 +1153,38 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return LogAtividadePeer
+     * @return LogRequisicaoPeer
      */
     public function getPeer()
     {
         if (self::$peer === null) {
-            self::$peer = new LogAtividadePeer();
+            self::$peer = new LogRequisicaoPeer();
         }
 
         return self::$peer;
     }
 
     /**
-     * Declares an association between this object and a LogRequisicao object.
+     * Declares an association between this object and a Usuario object.
      *
-     * @param                  LogRequisicao $v
-     * @return LogAtividade The current object (for fluent API support)
+     * @param                  Usuario $v
+     * @return LogRequisicao The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setLogRequisicao(LogRequisicao $v = null)
+    public function setUsuario(Usuario $v = null)
     {
         if ($v === null) {
-            $this->setLogRequisicaoId(NULL);
+            $this->setUsuarioId(NULL);
         } else {
-            $this->setLogRequisicaoId($v->getId());
+            $this->setUsuarioId($v->getId());
         }
 
-        $this->aLogRequisicao = $v;
+        $this->aUsuario = $v;
 
         // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the LogRequisicao object, it will not be re-added.
+        // If this object has already been added to the Usuario object, it will not be re-added.
         if ($v !== null) {
-            $v->addLogAtividade($this);
+            $v->addLogRequisicao($this);
         }
 
 
@@ -977,27 +1193,268 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
 
 
     /**
-     * Get the associated LogRequisicao object
+     * Get the associated Usuario object
      *
      * @param PropelPDO $con Optional Connection object.
      * @param $doQuery Executes a query to get the object if required
-     * @return LogRequisicao The associated LogRequisicao object.
+     * @return Usuario The associated Usuario object.
      * @throws PropelException
      */
-    public function getLogRequisicao(PropelPDO $con = null, $doQuery = true)
+    public function getUsuario(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aLogRequisicao === null && ($this->log_requisicao_id !== null) && $doQuery) {
-            $this->aLogRequisicao = LogRequisicaoQuery::create()->findPk($this->log_requisicao_id, $con);
+        if ($this->aUsuario === null && ($this->usuario_id !== null) && $doQuery) {
+            $this->aUsuario = UsuarioQuery::create()->findPk($this->usuario_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aLogRequisicao->addLogAtividades($this);
+                $this->aUsuario->addLogRequisicaos($this);
              */
         }
 
-        return $this->aLogRequisicao;
+        return $this->aUsuario;
+    }
+
+
+    /**
+     * Initializes a collection based on the name of a relation.
+     * Avoids crafting an 'init[$relationName]s' method name
+     * that wouldn't work when StandardEnglishPluralizer is used.
+     *
+     * @param string $relationName The name of the relation to initialize
+     * @return void
+     */
+    public function initRelation($relationName)
+    {
+        if ('LogAtividade' == $relationName) {
+            $this->initLogAtividades();
+        }
+    }
+
+    /**
+     * Clears out the collLogAtividades collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return LogRequisicao The current object (for fluent API support)
+     * @see        addLogAtividades()
+     */
+    public function clearLogAtividades()
+    {
+        $this->collLogAtividades = null; // important to set this to null since that means it is uninitialized
+        $this->collLogAtividadesPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collLogAtividades collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialLogAtividades($v = true)
+    {
+        $this->collLogAtividadesPartial = $v;
+    }
+
+    /**
+     * Initializes the collLogAtividades collection.
+     *
+     * By default this just sets the collLogAtividades collection to an empty array (like clearcollLogAtividades());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initLogAtividades($overrideExisting = true)
+    {
+        if (null !== $this->collLogAtividades && !$overrideExisting) {
+            return;
+        }
+        $this->collLogAtividades = new PropelObjectCollection();
+        $this->collLogAtividades->setModel('LogAtividade');
+    }
+
+    /**
+     * Gets an array of LogAtividade objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this LogRequisicao is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|LogAtividade[] List of LogAtividade objects
+     * @throws PropelException
+     */
+    public function getLogAtividades($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collLogAtividadesPartial && !$this->isNew();
+        if (null === $this->collLogAtividades || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collLogAtividades) {
+                // return empty collection
+                $this->initLogAtividades();
+            } else {
+                $collLogAtividades = LogAtividadeQuery::create(null, $criteria)
+                    ->filterByLogRequisicao($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collLogAtividadesPartial && count($collLogAtividades)) {
+                      $this->initLogAtividades(false);
+
+                      foreach ($collLogAtividades as $obj) {
+                        if (false == $this->collLogAtividades->contains($obj)) {
+                          $this->collLogAtividades->append($obj);
+                        }
+                      }
+
+                      $this->collLogAtividadesPartial = true;
+                    }
+
+                    $collLogAtividades->getInternalIterator()->rewind();
+
+                    return $collLogAtividades;
+                }
+
+                if ($partial && $this->collLogAtividades) {
+                    foreach ($this->collLogAtividades as $obj) {
+                        if ($obj->isNew()) {
+                            $collLogAtividades[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collLogAtividades = $collLogAtividades;
+                $this->collLogAtividadesPartial = false;
+            }
+        }
+
+        return $this->collLogAtividades;
+    }
+
+    /**
+     * Sets a collection of LogAtividade objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $logAtividades A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return LogRequisicao The current object (for fluent API support)
+     */
+    public function setLogAtividades(PropelCollection $logAtividades, PropelPDO $con = null)
+    {
+        $logAtividadesToDelete = $this->getLogAtividades(new Criteria(), $con)->diff($logAtividades);
+
+
+        $this->logAtividadesScheduledForDeletion = $logAtividadesToDelete;
+
+        foreach ($logAtividadesToDelete as $logAtividadeRemoved) {
+            $logAtividadeRemoved->setLogRequisicao(null);
+        }
+
+        $this->collLogAtividades = null;
+        foreach ($logAtividades as $logAtividade) {
+            $this->addLogAtividade($logAtividade);
+        }
+
+        $this->collLogAtividades = $logAtividades;
+        $this->collLogAtividadesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related LogAtividade objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related LogAtividade objects.
+     * @throws PropelException
+     */
+    public function countLogAtividades(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collLogAtividadesPartial && !$this->isNew();
+        if (null === $this->collLogAtividades || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collLogAtividades) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getLogAtividades());
+            }
+            $query = LogAtividadeQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByLogRequisicao($this)
+                ->count($con);
+        }
+
+        return count($this->collLogAtividades);
+    }
+
+    /**
+     * Method called to associate a LogAtividade object to this object
+     * through the LogAtividade foreign key attribute.
+     *
+     * @param    LogAtividade $l LogAtividade
+     * @return LogRequisicao The current object (for fluent API support)
+     */
+    public function addLogAtividade(LogAtividade $l)
+    {
+        if ($this->collLogAtividades === null) {
+            $this->initLogAtividades();
+            $this->collLogAtividadesPartial = true;
+        }
+
+        if (!in_array($l, $this->collLogAtividades->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddLogAtividade($l);
+
+            if ($this->logAtividadesScheduledForDeletion and $this->logAtividadesScheduledForDeletion->contains($l)) {
+                $this->logAtividadesScheduledForDeletion->remove($this->logAtividadesScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	LogAtividade $logAtividade The logAtividade object to add.
+     */
+    protected function doAddLogAtividade($logAtividade)
+    {
+        $this->collLogAtividades[]= $logAtividade;
+        $logAtividade->setLogRequisicao($this);
+    }
+
+    /**
+     * @param	LogAtividade $logAtividade The logAtividade object to remove.
+     * @return LogRequisicao The current object (for fluent API support)
+     */
+    public function removeLogAtividade($logAtividade)
+    {
+        if ($this->getLogAtividades()->contains($logAtividade)) {
+            $this->collLogAtividades->remove($this->collLogAtividades->search($logAtividade));
+            if (null === $this->logAtividadesScheduledForDeletion) {
+                $this->logAtividadesScheduledForDeletion = clone $this->collLogAtividades;
+                $this->logAtividadesScheduledForDeletion->clear();
+            }
+            $this->logAtividadesScheduledForDeletion[]= clone $logAtividade;
+            $logAtividade->setLogRequisicao(null);
+        }
+
+        return $this;
     }
 
     /**
@@ -1006,13 +1463,16 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
     public function clear()
     {
         $this->id = null;
-        $this->log_requisicao_id = null;
-        $this->valor_anterior = null;
-        $this->valor_atual = null;
+        $this->usuario_id = null;
+        $this->requisicao = null;
+        $this->nonce = null;
+        $this->data = null;
+        $this->ip = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);
@@ -1031,14 +1491,23 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
-            if ($this->aLogRequisicao instanceof Persistent) {
-              $this->aLogRequisicao->clearAllReferences($deep);
+            if ($this->collLogAtividades) {
+                foreach ($this->collLogAtividades as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->aUsuario instanceof Persistent) {
+              $this->aUsuario->clearAllReferences($deep);
             }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
-        $this->aLogRequisicao = null;
+        if ($this->collLogAtividades instanceof PropelCollection) {
+            $this->collLogAtividades->clearIterator();
+        }
+        $this->collLogAtividades = null;
+        $this->aUsuario = null;
     }
 
     /**
@@ -1048,7 +1517,7 @@ abstract class BaseLogAtividade extends BaseObject implements Persistent
      */
     public function __toString()
     {
-        return (string) $this->exportTo(LogAtividadePeer::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(LogRequisicaoPeer::DEFAULT_STRING_FORMAT);
     }
 
     /**

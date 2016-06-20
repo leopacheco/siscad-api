@@ -1,5 +1,21 @@
 <?php
 
+namespace Model\om;
+
+use \BaseObject;
+use \BasePeer;
+use \Criteria;
+use \DateTime;
+use \Exception;
+use \PDO;
+use \Persistent;
+use \Propel;
+use \PropelDateTime;
+use \PropelException;
+use \PropelPDO;
+use Model\PfjEndereco;
+use Model\PfjEnderecoPeer;
+use Model\PfjEnderecoQuery;
 
 /**
  * Base class that represents a row from the 'pfj_endereco' table.
@@ -13,7 +29,7 @@ abstract class BasePfjEndereco extends BaseObject implements Persistent
     /**
      * Peer class name
      */
-    const PEER = 'PfjEnderecoPeer';
+    const PEER = 'Model\\PfjEnderecoPeer';
 
     /**
      * The Peer class.

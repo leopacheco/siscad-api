@@ -1,5 +1,17 @@
 <?php
 
+namespace Model\om;
+
+use \BasePeer;
+use \Criteria;
+use \PDO;
+use \PDOStatement;
+use \Propel;
+use \PropelException;
+use \PropelPDO;
+use Model\Endpoint;
+use Model\EndpointPeer;
+use Model\map\EndpointTableMap;
 
 /**
  * Base static class for performing query and update operations on the 'endpoint' table.
@@ -18,10 +30,10 @@ abstract class BaseEndpointPeer
     const TABLE_NAME = 'endpoint';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'Endpoint';
+    const OM_CLASS = 'Model\\Endpoint';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'EndpointTableMap';
+    const TM_CLASS = 'Model\\map\\EndpointTableMap';
 
     /** The total number of columns. */
     const NUM_COLUMNS = 6;
@@ -495,7 +507,7 @@ abstract class BaseEndpointPeer
     {
       $dbMap = Propel::getDatabaseMap(BaseEndpointPeer::DATABASE_NAME);
       if (!$dbMap->hasTable(BaseEndpointPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new \EndpointTableMap());
+        $dbMap->addTableObject(new \Model\map\EndpointTableMap());
       }
     }
 
@@ -714,6 +726,15 @@ abstract class BaseEndpointPeer
                 }
             }
         } else {
+
+        if ($obj->isNew() || $obj->isColumnModified(EndpointPeer::METHOD))
+            $columns[EndpointPeer::METHOD] = $obj->getMethod();
+
+        if ($obj->isNew() || $obj->isColumnModified(EndpointPeer::URI))
+            $columns[EndpointPeer::URI] = $obj->getUri();
+
+        if ($obj->isNew() || $obj->isColumnModified(EndpointPeer::DESCRICAO))
+            $columns[EndpointPeer::DESCRICAO] = $obj->getDescricao();
 
         }
 

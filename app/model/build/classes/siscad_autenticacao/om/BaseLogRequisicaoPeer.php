@@ -9,100 +9,68 @@ use \PDOStatement;
 use \Propel;
 use \PropelException;
 use \PropelPDO;
-use Model\TabUf;
-use Model\TabUfPeer;
-use Model\map\TabUfTableMap;
+use Model\LogRequisicao;
+use Model\LogRequisicaoPeer;
+use Model\UsuarioPeer;
+use Model\map\LogRequisicaoTableMap;
 
 /**
- * Base static class for performing query and update operations on the 'tab_uf' table.
+ * Base static class for performing query and update operations on the 'log_requisicao' table.
  *
  *
  *
- * @package propel.generator.siscad.om
+ * @package propel.generator.siscad_autenticacao.om
  */
-abstract class BaseTabUfPeer
+abstract class BaseLogRequisicaoPeer
 {
 
     /** the default database name for this class */
-    const DATABASE_NAME = 'siscad';
+    const DATABASE_NAME = 'siscad_autenticacao';
 
     /** the table name for this class */
-    const TABLE_NAME = 'tab_uf';
+    const TABLE_NAME = 'log_requisicao';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'Model\\TabUf';
+    const OM_CLASS = 'Model\\LogRequisicao';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'Model\\map\\TabUfTableMap';
+    const TM_CLASS = 'Model\\map\\LogRequisicaoTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 17;
+    const NUM_COLUMNS = 6;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 17;
+    const NUM_HYDRATE_COLUMNS = 6;
 
-    /** the column name for the id_tab_uf field */
-    const ID_TAB_UF = 'tab_uf.id_tab_uf';
+    /** the column name for the id field */
+    const ID = 'log_requisicao.id';
 
-    /** the column name for the sigla field */
-    const SIGLA = 'tab_uf.sigla';
+    /** the column name for the usuario_id field */
+    const USUARIO_ID = 'log_requisicao.usuario_id';
 
-    /** the column name for the tratamento field */
-    const TRATAMENTO = 'tab_uf.tratamento';
+    /** the column name for the requisicao field */
+    const REQUISICAO = 'log_requisicao.requisicao';
 
-    /** the column name for the estado field */
-    const ESTADO = 'tab_uf.estado';
+    /** the column name for the nonce field */
+    const NONCE = 'log_requisicao.nonce';
 
-    /** the column name for the capital field */
-    const CAPITAL = 'tab_uf.capital';
+    /** the column name for the data field */
+    const DATA = 'log_requisicao.data';
 
-    /** the column name for the rua field */
-    const RUA = 'tab_uf.rua';
-
-    /** the column name for the bairro field */
-    const BAIRRO = 'tab_uf.bairro';
-
-    /** the column name for the cep field */
-    const CEP = 'tab_uf.cep';
-
-    /** the column name for the ddd field */
-    const DDD = 'tab_uf.ddd';
-
-    /** the column name for the telefone field */
-    const TELEFONE = 'tab_uf.telefone';
-
-    /** the column name for the fax field */
-    const FAX = 'tab_uf.fax';
-
-    /** the column name for the email field */
-    const EMAIL = 'tab_uf.email';
-
-    /** the column name for the sequencia_tf field */
-    const SEQUENCIA_TF = 'tab_uf.sequencia_tf';
-
-    /** the column name for the sequencia_ai field */
-    const SEQUENCIA_AI = 'tab_uf.sequencia_ai';
-
-    /** the column name for the ano field */
-    const ANO = 'tab_uf.ano';
-
-    /** the column name for the regiao field */
-    const REGIAO = 'tab_uf.regiao';
-
-    /** the column name for the res1102 field */
-    const RES1102 = 'tab_uf.res1102';
+    /** the column name for the ip field */
+    const IP = 'log_requisicao.ip';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
-     * An identity map to hold any loaded instances of TabUf objects.
+     * An identity map to hold any loaded instances of LogRequisicao objects.
      * This must be public so that other peer classes can access this when hydrating from JOIN
      * queries.
-     * @var        array TabUf[]
+     * @var        array LogRequisicao[]
      */
     public static $instances = array();
 
@@ -111,30 +79,30 @@ abstract class BaseTabUfPeer
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. TabUfPeer::$fieldNames[TabUfPeer::TYPE_PHPNAME][0] = 'Id'
+     * e.g. LogRequisicaoPeer::$fieldNames[LogRequisicaoPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('IdTabUf', 'Sigla', 'Tratamento', 'Estado', 'Capital', 'Rua', 'Bairro', 'Cep', 'Ddd', 'Telefone', 'Fax', 'Email', 'SequenciaTf', 'SequenciaAi', 'Ano', 'Regiao', 'Res1102', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idTabUf', 'sigla', 'tratamento', 'estado', 'capital', 'rua', 'bairro', 'cep', 'ddd', 'telefone', 'fax', 'email', 'sequenciaTf', 'sequenciaAi', 'ano', 'regiao', 'res1102', ),
-        BasePeer::TYPE_COLNAME => array (TabUfPeer::ID_TAB_UF, TabUfPeer::SIGLA, TabUfPeer::TRATAMENTO, TabUfPeer::ESTADO, TabUfPeer::CAPITAL, TabUfPeer::RUA, TabUfPeer::BAIRRO, TabUfPeer::CEP, TabUfPeer::DDD, TabUfPeer::TELEFONE, TabUfPeer::FAX, TabUfPeer::EMAIL, TabUfPeer::SEQUENCIA_TF, TabUfPeer::SEQUENCIA_AI, TabUfPeer::ANO, TabUfPeer::REGIAO, TabUfPeer::RES1102, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID_TAB_UF', 'SIGLA', 'TRATAMENTO', 'ESTADO', 'CAPITAL', 'RUA', 'BAIRRO', 'CEP', 'DDD', 'TELEFONE', 'FAX', 'EMAIL', 'SEQUENCIA_TF', 'SEQUENCIA_AI', 'ANO', 'REGIAO', 'RES1102', ),
-        BasePeer::TYPE_FIELDNAME => array ('id_tab_uf', 'sigla', 'tratamento', 'estado', 'capital', 'rua', 'bairro', 'cep', 'ddd', 'telefone', 'fax', 'email', 'sequencia_tf', 'sequencia_ai', 'ano', 'regiao', 'res1102', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'UsuarioId', 'Requisicao', 'Nonce', 'Data', 'Ip', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'usuarioId', 'requisicao', 'nonce', 'data', 'ip', ),
+        BasePeer::TYPE_COLNAME => array (LogRequisicaoPeer::ID, LogRequisicaoPeer::USUARIO_ID, LogRequisicaoPeer::REQUISICAO, LogRequisicaoPeer::NONCE, LogRequisicaoPeer::DATA, LogRequisicaoPeer::IP, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USUARIO_ID', 'REQUISICAO', 'NONCE', 'DATA', 'IP', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'usuario_id', 'requisicao', 'nonce', 'data', 'ip', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
     /**
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. TabUfPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. LogRequisicaoPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('IdTabUf' => 0, 'Sigla' => 1, 'Tratamento' => 2, 'Estado' => 3, 'Capital' => 4, 'Rua' => 5, 'Bairro' => 6, 'Cep' => 7, 'Ddd' => 8, 'Telefone' => 9, 'Fax' => 10, 'Email' => 11, 'SequenciaTf' => 12, 'SequenciaAi' => 13, 'Ano' => 14, 'Regiao' => 15, 'Res1102' => 16, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idTabUf' => 0, 'sigla' => 1, 'tratamento' => 2, 'estado' => 3, 'capital' => 4, 'rua' => 5, 'bairro' => 6, 'cep' => 7, 'ddd' => 8, 'telefone' => 9, 'fax' => 10, 'email' => 11, 'sequenciaTf' => 12, 'sequenciaAi' => 13, 'ano' => 14, 'regiao' => 15, 'res1102' => 16, ),
-        BasePeer::TYPE_COLNAME => array (TabUfPeer::ID_TAB_UF => 0, TabUfPeer::SIGLA => 1, TabUfPeer::TRATAMENTO => 2, TabUfPeer::ESTADO => 3, TabUfPeer::CAPITAL => 4, TabUfPeer::RUA => 5, TabUfPeer::BAIRRO => 6, TabUfPeer::CEP => 7, TabUfPeer::DDD => 8, TabUfPeer::TELEFONE => 9, TabUfPeer::FAX => 10, TabUfPeer::EMAIL => 11, TabUfPeer::SEQUENCIA_TF => 12, TabUfPeer::SEQUENCIA_AI => 13, TabUfPeer::ANO => 14, TabUfPeer::REGIAO => 15, TabUfPeer::RES1102 => 16, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID_TAB_UF' => 0, 'SIGLA' => 1, 'TRATAMENTO' => 2, 'ESTADO' => 3, 'CAPITAL' => 4, 'RUA' => 5, 'BAIRRO' => 6, 'CEP' => 7, 'DDD' => 8, 'TELEFONE' => 9, 'FAX' => 10, 'EMAIL' => 11, 'SEQUENCIA_TF' => 12, 'SEQUENCIA_AI' => 13, 'ANO' => 14, 'REGIAO' => 15, 'RES1102' => 16, ),
-        BasePeer::TYPE_FIELDNAME => array ('id_tab_uf' => 0, 'sigla' => 1, 'tratamento' => 2, 'estado' => 3, 'capital' => 4, 'rua' => 5, 'bairro' => 6, 'cep' => 7, 'ddd' => 8, 'telefone' => 9, 'fax' => 10, 'email' => 11, 'sequencia_tf' => 12, 'sequencia_ai' => 13, 'ano' => 14, 'regiao' => 15, 'res1102' => 16, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UsuarioId' => 1, 'Requisicao' => 2, 'Nonce' => 3, 'Data' => 4, 'Ip' => 5, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'usuarioId' => 1, 'requisicao' => 2, 'nonce' => 3, 'data' => 4, 'ip' => 5, ),
+        BasePeer::TYPE_COLNAME => array (LogRequisicaoPeer::ID => 0, LogRequisicaoPeer::USUARIO_ID => 1, LogRequisicaoPeer::REQUISICAO => 2, LogRequisicaoPeer::NONCE => 3, LogRequisicaoPeer::DATA => 4, LogRequisicaoPeer::IP => 5, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USUARIO_ID' => 1, 'REQUISICAO' => 2, 'NONCE' => 3, 'DATA' => 4, 'IP' => 5, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'usuario_id' => 1, 'requisicao' => 2, 'nonce' => 3, 'data' => 4, 'ip' => 5, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -149,10 +117,10 @@ abstract class BaseTabUfPeer
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = TabUfPeer::getFieldNames($toType);
-        $key = isset(TabUfPeer::$fieldKeys[$fromType][$name]) ? TabUfPeer::$fieldKeys[$fromType][$name] : null;
+        $toNames = LogRequisicaoPeer::getFieldNames($toType);
+        $key = isset(LogRequisicaoPeer::$fieldKeys[$fromType][$name]) ? LogRequisicaoPeer::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(TabUfPeer::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(LogRequisicaoPeer::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -169,11 +137,11 @@ abstract class BaseTabUfPeer
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, TabUfPeer::$fieldNames)) {
+        if (!array_key_exists($type, LogRequisicaoPeer::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return TabUfPeer::$fieldNames[$type];
+        return LogRequisicaoPeer::$fieldNames[$type];
     }
 
     /**
@@ -185,12 +153,12 @@ abstract class BaseTabUfPeer
      *		$c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
      * </code>
      * @param      string $alias The alias for the current table.
-     * @param      string $column The column name for current table. (i.e. TabUfPeer::COLUMN_NAME).
+     * @param      string $column The column name for current table. (i.e. LogRequisicaoPeer::COLUMN_NAME).
      * @return string
      */
     public static function alias($alias, $column)
     {
-        return str_replace(TabUfPeer::TABLE_NAME.'.', $alias.'.', $column);
+        return str_replace(LogRequisicaoPeer::TABLE_NAME.'.', $alias.'.', $column);
     }
 
     /**
@@ -208,41 +176,19 @@ abstract class BaseTabUfPeer
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(TabUfPeer::ID_TAB_UF);
-            $criteria->addSelectColumn(TabUfPeer::SIGLA);
-            $criteria->addSelectColumn(TabUfPeer::TRATAMENTO);
-            $criteria->addSelectColumn(TabUfPeer::ESTADO);
-            $criteria->addSelectColumn(TabUfPeer::CAPITAL);
-            $criteria->addSelectColumn(TabUfPeer::RUA);
-            $criteria->addSelectColumn(TabUfPeer::BAIRRO);
-            $criteria->addSelectColumn(TabUfPeer::CEP);
-            $criteria->addSelectColumn(TabUfPeer::DDD);
-            $criteria->addSelectColumn(TabUfPeer::TELEFONE);
-            $criteria->addSelectColumn(TabUfPeer::FAX);
-            $criteria->addSelectColumn(TabUfPeer::EMAIL);
-            $criteria->addSelectColumn(TabUfPeer::SEQUENCIA_TF);
-            $criteria->addSelectColumn(TabUfPeer::SEQUENCIA_AI);
-            $criteria->addSelectColumn(TabUfPeer::ANO);
-            $criteria->addSelectColumn(TabUfPeer::REGIAO);
-            $criteria->addSelectColumn(TabUfPeer::RES1102);
+            $criteria->addSelectColumn(LogRequisicaoPeer::ID);
+            $criteria->addSelectColumn(LogRequisicaoPeer::USUARIO_ID);
+            $criteria->addSelectColumn(LogRequisicaoPeer::REQUISICAO);
+            $criteria->addSelectColumn(LogRequisicaoPeer::NONCE);
+            $criteria->addSelectColumn(LogRequisicaoPeer::DATA);
+            $criteria->addSelectColumn(LogRequisicaoPeer::IP);
         } else {
-            $criteria->addSelectColumn($alias . '.id_tab_uf');
-            $criteria->addSelectColumn($alias . '.sigla');
-            $criteria->addSelectColumn($alias . '.tratamento');
-            $criteria->addSelectColumn($alias . '.estado');
-            $criteria->addSelectColumn($alias . '.capital');
-            $criteria->addSelectColumn($alias . '.rua');
-            $criteria->addSelectColumn($alias . '.bairro');
-            $criteria->addSelectColumn($alias . '.cep');
-            $criteria->addSelectColumn($alias . '.ddd');
-            $criteria->addSelectColumn($alias . '.telefone');
-            $criteria->addSelectColumn($alias . '.fax');
-            $criteria->addSelectColumn($alias . '.email');
-            $criteria->addSelectColumn($alias . '.sequencia_tf');
-            $criteria->addSelectColumn($alias . '.sequencia_ai');
-            $criteria->addSelectColumn($alias . '.ano');
-            $criteria->addSelectColumn($alias . '.regiao');
-            $criteria->addSelectColumn($alias . '.res1102');
+            $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.usuario_id');
+            $criteria->addSelectColumn($alias . '.requisicao');
+            $criteria->addSelectColumn($alias . '.nonce');
+            $criteria->addSelectColumn($alias . '.data');
+            $criteria->addSelectColumn($alias . '.ip');
         }
     }
 
@@ -262,21 +208,21 @@ abstract class BaseTabUfPeer
         // We need to set the primary table name, since in the case that there are no WHERE columns
         // it will be impossible for the BasePeer::createSelectSql() method to determine which
         // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(TabUfPeer::TABLE_NAME);
+        $criteria->setPrimaryTableName(LogRequisicaoPeer::TABLE_NAME);
 
         if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
             $criteria->setDistinct();
         }
 
         if (!$criteria->hasSelectClause()) {
-            TabUfPeer::addSelectColumns($criteria);
+            LogRequisicaoPeer::addSelectColumns($criteria);
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(TabUfPeer::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(LogRequisicaoPeer::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
-            $con = Propel::getConnection(TabUfPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(LogRequisicaoPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
         // BasePeer returns a PDOStatement
         $stmt = BasePeer::doCount($criteria, $con);
@@ -295,7 +241,7 @@ abstract class BaseTabUfPeer
      *
      * @param      Criteria $criteria object used to create the SELECT statement.
      * @param      PropelPDO $con
-     * @return TabUf
+     * @return LogRequisicao
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
@@ -303,7 +249,7 @@ abstract class BaseTabUfPeer
     {
         $critcopy = clone $criteria;
         $critcopy->setLimit(1);
-        $objects = TabUfPeer::doSelect($critcopy, $con);
+        $objects = LogRequisicaoPeer::doSelect($critcopy, $con);
         if ($objects) {
             return $objects[0];
         }
@@ -321,7 +267,7 @@ abstract class BaseTabUfPeer
      */
     public static function doSelect(Criteria $criteria, PropelPDO $con = null)
     {
-        return TabUfPeer::populateObjects(TabUfPeer::doSelectStmt($criteria, $con));
+        return LogRequisicaoPeer::populateObjects(LogRequisicaoPeer::doSelectStmt($criteria, $con));
     }
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
@@ -339,16 +285,16 @@ abstract class BaseTabUfPeer
     public static function doSelectStmt(Criteria $criteria, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(TabUfPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(LogRequisicaoPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         if (!$criteria->hasSelectClause()) {
             $criteria = clone $criteria;
-            TabUfPeer::addSelectColumns($criteria);
+            LogRequisicaoPeer::addSelectColumns($criteria);
         }
 
         // Set the correct dbName
-        $criteria->setDbName(TabUfPeer::DATABASE_NAME);
+        $criteria->setDbName(LogRequisicaoPeer::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -362,16 +308,16 @@ abstract class BaseTabUfPeer
      * to the cache in order to ensure that the same objects are always returned by doSelect*()
      * and retrieveByPK*() calls.
      *
-     * @param TabUf $obj A TabUf object.
+     * @param LogRequisicao $obj A LogRequisicao object.
      * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
      */
     public static function addInstanceToPool($obj, $key = null)
     {
         if (Propel::isInstancePoolingEnabled()) {
             if ($key === null) {
-                $key = (string) $obj->getIdTabUf();
+                $key = (string) $obj->getId();
             } // if key === null
-            TabUfPeer::$instances[$key] = $obj;
+            LogRequisicaoPeer::$instances[$key] = $obj;
         }
     }
 
@@ -383,7 +329,7 @@ abstract class BaseTabUfPeer
      * methods in your stub classes -- you may need to explicitly remove objects
      * from the cache in order to prevent returning objects that no longer exist.
      *
-     * @param      mixed $value A TabUf object or a primary key value.
+     * @param      mixed $value A LogRequisicao object or a primary key value.
      *
      * @return void
      * @throws PropelException - if the value is invalid.
@@ -391,17 +337,17 @@ abstract class BaseTabUfPeer
     public static function removeInstanceFromPool($value)
     {
         if (Propel::isInstancePoolingEnabled() && $value !== null) {
-            if (is_object($value) && $value instanceof TabUf) {
-                $key = (string) $value->getIdTabUf();
+            if (is_object($value) && $value instanceof LogRequisicao) {
+                $key = (string) $value->getId();
             } elseif (is_scalar($value)) {
                 // assume we've been passed a primary key
                 $key = (string) $value;
             } else {
-                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or TabUf object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
+                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or LogRequisicao object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
                 throw $e;
             }
 
-            unset(TabUfPeer::$instances[$key]);
+            unset(LogRequisicaoPeer::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -412,14 +358,14 @@ abstract class BaseTabUfPeer
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return TabUf Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return LogRequisicao Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(TabUfPeer::$instances[$key])) {
-                return TabUfPeer::$instances[$key];
+            if (isset(LogRequisicaoPeer::$instances[$key])) {
+                return LogRequisicaoPeer::$instances[$key];
             }
         }
 
@@ -434,15 +380,15 @@ abstract class BaseTabUfPeer
     public static function clearInstancePool($and_clear_all_references = false)
     {
       if ($and_clear_all_references) {
-        foreach (TabUfPeer::$instances as $instance) {
+        foreach (LogRequisicaoPeer::$instances as $instance) {
           $instance->clearAllReferences(true);
         }
       }
-        TabUfPeer::$instances = array();
+        LogRequisicaoPeer::$instances = array();
     }
 
     /**
-     * Method to invalidate the instance pool of all tables related to tab_uf
+     * Method to invalidate the instance pool of all tables related to log_requisicao
      * by a foreign key with ON DELETE CASCADE
      */
     public static function clearRelatedInstancePool()
@@ -496,11 +442,11 @@ abstract class BaseTabUfPeer
         $results = array();
 
         // set the class once to avoid overhead in the loop
-        $cls = TabUfPeer::getOMClass();
+        $cls = LogRequisicaoPeer::getOMClass();
         // populate the object(s)
         while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key = TabUfPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj = TabUfPeer::getInstanceFromPool($key))) {
+            $key = LogRequisicaoPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj = LogRequisicaoPeer::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -509,7 +455,7 @@ abstract class BaseTabUfPeer
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                TabUfPeer::addInstanceToPool($obj, $key);
+                LogRequisicaoPeer::addInstanceToPool($obj, $key);
             } // if key exists
         }
         $stmt->closeCursor();
@@ -523,24 +469,262 @@ abstract class BaseTabUfPeer
      * @param      int $startcol The 0-based offset for reading from the resultset row.
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
-     * @return array (TabUf object, last column rank)
+     * @return array (LogRequisicao object, last column rank)
      */
     public static function populateObject($row, $startcol = 0)
     {
-        $key = TabUfPeer::getPrimaryKeyHashFromRow($row, $startcol);
-        if (null !== ($obj = TabUfPeer::getInstanceFromPool($key))) {
+        $key = LogRequisicaoPeer::getPrimaryKeyHashFromRow($row, $startcol);
+        if (null !== ($obj = LogRequisicaoPeer::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $startcol, true); // rehydrate
-            $col = $startcol + TabUfPeer::NUM_HYDRATE_COLUMNS;
+            $col = $startcol + LogRequisicaoPeer::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = TabUfPeer::OM_CLASS;
+            $cls = LogRequisicaoPeer::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $startcol);
-            TabUfPeer::addInstanceToPool($obj, $key);
+            LogRequisicaoPeer::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related Usuario table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinUsuario(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(LogRequisicaoPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            LogRequisicaoPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(LogRequisicaoPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(LogRequisicaoPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(LogRequisicaoPeer::USUARIO_ID, UsuarioPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Selects a collection of LogRequisicao objects pre-filled with their Usuario objects.
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of LogRequisicao objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinUsuario(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(LogRequisicaoPeer::DATABASE_NAME);
+        }
+
+        LogRequisicaoPeer::addSelectColumns($criteria);
+        $startcol = LogRequisicaoPeer::NUM_HYDRATE_COLUMNS;
+        UsuarioPeer::addSelectColumns($criteria);
+
+        $criteria->addJoin(LogRequisicaoPeer::USUARIO_ID, UsuarioPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = LogRequisicaoPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = LogRequisicaoPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+
+                $cls = LogRequisicaoPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                LogRequisicaoPeer::addInstanceToPool($obj1, $key1);
+            } // if $obj1 already loaded
+
+            $key2 = UsuarioPeer::getPrimaryKeyHashFromRow($row, $startcol);
+            if ($key2 !== null) {
+                $obj2 = UsuarioPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = UsuarioPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol);
+                    UsuarioPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 already loaded
+
+                // Add the $obj1 (LogRequisicao) to $obj2 (Usuario)
+                $obj2->addLogRequisicao($obj1);
+
+            } // if joined row was not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining all related tables
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAll(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(LogRequisicaoPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            LogRequisicaoPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(LogRequisicaoPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(LogRequisicaoPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(LogRequisicaoPeer::USUARIO_ID, UsuarioPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+    /**
+     * Selects a collection of LogRequisicao objects pre-filled with all related objects.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of LogRequisicao objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAll(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(LogRequisicaoPeer::DATABASE_NAME);
+        }
+
+        LogRequisicaoPeer::addSelectColumns($criteria);
+        $startcol2 = LogRequisicaoPeer::NUM_HYDRATE_COLUMNS;
+
+        UsuarioPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + UsuarioPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(LogRequisicaoPeer::USUARIO_ID, UsuarioPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = LogRequisicaoPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = LogRequisicaoPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = LogRequisicaoPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                LogRequisicaoPeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+            // Add objects for joined Usuario rows
+
+            $key2 = UsuarioPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+            if ($key2 !== null) {
+                $obj2 = UsuarioPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = UsuarioPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    UsuarioPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 loaded
+
+                // Add the $obj1 (LogRequisicao) to the collection in $obj2 (Usuario)
+                $obj2->addLogRequisicao($obj1);
+            } // if joined row not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
     }
 
     /**
@@ -552,7 +736,7 @@ abstract class BaseTabUfPeer
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(TabUfPeer::DATABASE_NAME)->getTable(TabUfPeer::TABLE_NAME);
+        return Propel::getDatabaseMap(LogRequisicaoPeer::DATABASE_NAME)->getTable(LogRequisicaoPeer::TABLE_NAME);
     }
 
     /**
@@ -560,9 +744,9 @@ abstract class BaseTabUfPeer
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getDatabaseMap(BaseTabUfPeer::DATABASE_NAME);
-      if (!$dbMap->hasTable(BaseTabUfPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new \Model\map\TabUfTableMap());
+      $dbMap = Propel::getDatabaseMap(BaseLogRequisicaoPeer::DATABASE_NAME);
+      if (!$dbMap->hasTable(BaseLogRequisicaoPeer::TABLE_NAME)) {
+        $dbMap->addTableObject(new \Model\map\LogRequisicaoTableMap());
       }
     }
 
@@ -574,13 +758,13 @@ abstract class BaseTabUfPeer
      */
     public static function getOMClass($row = 0, $colnum = 0)
     {
-        return TabUfPeer::OM_CLASS;
+        return LogRequisicaoPeer::OM_CLASS;
     }
 
     /**
-     * Performs an INSERT on the database, given a TabUf or Criteria object.
+     * Performs an INSERT on the database, given a LogRequisicao or Criteria object.
      *
-     * @param      mixed $values Criteria or TabUf object containing data that is used to create the INSERT statement.
+     * @param      mixed $values Criteria or LogRequisicao object containing data that is used to create the INSERT statement.
      * @param      PropelPDO $con the PropelPDO connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -589,22 +773,22 @@ abstract class BaseTabUfPeer
     public static function doInsert($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(TabUfPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(LogRequisicaoPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
         } else {
-            $criteria = $values->buildCriteria(); // build Criteria from TabUf object
+            $criteria = $values->buildCriteria(); // build Criteria from LogRequisicao object
         }
 
-        if ($criteria->containsKey(TabUfPeer::ID_TAB_UF) && $criteria->keyContainsValue(TabUfPeer::ID_TAB_UF) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.TabUfPeer::ID_TAB_UF.')');
+        if ($criteria->containsKey(LogRequisicaoPeer::ID) && $criteria->keyContainsValue(LogRequisicaoPeer::ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.LogRequisicaoPeer::ID.')');
         }
 
 
         // Set the correct dbName
-        $criteria->setDbName(TabUfPeer::DATABASE_NAME);
+        $criteria->setDbName(LogRequisicaoPeer::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -621,9 +805,9 @@ abstract class BaseTabUfPeer
     }
 
     /**
-     * Performs an UPDATE on the database, given a TabUf or Criteria object.
+     * Performs an UPDATE on the database, given a LogRequisicao or Criteria object.
      *
-     * @param      mixed $values Criteria or TabUf object containing data that is used to create the UPDATE statement.
+     * @param      mixed $values Criteria or LogRequisicao object containing data that is used to create the UPDATE statement.
      * @param      PropelPDO $con The connection to use (specify PropelPDO connection object to exert more control over transactions).
      * @return int             The number of affected rows (if supported by underlying database driver).
      * @throws PropelException Any exceptions caught during processing will be
@@ -632,35 +816,35 @@ abstract class BaseTabUfPeer
     public static function doUpdate($values, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(TabUfPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(LogRequisicaoPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(TabUfPeer::DATABASE_NAME);
+        $selectCriteria = new Criteria(LogRequisicaoPeer::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
 
-            $comparison = $criteria->getComparison(TabUfPeer::ID_TAB_UF);
-            $value = $criteria->remove(TabUfPeer::ID_TAB_UF);
+            $comparison = $criteria->getComparison(LogRequisicaoPeer::ID);
+            $value = $criteria->remove(LogRequisicaoPeer::ID);
             if ($value) {
-                $selectCriteria->add(TabUfPeer::ID_TAB_UF, $value, $comparison);
+                $selectCriteria->add(LogRequisicaoPeer::ID, $value, $comparison);
             } else {
-                $selectCriteria->setPrimaryTableName(TabUfPeer::TABLE_NAME);
+                $selectCriteria->setPrimaryTableName(LogRequisicaoPeer::TABLE_NAME);
             }
 
-        } else { // $values is TabUf object
+        } else { // $values is LogRequisicao object
             $criteria = $values->buildCriteria(); // gets full criteria
             $selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)
         }
 
         // set the correct dbName
-        $criteria->setDbName(TabUfPeer::DATABASE_NAME);
+        $criteria->setDbName(LogRequisicaoPeer::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
 
     /**
-     * Deletes all rows from the tab_uf table.
+     * Deletes all rows from the log_requisicao table.
      *
      * @param      PropelPDO $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).
@@ -669,19 +853,19 @@ abstract class BaseTabUfPeer
     public static function doDeleteAll(PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(TabUfPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(LogRequisicaoPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
         $affectedRows = 0; // initialize var to track total num of affected rows
         try {
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            $affectedRows += BasePeer::doDeleteAll(TabUfPeer::TABLE_NAME, $con, TabUfPeer::DATABASE_NAME);
+            $affectedRows += BasePeer::doDeleteAll(LogRequisicaoPeer::TABLE_NAME, $con, LogRequisicaoPeer::DATABASE_NAME);
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
-            TabUfPeer::clearInstancePool();
-            TabUfPeer::clearRelatedInstancePool();
+            LogRequisicaoPeer::clearInstancePool();
+            LogRequisicaoPeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -692,9 +876,9 @@ abstract class BaseTabUfPeer
     }
 
     /**
-     * Performs a DELETE on the database, given a TabUf or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a LogRequisicao or Criteria object OR a primary key value.
      *
-     * @param      mixed $values Criteria or TabUf object or primary key or array of primary keys
+     * @param      mixed $values Criteria or LogRequisicao object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param      PropelPDO $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -705,32 +889,32 @@ abstract class BaseTabUfPeer
      public static function doDelete($values, PropelPDO $con = null)
      {
         if ($con === null) {
-            $con = Propel::getConnection(TabUfPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(LogRequisicaoPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         if ($values instanceof Criteria) {
             // invalidate the cache for all objects of this type, since we have no
             // way of knowing (without running a query) what objects should be invalidated
             // from the cache based on this Criteria.
-            TabUfPeer::clearInstancePool();
+            LogRequisicaoPeer::clearInstancePool();
             // rename for clarity
             $criteria = clone $values;
-        } elseif ($values instanceof TabUf) { // it's a model object
+        } elseif ($values instanceof LogRequisicao) { // it's a model object
             // invalidate the cache for this single object
-            TabUfPeer::removeInstanceFromPool($values);
+            LogRequisicaoPeer::removeInstanceFromPool($values);
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(TabUfPeer::DATABASE_NAME);
-            $criteria->add(TabUfPeer::ID_TAB_UF, (array) $values, Criteria::IN);
+            $criteria = new Criteria(LogRequisicaoPeer::DATABASE_NAME);
+            $criteria->add(LogRequisicaoPeer::ID, (array) $values, Criteria::IN);
             // invalidate the cache for this object(s)
             foreach ((array) $values as $singleval) {
-                TabUfPeer::removeInstanceFromPool($singleval);
+                LogRequisicaoPeer::removeInstanceFromPool($singleval);
             }
         }
 
         // Set the correct dbName
-        $criteria->setDbName(TabUfPeer::DATABASE_NAME);
+        $criteria->setDbName(LogRequisicaoPeer::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -740,7 +924,7 @@ abstract class BaseTabUfPeer
             $con->beginTransaction();
 
             $affectedRows += BasePeer::doDelete($criteria, $con);
-            TabUfPeer::clearRelatedInstancePool();
+            LogRequisicaoPeer::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -751,13 +935,13 @@ abstract class BaseTabUfPeer
     }
 
     /**
-     * Validates all modified columns of given TabUf object.
+     * Validates all modified columns of given LogRequisicao object.
      * If parameter $columns is either a single column name or an array of column names
      * than only those columns are validated.
      *
      * NOTICE: This does not apply to primary or foreign keys for now.
      *
-     * @param TabUf $obj The object to validate.
+     * @param LogRequisicao $obj The object to validate.
      * @param      mixed $cols Column name or array of column names.
      *
      * @return mixed TRUE if all columns are valid or the error message of the first invalid column.
@@ -767,8 +951,8 @@ abstract class BaseTabUfPeer
         $columns = array();
 
         if ($cols) {
-            $dbMap = Propel::getDatabaseMap(TabUfPeer::DATABASE_NAME);
-            $tableMap = $dbMap->getTable(TabUfPeer::TABLE_NAME);
+            $dbMap = Propel::getDatabaseMap(LogRequisicaoPeer::DATABASE_NAME);
+            $tableMap = $dbMap->getTable(LogRequisicaoPeer::TABLE_NAME);
 
             if (! is_array($cols)) {
                 $cols = array($cols);
@@ -782,48 +966,9 @@ abstract class BaseTabUfPeer
             }
         } else {
 
-        if ($obj->isNew() || $obj->isColumnModified(TabUfPeer::SIGLA))
-            $columns[TabUfPeer::SIGLA] = $obj->getSigla();
-
-        if ($obj->isNew() || $obj->isColumnModified(TabUfPeer::TRATAMENTO))
-            $columns[TabUfPeer::TRATAMENTO] = $obj->getTratamento();
-
-        if ($obj->isNew() || $obj->isColumnModified(TabUfPeer::ESTADO))
-            $columns[TabUfPeer::ESTADO] = $obj->getEstado();
-
-        if ($obj->isNew() || $obj->isColumnModified(TabUfPeer::CAPITAL))
-            $columns[TabUfPeer::CAPITAL] = $obj->getCapital();
-
-        if ($obj->isNew() || $obj->isColumnModified(TabUfPeer::RUA))
-            $columns[TabUfPeer::RUA] = $obj->getRua();
-
-        if ($obj->isNew() || $obj->isColumnModified(TabUfPeer::BAIRRO))
-            $columns[TabUfPeer::BAIRRO] = $obj->getBairro();
-
-        if ($obj->isNew() || $obj->isColumnModified(TabUfPeer::CEP))
-            $columns[TabUfPeer::CEP] = $obj->getCep();
-
-        if ($obj->isNew() || $obj->isColumnModified(TabUfPeer::DDD))
-            $columns[TabUfPeer::DDD] = $obj->getDdd();
-
-        if ($obj->isNew() || $obj->isColumnModified(TabUfPeer::TELEFONE))
-            $columns[TabUfPeer::TELEFONE] = $obj->getTelefone();
-
-        if ($obj->isNew() || $obj->isColumnModified(TabUfPeer::FAX))
-            $columns[TabUfPeer::FAX] = $obj->getFax();
-
-        if ($obj->isNew() || $obj->isColumnModified(TabUfPeer::EMAIL))
-            $columns[TabUfPeer::EMAIL] = $obj->getEmail();
-
-        if ($obj->isNew() || $obj->isColumnModified(TabUfPeer::ANO))
-            $columns[TabUfPeer::ANO] = $obj->getAno();
-
-        if ($obj->isNew() || $obj->isColumnModified(TabUfPeer::REGIAO))
-            $columns[TabUfPeer::REGIAO] = $obj->getRegiao();
-
         }
 
-        return BasePeer::doValidate(TabUfPeer::DATABASE_NAME, TabUfPeer::TABLE_NAME, $columns);
+        return BasePeer::doValidate(LogRequisicaoPeer::DATABASE_NAME, LogRequisicaoPeer::TABLE_NAME, $columns);
     }
 
     /**
@@ -831,23 +976,23 @@ abstract class BaseTabUfPeer
      *
      * @param int $pk the primary key.
      * @param      PropelPDO $con the connection to use
-     * @return TabUf
+     * @return LogRequisicao
      */
     public static function retrieveByPK($pk, PropelPDO $con = null)
     {
 
-        if (null !== ($obj = TabUfPeer::getInstanceFromPool((string) $pk))) {
+        if (null !== ($obj = LogRequisicaoPeer::getInstanceFromPool((string) $pk))) {
             return $obj;
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(TabUfPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(LogRequisicaoPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria = new Criteria(TabUfPeer::DATABASE_NAME);
-        $criteria->add(TabUfPeer::ID_TAB_UF, $pk);
+        $criteria = new Criteria(LogRequisicaoPeer::DATABASE_NAME);
+        $criteria->add(LogRequisicaoPeer::ID, $pk);
 
-        $v = TabUfPeer::doSelect($criteria, $con);
+        $v = LogRequisicaoPeer::doSelect($criteria, $con);
 
         return !empty($v) > 0 ? $v[0] : null;
     }
@@ -857,31 +1002,31 @@ abstract class BaseTabUfPeer
      *
      * @param      array $pks List of primary keys
      * @param      PropelPDO $con the connection to use
-     * @return TabUf[]
+     * @return LogRequisicao[]
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
     public static function retrieveByPKs($pks, PropelPDO $con = null)
     {
         if ($con === null) {
-            $con = Propel::getConnection(TabUfPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(LogRequisicaoPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         $objs = null;
         if (empty($pks)) {
             $objs = array();
         } else {
-            $criteria = new Criteria(TabUfPeer::DATABASE_NAME);
-            $criteria->add(TabUfPeer::ID_TAB_UF, $pks, Criteria::IN);
-            $objs = TabUfPeer::doSelect($criteria, $con);
+            $criteria = new Criteria(LogRequisicaoPeer::DATABASE_NAME);
+            $criteria->add(LogRequisicaoPeer::ID, $pks, Criteria::IN);
+            $objs = LogRequisicaoPeer::doSelect($criteria, $con);
         }
 
         return $objs;
     }
 
-} // BaseTabUfPeer
+} // BaseLogRequisicaoPeer
 
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-BaseTabUfPeer::buildTableMap();
+BaseLogRequisicaoPeer::buildTableMap();
 

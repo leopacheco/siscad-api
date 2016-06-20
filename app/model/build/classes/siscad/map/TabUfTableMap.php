@@ -1,5 +1,9 @@
 <?php
 
+namespace Model\map;
+
+use \RelationMap;
+use \TableMap;
 
 
 /**
@@ -34,7 +38,7 @@ class TabUfTableMap extends TableMap
         // attributes
         $this->setName('tab_uf');
         $this->setPhpName('TabUf');
-        $this->setClassname('TabUf');
+        $this->setClassname('Model\\TabUf');
         $this->setPackage('siscad');
         $this->setUseIdGenerator(true);
         // columns

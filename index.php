@@ -14,10 +14,14 @@ $app = new \Slim\Slim(array(
     'debug' => false,
     'mode' => 'development'
 ));
+//definindo o objeto de log como singleton para ser durante toda a requisição
+$app->container->singleton('log', function () {
+    return new \Model\LogRequisicao();
+});
 
 $app->add(new Slim\Middleware\ContentTypes);
 // Middleware de autenticação
-$app->add(new \Autenticacao);
+$app->add(new Middleware\Autenticacao);
 // setando headers de resposta para json
 $app->response->headers->set('Content-Type', 'application/json; charset=utf-8');
 
@@ -36,7 +40,6 @@ require 'app/route/ramo1.php';
 require 'app/route/ramo2.php';
 require 'app/route/ramo3.php';
 require 'app/route/uf.php';
-require 'app/route/usuario.php';
 require 'app/route/error.php';
 
 $app->run();

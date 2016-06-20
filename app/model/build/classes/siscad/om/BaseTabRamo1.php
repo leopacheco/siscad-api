@@ -1,5 +1,19 @@
 <?php
 
+namespace Model\om;
+
+use \BaseObject;
+use \BasePeer;
+use \Criteria;
+use \Exception;
+use \PDO;
+use \Persistent;
+use \Propel;
+use \PropelException;
+use \PropelPDO;
+use Model\TabRamo1;
+use Model\TabRamo1Peer;
+use Model\TabRamo1Query;
 
 /**
  * Base class that represents a row from the 'tab_ramo1' table.
@@ -13,7 +27,7 @@ abstract class BaseTabRamo1 extends BaseObject implements Persistent
     /**
      * Peer class name
      */
-    const PEER = 'TabRamo1Peer';
+    const PEER = 'Model\\TabRamo1Peer';
 
     /**
      * The Peer class.

@@ -1,5 +1,9 @@
 <?php
 
+namespace Model\map;
+
+use \RelationMap;
+use \TableMap;
 
 
 /**
@@ -34,7 +38,7 @@ class EndpointTableMap extends TableMap
         // attributes
         $this->setName('endpoint');
         $this->setPhpName('Endpoint');
-        $this->setClassname('Endpoint');
+        $this->setClassname('Model\\Endpoint');
         $this->setPackage('siscad_autenticacao');
         $this->setUseIdGenerator(true);
         // columns
@@ -45,6 +49,9 @@ class EndpointTableMap extends TableMap
         $this->addColumn('ativo', 'Ativo', 'BOOLEAN', true, 1, null);
         $this->addColumn('restrito', 'Restrito', 'BOOLEAN', true, 1, null);
         // validators
+        $this->addValidator('method', 'maxLength', 'propel.validator.MaxLengthValidator', '10', 'Method: Tamanho máximo 10');
+        $this->addValidator('uri', 'maxLength', 'propel.validator.MaxLengthValidator', '255', 'Uri: Tamanho máximo 255');
+        $this->addValidator('descricao', 'maxLength', 'propel.validator.MaxLengthValidator', '255', 'Descrição: Tamanho máximo 255');
     } // initialize()
 
     /**
@@ -52,7 +59,7 @@ class EndpointTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('PerfilEndpoint', 'PerfilEndpoint', RelationMap::ONE_TO_MANY, array('id' => 'endpoint_id', ), null, null, 'PerfilEndpoints');
+        $this->addRelation('PerfilEndpoint', 'Model\\PerfilEndpoint', RelationMap::ONE_TO_MANY, array('id' => 'endpoint_id', ), null, null, 'PerfilEndpoints');
     } // buildRelations()
 
 } // EndpointTableMap

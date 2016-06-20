@@ -1,5 +1,17 @@
 <?php
 
+namespace Model\om;
+
+use \BasePeer;
+use \Criteria;
+use \PDO;
+use \PDOStatement;
+use \Propel;
+use \PropelException;
+use \PropelPDO;
+use Model\PfGraduacao;
+use Model\PfGraduacaoPeer;
+use Model\map\PfGraduacaoTableMap;
 
 /**
  * Base static class for performing query and update operations on the 'pf_graduacao' table.
@@ -18,10 +30,10 @@ abstract class BasePfGraduacaoPeer
     const TABLE_NAME = 'pf_graduacao';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'PfGraduacao';
+    const OM_CLASS = 'Model\\PfGraduacao';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'PfGraduacaoTableMap';
+    const TM_CLASS = 'Model\\map\\PfGraduacaoTableMap';
 
     /** The total number of columns. */
     const NUM_COLUMNS = 7;
@@ -500,7 +512,7 @@ abstract class BasePfGraduacaoPeer
     {
       $dbMap = Propel::getDatabaseMap(BasePfGraduacaoPeer::DATABASE_NAME);
       if (!$dbMap->hasTable(BasePfGraduacaoPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new \PfGraduacaoTableMap());
+        $dbMap->addTableObject(new \Model\map\PfGraduacaoTableMap());
       }
     }
 

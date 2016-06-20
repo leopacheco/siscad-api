@@ -1,5 +1,9 @@
 <?php
 
+namespace Model\map;
+
+use \RelationMap;
+use \TableMap;
 
 
 /**
@@ -34,7 +38,7 @@ class TabGraduacaoAreaTableMap extends TableMap
         // attributes
         $this->setName('tab_graduacao_area');
         $this->setPhpName('TabGraduacaoArea');
-        $this->setClassname('TabGraduacaoArea');
+        $this->setClassname('Model\\TabGraduacaoArea');
         $this->setPackage('siscad');
         $this->setUseIdGenerator(true);
         // columns

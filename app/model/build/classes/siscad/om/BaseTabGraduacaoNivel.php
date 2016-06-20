@@ -1,5 +1,19 @@
 <?php
 
+namespace Model\om;
+
+use \BaseObject;
+use \BasePeer;
+use \Criteria;
+use \Exception;
+use \PDO;
+use \Persistent;
+use \Propel;
+use \PropelException;
+use \PropelPDO;
+use Model\TabGraduacaoNivel;
+use Model\TabGraduacaoNivelPeer;
+use Model\TabGraduacaoNivelQuery;
 
 /**
  * Base class that represents a row from the 'tab_graduacao_nivel' table.
@@ -13,7 +27,7 @@ abstract class BaseTabGraduacaoNivel extends BaseObject implements Persistent
     /**
      * Peer class name
      */
-    const PEER = 'TabGraduacaoNivelPeer';
+    const PEER = 'Model\\TabGraduacaoNivelPeer';
 
     /**
      * The Peer class.

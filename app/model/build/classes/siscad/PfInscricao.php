@@ -1,5 +1,7 @@
 <?php
+namespace Model;
 
+use Model\om\BasePfInscricao;
 
 
 /**
@@ -13,9 +15,9 @@
  *
  * @package    propel.generator.siscad-api
  */
+
 class PfInscricao extends BasePfInscricao
 {
-
 
   private $_columns = array("id_pf_inscricao"       => array("sanitize" => FILTER_SANITIZE_NUMBER_INT, "size" => "10", "required" => "true"),
                             "fk_id_pf_informacoes"  => array("sanitize" => FILTER_SANITIZE_NUMBER_INT, "size" => "10"),
@@ -63,7 +65,7 @@ private $_errorMessage = '';
 
         return $response;
       }else{
-        throw new Exception('Nenhum resultado encontrado', 400);
+        throw new \Exception('Nenhum resultado encontrado', 400);
       }
 
     }else{
@@ -72,7 +74,7 @@ private $_errorMessage = '';
       if(!is_null($query)){
         return $query->toArray();
       }else{
-        throw new Exception('Nenhum resultado encontrado', 400);
+        throw new \Exception('Nenhum resultado encontrado', 400);
       }
     }
 
@@ -81,15 +83,13 @@ private $_errorMessage = '';
   /*
 
   */
-  public function setInscricao($id, $fields, $userId){
+  public function setInscricao($id, $fields, $logId){
 
     $query = $this->_getById($id);
 
     $log = new LogAtividade();
     $log->setValorAnterior(json_encode($query->toArray()));
-    $log->setUsuarioId($userId);
-    $tableName = new PfInscricaoTableMap();
-    $log->setTabelaAtualizada($tableName->getName());
+    $log->setLogRequisicaoId($logId);
 
     foreach ($fields as $key => $value) {
       //verifica se o  campo existe na tabela
@@ -97,7 +97,7 @@ private $_errorMessage = '';
           $value = $this->_sanitize($key, $value);
 
         if($this->_validate($key, $value)){
-          $column = 'set'.Utils::dashesToCamelCase($key);
+          $column = 'set'.\Utils\Utils::dashesToCamelCase($key);
           $query->$column($value);
         }
       }
@@ -114,7 +114,7 @@ private $_errorMessage = '';
       foreach ($query->getValidationFailures() as $failure) {
         $errorMsg .= $failure->getMessage() . "\n";
       }
-      throw new Exception($errorMsg, 400);
+      throw new \Exception($errorMsg, 400);
     }
 
   }
@@ -125,7 +125,7 @@ private $_errorMessage = '';
   */
   public function getInscricaoWithFilters($filters){
 
-    $parsedFilters = Utils::parseFilters($filters);
+    $parsedFilters = \Utils\Utils::parseFilters($filters);
 
     if(is_array($parsedFilters)){
       //compara os filtos enviados com as colunas da tabela
@@ -141,11 +141,11 @@ private $_errorMessage = '';
         if(count($query) > 0){
           return $query->toArray();
         }else{
-          throw new Exception('Nenhum resultado encontrado', 400);
+          throw new \Exception('Nenhum resultado encontrado', 400);
         }
 
       }else{
-        throw new Exception('Parâmetros de busca inválidos', 400);
+        throw new \Exception('Parâmetros de busca inválidos', 400);
       }
     }
   }

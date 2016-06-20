@@ -1,5 +1,5 @@
 <?php
-
+namespace Utils;
 class Utils{
 
   public static function utf8_converter($array){

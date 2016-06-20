@@ -1,6 +1,7 @@
 <?php
+namespace Model;
 
-
+use Model\om\BaseEndpoint;
 
 /**
  * Skeleton subclass for representing a row from the 'endpoint' table.
@@ -13,6 +14,7 @@
  *
  * @package    propel.generator.siscad_autenticacao
  */
+
 class Endpoint extends BaseEndpoint
 {
   private $_hasAccess = true;

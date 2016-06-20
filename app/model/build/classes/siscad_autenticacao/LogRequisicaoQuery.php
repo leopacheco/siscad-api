@@ -1,9 +1,12 @@
 <?php
 
+namespace Model;
+
+use Model\om\BaseLogRequisicaoQuery;
 
 
 /**
- * Skeleton subclass for performing query and update operations on the 'log_acesso' table.
+ * Skeleton subclass for performing query and update operations on the 'log_requisicao' table.
  *
  *
  *
@@ -13,6 +16,6 @@
  *
  * @package    propel.generator.siscad_autenticacao
  */
-class LogAcessoQuery extends BaseLogAcessoQuery
+class LogRequisicaoQuery extends BaseLogRequisicaoQuery
 {
 }

@@ -1,5 +1,9 @@
 <?php
 
+namespace Model\map;
+
+use \RelationMap;
+use \TableMap;
 
 
 /**
@@ -34,7 +38,7 @@ class TabRamo2TableMap extends TableMap
         // attributes
         $this->setName('tab_ramo2');
         $this->setPhpName('TabRamo2');
-        $this->setClassname('TabRamo2');
+        $this->setClassname('Model\\TabRamo2');
         $this->setPackage('siscad');
         $this->setUseIdGenerator(true);
         // columns

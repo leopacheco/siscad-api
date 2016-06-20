@@ -1,6 +1,7 @@
 <?php
+namespace Model;
 
-
+use Model\om\BaseLogAtividadeQuery;
 
 /**
  * Skeleton subclass for performing query and update operations on the 'log_atividade' table.

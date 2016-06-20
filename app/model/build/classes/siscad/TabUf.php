@@ -1,5 +1,7 @@
 <?php
+namespace Model;
 
+use Model\om\BaseTabUf;
 
 
 /**
@@ -13,6 +15,7 @@
  *
  * @package    propel.generator.siscad-api
  */
+
 class TabUf extends BaseTabUf
 {
 
@@ -51,22 +54,20 @@ class TabUf extends BaseTabUf
     if(!is_null($uf)){
       return $uf->toArray();
     }else{
-      throw new Exception('Nenhum resultado encontrado', 400);
+      throw new \Exception('Nenhum resultado encontrado', 400);
     }
   }
 
   /*
 
   */
-  public function setUf($id, $fields, $userId){
+  public function setUf($id, $fields, $logId){
 
     $uf = $this->getById($id);
 
     $log = new LogAtividade();
     $log->setValorAnterior(json_encode($query->toArray()));
-    $log->setUsuarioId($userId);
-    $tableName = new TabUfTableMap();
-    $log->setTabelaAtualizada($tableName->getName());
+    $log->setLogRequisicaoId($logId);
 
     foreach ($fields as $key => $value) {
       //verifica se o  campo existe na tabela
@@ -74,7 +75,7 @@ class TabUf extends BaseTabUf
           $value = $this->_sanitize($key, $value);
 
         if($this->_validate($key, $value)){
-          $column = 'set'.Utils::dashesToCamelCase($key);
+          $column = 'set'.\Utils\Utils::dashesToCamelCase($key);
           $uf->$column($value);
         }
       }
@@ -91,7 +92,7 @@ class TabUf extends BaseTabUf
       foreach ($query->getValidationFailures() as $failure) {
         $errorMsg .= $failure->getMessage() . "\n";
       }
-      throw new Exception($errorMsg, 400);
+      throw new \Exception($errorMsg, 400);
     }
 
   }
@@ -102,7 +103,7 @@ class TabUf extends BaseTabUf
   */
   public function getUfWithFilters($filters){
 
-    $parsedFilters = Utils::parseFilters($filters);
+    $parsedFilters = \Utils\Utils::parseFilters($filters);
 
     if(is_array($parsedFilters)){
       //compara os filtos enviados com as colunas da tabela
@@ -118,11 +119,11 @@ class TabUf extends BaseTabUf
         if(count($uf) > 0){
           return $uf->toArray();
         }else{
-          throw new Exception('Nenhum resultado encontrado', 400);
+          throw new \Exception('Nenhum resultado encontrado', 400);
         }
 
       }else{
-        throw new Exception('Parâmetros de busca inválidos', 400);
+        throw new \Exception('Parâmetros de busca inválidos', 400);
       }
     }
   }

@@ -1,5 +1,18 @@
 <?php
 
+namespace Model\om;
+
+use \Criteria;
+use \Exception;
+use \ModelCriteria;
+use \PDO;
+use \Propel;
+use \PropelException;
+use \PropelObjectCollection;
+use \PropelPDO;
+use Model\TabCorreio;
+use Model\TabCorreioPeer;
+use Model\TabCorreioQuery;
 
 /**
  * Base class that represents a query for the 'tab_correio' table.
@@ -41,7 +54,7 @@ abstract class BaseTabCorreioQuery extends ModelCriteria
             $dbName = 'siscad';
         }
         if (null === $modelName) {
-            $modelName = 'TabCorreio';
+            $modelName = 'Model\\TabCorreio';
         }
         parent::__construct($dbName, $modelName, $modelAlias);
     }

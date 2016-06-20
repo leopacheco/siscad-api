@@ -1,5 +1,19 @@
 <?php
 
+namespace Model\om;
+
+use \BasePeer;
+use \Criteria;
+use \PDO;
+use \PDOStatement;
+use \Propel;
+use \PropelException;
+use \PropelPDO;
+use Model\EndpointPeer;
+use Model\PerfilEndpoint;
+use Model\PerfilEndpointPeer;
+use Model\PerfilPeer;
+use Model\map\PerfilEndpointTableMap;
 
 /**
  * Base static class for performing query and update operations on the 'perfil_endpoint' table.
@@ -18,10 +32,10 @@ abstract class BasePerfilEndpointPeer
     const TABLE_NAME = 'perfil_endpoint';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'PerfilEndpoint';
+    const OM_CLASS = 'Model\\PerfilEndpoint';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'PerfilEndpointTableMap';
+    const TM_CLASS = 'Model\\map\\PerfilEndpointTableMap';
 
     /** The total number of columns. */
     const NUM_COLUMNS = 2;
@@ -1106,7 +1120,7 @@ abstract class BasePerfilEndpointPeer
     {
       $dbMap = Propel::getDatabaseMap(BasePerfilEndpointPeer::DATABASE_NAME);
       if (!$dbMap->hasTable(BasePerfilEndpointPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new \PerfilEndpointTableMap());
+        $dbMap->addTableObject(new \Model\map\PerfilEndpointTableMap());
       }
     }
 

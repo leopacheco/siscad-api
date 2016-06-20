@@ -1,5 +1,18 @@
 <?php
 
+namespace Model\om;
+
+use \Criteria;
+use \Exception;
+use \ModelCriteria;
+use \PDO;
+use \Propel;
+use \PropelException;
+use \PropelObjectCollection;
+use \PropelPDO;
+use Model\TabGraduacaoNivel;
+use Model\TabGraduacaoNivelPeer;
+use Model\TabGraduacaoNivelQuery;
 
 /**
  * Base class that represents a query for the 'tab_graduacao_nivel' table.
@@ -41,7 +54,7 @@ abstract class BaseTabGraduacaoNivelQuery extends ModelCriteria
             $dbName = 'siscad';
         }
         if (null === $modelName) {
-            $modelName = 'TabGraduacaoNivel';
+            $modelName = 'Model\\TabGraduacaoNivel';
         }
         parent::__construct($dbName, $modelName, $modelAlias);
     }

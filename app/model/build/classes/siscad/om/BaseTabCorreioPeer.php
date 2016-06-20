@@ -1,5 +1,17 @@
 <?php
 
+namespace Model\om;
+
+use \BasePeer;
+use \Criteria;
+use \PDO;
+use \PDOStatement;
+use \Propel;
+use \PropelException;
+use \PropelPDO;
+use Model\TabCorreio;
+use Model\TabCorreioPeer;
+use Model\map\TabCorreioTableMap;
 
 /**
  * Base static class for performing query and update operations on the 'tab_correio' table.
@@ -18,10 +30,10 @@ abstract class BaseTabCorreioPeer
     const TABLE_NAME = 'tab_correio';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'TabCorreio';
+    const OM_CLASS = 'Model\\TabCorreio';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'TabCorreioTableMap';
+    const TM_CLASS = 'Model\\map\\TabCorreioTableMap';
 
     /** The total number of columns. */
     const NUM_COLUMNS = 2;
@@ -475,7 +487,7 @@ abstract class BaseTabCorreioPeer
     {
       $dbMap = Propel::getDatabaseMap(BaseTabCorreioPeer::DATABASE_NAME);
       if (!$dbMap->hasTable(BaseTabCorreioPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new \TabCorreioTableMap());
+        $dbMap->addTableObject(new \Model\map\TabCorreioTableMap());
       }
     }
 

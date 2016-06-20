@@ -1,6 +1,8 @@
 <?php
 
+namespace Model;
 
+use Model\om\BasePfInscricaoQuery;
 
 /**
  * Skeleton subclass for performing query and update operations on the 'pf_inscricao' table.

@@ -1,5 +1,22 @@
 <?php
 
+namespace Model\om;
+
+use \Criteria;
+use \Exception;
+use \ModelCriteria;
+use \ModelJoin;
+use \PDO;
+use \Propel;
+use \PropelCollection;
+use \PropelException;
+use \PropelObjectCollection;
+use \PropelPDO;
+use Model\LogRequisicao;
+use Model\Perfil;
+use Model\Usuario;
+use Model\UsuarioPeer;
+use Model\UsuarioQuery;
 
 /**
  * Base class that represents a query for the 'usuario' table.
@@ -28,13 +45,9 @@
  * @method UsuarioQuery rightJoinPerfil($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Perfil relation
  * @method UsuarioQuery innerJoinPerfil($relationAlias = null) Adds a INNER JOIN clause to the query using the Perfil relation
  *
- * @method UsuarioQuery leftJoinLogAcesso($relationAlias = null) Adds a LEFT JOIN clause to the query using the LogAcesso relation
- * @method UsuarioQuery rightJoinLogAcesso($relationAlias = null) Adds a RIGHT JOIN clause to the query using the LogAcesso relation
- * @method UsuarioQuery innerJoinLogAcesso($relationAlias = null) Adds a INNER JOIN clause to the query using the LogAcesso relation
- *
- * @method UsuarioQuery leftJoinLogAtividade($relationAlias = null) Adds a LEFT JOIN clause to the query using the LogAtividade relation
- * @method UsuarioQuery rightJoinLogAtividade($relationAlias = null) Adds a RIGHT JOIN clause to the query using the LogAtividade relation
- * @method UsuarioQuery innerJoinLogAtividade($relationAlias = null) Adds a INNER JOIN clause to the query using the LogAtividade relation
+ * @method UsuarioQuery leftJoinLogRequisicao($relationAlias = null) Adds a LEFT JOIN clause to the query using the LogRequisicao relation
+ * @method UsuarioQuery rightJoinLogRequisicao($relationAlias = null) Adds a RIGHT JOIN clause to the query using the LogRequisicao relation
+ * @method UsuarioQuery innerJoinLogRequisicao($relationAlias = null) Adds a INNER JOIN clause to the query using the LogRequisicao relation
  *
  * @method Usuario findOne(PropelPDO $con = null) Return the first Usuario matching the query
  * @method Usuario findOneOrCreate(PropelPDO $con = null) Return the first Usuario matching the query, or a new Usuario object populated from the query conditions when no match is found
@@ -69,7 +82,7 @@ abstract class BaseUsuarioQuery extends ModelCriteria
             $dbName = 'siscad_autenticacao';
         }
         if (null === $modelName) {
-            $modelName = 'Usuario';
+            $modelName = 'Model\\Usuario';
         }
         parent::__construct($dbName, $modelName, $modelAlias);
     }
@@ -514,51 +527,51 @@ abstract class BaseUsuarioQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   PerfilQuery A secondary query class using the current class as primary query
+     * @return   \Model\PerfilQuery A secondary query class using the current class as primary query
      */
     public function usePerfilQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
             ->joinPerfil($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Perfil', 'PerfilQuery');
+            ->useQuery($relationAlias ? $relationAlias : 'Perfil', '\Model\PerfilQuery');
     }
 
     /**
-     * Filter the query by a related LogAcesso object
+     * Filter the query by a related LogRequisicao object
      *
-     * @param   LogAcesso|PropelObjectCollection $logAcesso  the related object to use as filter
+     * @param   LogRequisicao|PropelObjectCollection $logRequisicao  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return                 UsuarioQuery The current query, for fluid interface
      * @throws PropelException - if the provided filter is invalid.
      */
-    public function filterByLogAcesso($logAcesso, $comparison = null)
+    public function filterByLogRequisicao($logRequisicao, $comparison = null)
     {
-        if ($logAcesso instanceof LogAcesso) {
+        if ($logRequisicao instanceof LogRequisicao) {
             return $this
-                ->addUsingAlias(UsuarioPeer::ID, $logAcesso->getUsuarioId(), $comparison);
-        } elseif ($logAcesso instanceof PropelObjectCollection) {
+                ->addUsingAlias(UsuarioPeer::ID, $logRequisicao->getUsuarioId(), $comparison);
+        } elseif ($logRequisicao instanceof PropelObjectCollection) {
             return $this
-                ->useLogAcessoQuery()
-                ->filterByPrimaryKeys($logAcesso->getPrimaryKeys())
+                ->useLogRequisicaoQuery()
+                ->filterByPrimaryKeys($logRequisicao->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByLogAcesso() only accepts arguments of type LogAcesso or PropelCollection');
+            throw new PropelException('filterByLogRequisicao() only accepts arguments of type LogRequisicao or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the LogAcesso relation
+     * Adds a JOIN clause to the query using the LogRequisicao relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return UsuarioQuery The current query, for fluid interface
      */
-    public function joinLogAcesso($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinLogRequisicao($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('LogAcesso');
+        $relationMap = $tableMap->getRelation('LogRequisicao');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -573,14 +586,14 @@ abstract class BaseUsuarioQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'LogAcesso');
+            $this->addJoinObject($join, 'LogRequisicao');
         }
 
         return $this;
     }
 
     /**
-     * Use the LogAcesso relation LogAcesso object
+     * Use the LogRequisicao relation LogRequisicao object
      *
      * @see       useQuery()
      *
@@ -588,87 +601,13 @@ abstract class BaseUsuarioQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   LogAcessoQuery A secondary query class using the current class as primary query
+     * @return   \Model\LogRequisicaoQuery A secondary query class using the current class as primary query
      */
-    public function useLogAcessoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useLogRequisicaoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinLogAcesso($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'LogAcesso', 'LogAcessoQuery');
-    }
-
-    /**
-     * Filter the query by a related LogAtividade object
-     *
-     * @param   LogAtividade|PropelObjectCollection $logAtividade  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 UsuarioQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByLogAtividade($logAtividade, $comparison = null)
-    {
-        if ($logAtividade instanceof LogAtividade) {
-            return $this
-                ->addUsingAlias(UsuarioPeer::ID, $logAtividade->getUsuarioId(), $comparison);
-        } elseif ($logAtividade instanceof PropelObjectCollection) {
-            return $this
-                ->useLogAtividadeQuery()
-                ->filterByPrimaryKeys($logAtividade->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByLogAtividade() only accepts arguments of type LogAtividade or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the LogAtividade relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return UsuarioQuery The current query, for fluid interface
-     */
-    public function joinLogAtividade($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('LogAtividade');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'LogAtividade');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the LogAtividade relation LogAtividade object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   LogAtividadeQuery A secondary query class using the current class as primary query
-     */
-    public function useLogAtividadeQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinLogAtividade($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'LogAtividade', 'LogAtividadeQuery');
+            ->joinLogRequisicao($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'LogRequisicao', '\Model\LogRequisicaoQuery');
     }
 
     /**

@@ -1,5 +1,17 @@
 <?php
 
+namespace Model\om;
+
+use \BasePeer;
+use \Criteria;
+use \PDO;
+use \PDOStatement;
+use \Propel;
+use \PropelException;
+use \PropelPDO;
+use Model\TabIes;
+use Model\TabIesPeer;
+use Model\map\TabIesTableMap;
 
 /**
  * Base static class for performing query and update operations on the 'tab_ies' table.
@@ -18,10 +30,10 @@ abstract class BaseTabIesPeer
     const TABLE_NAME = 'tab_ies';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'TabIes';
+    const OM_CLASS = 'Model\\TabIes';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'TabIesTableMap';
+    const TM_CLASS = 'Model\\map\\TabIesTableMap';
 
     /** The total number of columns. */
     const NUM_COLUMNS = 13;
@@ -530,7 +542,7 @@ abstract class BaseTabIesPeer
     {
       $dbMap = Propel::getDatabaseMap(BaseTabIesPeer::DATABASE_NAME);
       if (!$dbMap->hasTable(BaseTabIesPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new \TabIesTableMap());
+        $dbMap->addTableObject(new \Model\map\TabIesTableMap());
       }
     }
 

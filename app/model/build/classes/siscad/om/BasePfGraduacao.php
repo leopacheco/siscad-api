@@ -1,5 +1,21 @@
 <?php
 
+namespace Model\om;
+
+use \BaseObject;
+use \BasePeer;
+use \Criteria;
+use \DateTime;
+use \Exception;
+use \PDO;
+use \Persistent;
+use \Propel;
+use \PropelDateTime;
+use \PropelException;
+use \PropelPDO;
+use Model\PfGraduacao;
+use Model\PfGraduacaoPeer;
+use Model\PfGraduacaoQuery;
 
 /**
  * Base class that represents a row from the 'pf_graduacao' table.
@@ -13,7 +29,7 @@ abstract class BasePfGraduacao extends BaseObject implements Persistent
     /**
      * Peer class name
      */
-    const PEER = 'PfGraduacaoPeer';
+    const PEER = 'Model\\PfGraduacaoPeer';
 
     /**
      * The Peer class.

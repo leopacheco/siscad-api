@@ -1,25 +1,26 @@
 <?php
+namespace Controller;
 
 class Uf{
 
 
   public function getUf($id){
 
-    $ufModel = new TabUf();
+    $ufModel = new \Model\TabUf();
 
     $response = $ufModel->getUf($id);
-    $response = Utils::utf8_converter($response);
+    $response = \Utils\Utils::utf8_converter($response);
 
     return json_encode($response);
   }
 
 
-  public function setUf($id, $fields, $userId){
+  public function setUf($id, $fields, $logId){
 
-    $ufModel = new TabUf();
+    $ufModel = new \Model\TabUf();
 
     if(!empty($fields)){
-      $ufModel->setUf($id, $fields, $userId);
+      $ufModel->setUf($id, $fields, $logId);
       $response = 'Atualizado com sucesso';
     }else{
       throw new Exception('Dados inválidos', 400);
@@ -30,10 +31,10 @@ class Uf{
 
   public function getUfWithFilters($filters){
 
-    $ufModel = new TabUf();
+    $ufModel = new \Model\TabUf();
     if(!empty($filters)){
       $response = $ufModel->getUfWithFilters($filters);
-      $response = Utils::utf8_converter($response);
+      $response = \Utils\Utils::utf8_converter($response);
     }
     return json_encode($response);
   }

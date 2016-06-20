@@ -7,7 +7,7 @@ use \TableMap;
 
 
 /**
- * This class defines the structure of the 'perfil' table.
+ * This class defines the structure of the 'log_requisicao' table.
  *
  *
  *
@@ -18,13 +18,13 @@ use \TableMap;
  *
  * @package    propel.generator.siscad_autenticacao.map
  */
-class PerfilTableMap extends TableMap
+class LogRequisicaoTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'siscad_autenticacao.map.PerfilTableMap';
+    const CLASS_NAME = 'siscad_autenticacao.map.LogRequisicaoTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -36,18 +36,19 @@ class PerfilTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('perfil');
-        $this->setPhpName('Perfil');
-        $this->setClassname('Model\\Perfil');
+        $this->setName('log_requisicao');
+        $this->setPhpName('LogRequisicao');
+        $this->setClassname('Model\\LogRequisicao');
         $this->setPackage('siscad_autenticacao');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('nome', 'Nome', 'VARCHAR', true, 30, null);
-        $this->addColumn('descricao', 'Descricao', 'VARCHAR', false, 255, null);
+        $this->addForeignKey('usuario_id', 'UsuarioId', 'INTEGER', 'usuario', 'id', true, null, null);
+        $this->addColumn('requisicao', 'Requisicao', 'VARCHAR', true, 255, null);
+        $this->addColumn('nonce', 'Nonce', 'VARCHAR', true, 20, null);
+        $this->addColumn('data', 'Data', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
+        $this->addColumn('ip', 'Ip', 'VARCHAR', false, 20, null);
         // validators
-        $this->addValidator('nome', 'maxLength', 'propel.validator.MaxLengthValidator', '30', 'Nome: Tamanho máximo 30');
-        $this->addValidator('descricao', 'maxLength', 'propel.validator.MaxLengthValidator', '255', 'Descrição: Tamanho máximo 255');
     } // initialize()
 
     /**
@@ -55,8 +56,8 @@ class PerfilTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('PerfilEndpoint', 'Model\\PerfilEndpoint', RelationMap::ONE_TO_MANY, array('id' => 'perfil_id', ), null, null, 'PerfilEndpoints');
-        $this->addRelation('Usuario', 'Model\\Usuario', RelationMap::ONE_TO_MANY, array('id' => 'perfil_id', ), null, null, 'Usuarios');
+        $this->addRelation('Usuario', 'Model\\Usuario', RelationMap::MANY_TO_ONE, array('usuario_id' => 'id', ), null, null);
+        $this->addRelation('LogAtividade', 'Model\\LogAtividade', RelationMap::ONE_TO_MANY, array('id' => 'log_requisicao_id', ), null, null, 'LogAtividades');
     } // buildRelations()
 
-} // PerfilTableMap
+} // LogRequisicaoTableMap

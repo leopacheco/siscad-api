@@ -1,5 +1,7 @@
 <?php
+namespace Model;
 
+use Model\om\BaseLogAtividade;
 
 
 /**
@@ -13,6 +15,8 @@
  *
  * @package    propel.generator.siscad_autenticacao
  */
+
+
 class LogAtividade extends BaseLogAtividade
 {
 }

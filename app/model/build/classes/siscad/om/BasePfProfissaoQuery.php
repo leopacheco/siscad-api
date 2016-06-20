@@ -1,5 +1,18 @@
 <?php
 
+namespace Model\om;
+
+use \Criteria;
+use \Exception;
+use \ModelCriteria;
+use \PDO;
+use \Propel;
+use \PropelException;
+use \PropelObjectCollection;
+use \PropelPDO;
+use Model\PfProfissao;
+use Model\PfProfissaoPeer;
+use Model\PfProfissaoQuery;
 
 /**
  * Base class that represents a query for the 'pf_profissao' table.
@@ -73,7 +86,7 @@ abstract class BasePfProfissaoQuery extends ModelCriteria
             $dbName = 'siscad';
         }
         if (null === $modelName) {
-            $modelName = 'PfProfissao';
+            $modelName = 'Model\\PfProfissao';
         }
         parent::__construct($dbName, $modelName, $modelAlias);
     }

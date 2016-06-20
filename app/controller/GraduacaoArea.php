@@ -1,25 +1,26 @@
 <?php
+namespace Controller;
 
 class GraduacaoArea{
 
 
   public function getGraduacaoArea($id){
 
-    $graduacaoModel = new TabGraduacaoArea();
+    $graduacaoModel = new \Model\TabGraduacaoArea();
 
     $response = $graduacaoModel->getGraduacaoArea($id);
-    $response = Utils::utf8_converter($response);
+    $response = \Utils\Utils::utf8_converter($response);
 
     return json_encode($response);
   }
 
 
-  public function setGraduacaoArea($id, $fields, $userId){
+  public function setGraduacaoArea($id, $fields, $logId){
 
-    $graduacaoModel = new TabGraduacaoArea();
+    $graduacaoModel = new \Model\TabGraduacaoArea();
 
     if(!empty($fields)){
-      $graduacaoModel->setGraduacaoArea($id, $fields, $userId);
+      $graduacaoModel->setGraduacaoArea($id, $fields, $logId);
       $response = 'Atualizado com sucesso';
     }else{
       throw new Exception('Dados inválidos', 400);
@@ -30,10 +31,10 @@ class GraduacaoArea{
 
   public function getGraduacaoAreaWithFilters($filters){
 
-    $graduacaoModel = new TabGraduacaoArea();
+    $graduacaoModel = new \Model\TabGraduacaoArea();
     if(!empty($filters)){
       $response = $graduacaoModel->getGraduacaoAreaWithFilters($filters);
-      $response = Utils::utf8_converter($response);
+      $response = \Utils\Utils::utf8_converter($response);
     }
     return json_encode($response);
   }

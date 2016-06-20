@@ -1,5 +1,23 @@
 <?php
 
+namespace Model\om;
+
+use \BaseObject;
+use \BasePeer;
+use \Criteria;
+use \Exception;
+use \PDO;
+use \Persistent;
+use \Propel;
+use \PropelException;
+use \PropelPDO;
+use Model\Endpoint;
+use Model\EndpointQuery;
+use Model\Perfil;
+use Model\PerfilEndpoint;
+use Model\PerfilEndpointPeer;
+use Model\PerfilEndpointQuery;
+use Model\PerfilQuery;
 
 /**
  * Base class that represents a row from the 'perfil_endpoint' table.
@@ -13,7 +31,7 @@ abstract class BasePerfilEndpoint extends BaseObject implements Persistent
     /**
      * Peer class name
      */
-    const PEER = 'PerfilEndpointPeer';
+    const PEER = 'Model\\PerfilEndpointPeer';
 
     /**
      * The Peer class.

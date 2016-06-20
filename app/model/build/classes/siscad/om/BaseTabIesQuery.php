@@ -1,5 +1,18 @@
 <?php
 
+namespace Model\om;
+
+use \Criteria;
+use \Exception;
+use \ModelCriteria;
+use \PDO;
+use \Propel;
+use \PropelException;
+use \PropelObjectCollection;
+use \PropelPDO;
+use Model\TabIes;
+use Model\TabIesPeer;
+use Model\TabIesQuery;
 
 /**
  * Base class that represents a query for the 'tab_ies' table.
@@ -85,7 +98,7 @@ abstract class BaseTabIesQuery extends ModelCriteria
             $dbName = 'siscad';
         }
         if (null === $modelName) {
-            $modelName = 'TabIes';
+            $modelName = 'Model\\TabIes';
         }
         parent::__construct($dbName, $modelName, $modelAlias);
     }

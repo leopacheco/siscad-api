@@ -1,5 +1,21 @@
 <?php
 
+namespace Model\om;
+
+use \BaseObject;
+use \BasePeer;
+use \Criteria;
+use \DateTime;
+use \Exception;
+use \PDO;
+use \Persistent;
+use \Propel;
+use \PropelDateTime;
+use \PropelException;
+use \PropelPDO;
+use Model\PfInscricao;
+use Model\PfInscricaoPeer;
+use Model\PfInscricaoQuery;
 
 /**
  * Base class that represents a row from the 'pf_inscricao' table.
@@ -13,7 +29,7 @@ abstract class BasePfInscricao extends BaseObject implements Persistent
     /**
      * Peer class name
      */
-    const PEER = 'PfInscricaoPeer';
+    const PEER = 'Model\\PfInscricaoPeer';
 
     /**
      * The Peer class.

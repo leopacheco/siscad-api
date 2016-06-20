@@ -1,5 +1,18 @@
 <?php
 
+namespace Model\om;
+
+use \Criteria;
+use \Exception;
+use \ModelCriteria;
+use \PDO;
+use \Propel;
+use \PropelException;
+use \PropelObjectCollection;
+use \PropelPDO;
+use Model\TabGraduacaoArea;
+use Model\TabGraduacaoAreaPeer;
+use Model\TabGraduacaoAreaQuery;
 
 /**
  * Base class that represents a query for the 'tab_graduacao_area' table.
@@ -41,7 +54,7 @@ abstract class BaseTabGraduacaoAreaQuery extends ModelCriteria
             $dbName = 'siscad';
         }
         if (null === $modelName) {
-            $modelName = 'TabGraduacaoArea';
+            $modelName = 'Model\\TabGraduacaoArea';
         }
         parent::__construct($dbName, $modelName, $modelAlias);
     }

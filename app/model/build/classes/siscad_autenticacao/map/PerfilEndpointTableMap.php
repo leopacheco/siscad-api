@@ -1,5 +1,9 @@
 <?php
 
+namespace Model\map;
+
+use \RelationMap;
+use \TableMap;
 
 
 /**
@@ -34,7 +38,7 @@ class PerfilEndpointTableMap extends TableMap
         // attributes
         $this->setName('perfil_endpoint');
         $this->setPhpName('PerfilEndpoint');
-        $this->setClassname('PerfilEndpoint');
+        $this->setClassname('Model\\PerfilEndpoint');
         $this->setPackage('siscad_autenticacao');
         $this->setUseIdGenerator(false);
         // columns
@@ -48,8 +52,8 @@ class PerfilEndpointTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Endpoint', 'Endpoint', RelationMap::MANY_TO_ONE, array('endpoint_id' => 'id', ), null, null);
-        $this->addRelation('Perfil', 'Perfil', RelationMap::MANY_TO_ONE, array('perfil_id' => 'id', ), null, null);
+        $this->addRelation('Endpoint', 'Model\\Endpoint', RelationMap::MANY_TO_ONE, array('endpoint_id' => 'id', ), null, null);
+        $this->addRelation('Perfil', 'Model\\Perfil', RelationMap::MANY_TO_ONE, array('perfil_id' => 'id', ), null, null);
     } // buildRelations()
 
 } // PerfilEndpointTableMap

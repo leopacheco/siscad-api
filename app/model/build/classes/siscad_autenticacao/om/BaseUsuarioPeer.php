@@ -1,5 +1,18 @@
 <?php
 
+namespace Model\om;
+
+use \BasePeer;
+use \Criteria;
+use \PDO;
+use \PDOStatement;
+use \Propel;
+use \PropelException;
+use \PropelPDO;
+use Model\PerfilPeer;
+use Model\Usuario;
+use Model\UsuarioPeer;
+use Model\map\UsuarioTableMap;
 
 /**
  * Base static class for performing query and update operations on the 'usuario' table.
@@ -18,10 +31,10 @@ abstract class BaseUsuarioPeer
     const TABLE_NAME = 'usuario';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'Usuario';
+    const OM_CLASS = 'Model\\Usuario';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'UsuarioTableMap';
+    const TM_CLASS = 'Model\\map\\UsuarioTableMap';
 
     /** The total number of columns. */
     const NUM_COLUMNS = 6;
@@ -733,7 +746,7 @@ abstract class BaseUsuarioPeer
     {
       $dbMap = Propel::getDatabaseMap(BaseUsuarioPeer::DATABASE_NAME);
       if (!$dbMap->hasTable(BaseUsuarioPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new \UsuarioTableMap());
+        $dbMap->addTableObject(new \Model\map\UsuarioTableMap());
       }
     }
 
@@ -952,6 +965,12 @@ abstract class BaseUsuarioPeer
                 }
             }
         } else {
+
+        if ($obj->isNew() || $obj->isColumnModified(UsuarioPeer::NOME))
+            $columns[UsuarioPeer::NOME] = $obj->getNome();
+
+        if ($obj->isNew() || $obj->isColumnModified(UsuarioPeer::DESCRICAO))
+            $columns[UsuarioPeer::DESCRICAO] = $obj->getDescricao();
 
         }
 

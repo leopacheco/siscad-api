@@ -1,5 +1,9 @@
 <?php
 
+namespace Model\map;
+
+use \RelationMap;
+use \TableMap;
 
 
 /**
@@ -34,7 +38,7 @@ class PfInscricaoTableMap extends TableMap
         // attributes
         $this->setName('pf_inscricao');
         $this->setPhpName('PfInscricao');
-        $this->setClassname('PfInscricao');
+        $this->setClassname('Model\\PfInscricao');
         $this->setPackage('siscad');
         $this->setUseIdGenerator(true);
         // columns

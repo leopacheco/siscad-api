@@ -1,5 +1,9 @@
 <?php
 
+namespace Model\map;
+
+use \RelationMap;
+use \TableMap;
 
 
 /**
@@ -34,16 +38,14 @@ class LogAtividadeTableMap extends TableMap
         // attributes
         $this->setName('log_atividade');
         $this->setPhpName('LogAtividade');
-        $this->setClassname('LogAtividade');
+        $this->setClassname('Model\\LogAtividade');
         $this->setPackage('siscad_autenticacao');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('usuario_id', 'UsuarioId', 'INTEGER', 'usuario', 'id', true, null, null);
-        $this->addColumn('tabela_atualizada', 'TabelaAtualizada', 'VARCHAR', true, 80, null);
+        $this->addForeignKey('log_requisicao_id', 'LogRequisicaoId', 'INTEGER', 'log_requisicao', 'id', true, null, null);
         $this->addColumn('valor_anterior', 'ValorAnterior', 'LONGVARCHAR', false, null, null);
         $this->addColumn('valor_atual', 'ValorAtual', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('data', 'Data', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
         // validators
     } // initialize()
 
@@ -52,7 +54,7 @@ class LogAtividadeTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Usuario', 'Usuario', RelationMap::MANY_TO_ONE, array('usuario_id' => 'id', ), null, null);
+        $this->addRelation('LogRequisicao', 'Model\\LogRequisicao', RelationMap::MANY_TO_ONE, array('log_requisicao_id' => 'id', ), null, null);
     } // buildRelations()
 
 } // LogAtividadeTableMap

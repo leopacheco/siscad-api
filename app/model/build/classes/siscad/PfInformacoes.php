@@ -1,5 +1,7 @@
 <?php
+namespace Model;
 
+use Model\om\BasePfInformacoes;
 
 
 /**
@@ -13,6 +15,7 @@
  *
  * @package    propel.generator.siscad-api
  */
+
 class PfInformacoes extends BasePfInformacoes
 {
 
@@ -52,22 +55,20 @@ class PfInformacoes extends BasePfInformacoes
     if(!is_null($query)){
       return $query->toArray();
     }else{
-      throw new Exception('Nenhum resultado encontrado', 400);
+      throw new \Exception('Nenhum resultado encontrado', 400);
     }
   }
 
   /*
 
   */
-  public function setInformacoes($id, $fields, $userId){
+  public function setInformacoes($id, $fields, $logId){
 
     $query = $this->getById($id);
-    
+
     $log = new LogAtividade();
     $log->setValorAnterior(json_encode($query->toArray()));
-    $log->setUsuarioId($userId);
-    $tableName = new PfInformacoesTableMap();
-    $log->setTabelaAtualizada($tableName->getName());
+    $log->setLogRequisicaoId($logId);
 
     foreach ($fields as $key => $value) {
       //verifica se o  campo existe na tabela
@@ -75,7 +76,7 @@ class PfInformacoes extends BasePfInformacoes
           $value = $this->_sanitize($key, $value);
 
         if($this->_validate($key, $value)){
-          $column = 'set'.Utils::dashesToCamelCase($key);
+          $column = 'set'.\Utils\Utils::dashesToCamelCase($key);
           $query->$column($value);
         }
       }
@@ -92,7 +93,7 @@ class PfInformacoes extends BasePfInformacoes
       foreach ($query->getValidationFailures() as $failure) {
         $errorMsg .= $failure->getMessage() . "\n";
       }
-      throw new Exception($errorMsg, 400);
+      throw new \Exception($errorMsg, 400);
     }
 
   }
@@ -103,7 +104,7 @@ class PfInformacoes extends BasePfInformacoes
   */
   public function getInformacoesWithFilters($filters){
 
-    $parsedFilters = Utils::parseFilters($filters);
+    $parsedFilters = \Utils\Utils::parseFilters($filters);
 
     if(is_array($parsedFilters)){
       //compara os filtos enviados com as colunas da tabela
@@ -119,11 +120,11 @@ class PfInformacoes extends BasePfInformacoes
         if(count($query) > 0){
           return $query->toArray();
         }else{
-          throw new Exception('Nenhum resultado encontrado', 400);
+          throw new \Exception('Nenhum resultado encontrado', 400);
         }
 
       }else{
-        throw new Exception('Parâmetros de busca inválidos', 400);
+        throw new \Exception('Parâmetros de busca inválidos', 400);
       }
     }
   }
@@ -145,6 +146,14 @@ class PfInformacoes extends BasePfInformacoes
 
   private function _sanitize($key, $value){
     return filter_var($value, $this->_columns[$key]['sanitize']);
+  }
+
+  public function getProfissional($id){
+    $con = \Propel::getConnection();
+    $sql = "SELECT * FROM siscad.view_profissional WHERE id_pf_informacoes = :id";
+    $stmt = $con->prepare($sql);
+    $stmt->execute(array(':id' => $id));
+    return $stmt->fetch();
   }
 
 }

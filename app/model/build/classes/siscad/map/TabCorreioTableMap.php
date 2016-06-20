@@ -1,5 +1,9 @@
 <?php
 
+namespace Model\map;
+
+use \RelationMap;
+use \TableMap;
 
 
 /**
@@ -34,7 +38,7 @@ class TabCorreioTableMap extends TableMap
         // attributes
         $this->setName('tab_correio');
         $this->setPhpName('TabCorreio');
-        $this->setClassname('TabCorreio');
+        $this->setClassname('Model\\TabCorreio');
         $this->setPackage('siscad');
         $this->setUseIdGenerator(false);
         // columns

@@ -1,25 +1,26 @@
 <?php
+namespace Controller;
 
 class Ies{
 
 
   public function getIes($id){
 
-    $model = new TabIes();
+    $model = new \Model\TabIes();
 
     $response = $model->getIes($id);
-    $response = Utils::utf8_converter($response);
+    $response = \Utils\Utils::utf8_converter($response);
 
     return json_encode($response);
   }
 
 
-  public function setIes($id, $fields, $userId){
+  public function setIes($id, $fields, $logId){
 
-    $model = new TabIes();
+    $model = new \Model\TabIes();
 
     if(!empty($fields)){
-      $model->setIes($id, $fields, $userId);
+      $model->setIes($id, $fields, $logId);
       $response = 'Atualizado com sucesso';
     }else{
       throw new Exception('Dados inválidos', 400);
@@ -30,10 +31,10 @@ class Ies{
 
   public function getIesWithFilters($filters){
 
-    $model = new TabIes();
+    $model = new \Model\TabIes();
     if(!empty($filters)){
       $response = $model->getIesWithFilters($filters);
-      $response = Utils::utf8_converter($response);
+      $response = \Utils\Utils::utf8_converter($response);
     }
     return json_encode($response);
   }

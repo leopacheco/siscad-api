@@ -1,5 +1,21 @@
 <?php
 
+namespace Model\om;
+
+use \BaseObject;
+use \BasePeer;
+use \Criteria;
+use \DateTime;
+use \Exception;
+use \PDO;
+use \Persistent;
+use \Propel;
+use \PropelDateTime;
+use \PropelException;
+use \PropelPDO;
+use Model\PfInformacoes;
+use Model\PfInformacoesPeer;
+use Model\PfInformacoesQuery;
 
 /**
  * Base class that represents a row from the 'pf_informacoes' table.
@@ -13,7 +29,7 @@ abstract class BasePfInformacoes extends BaseObject implements Persistent
     /**
      * Peer class name
      */
-    const PEER = 'PfInformacoesPeer';
+    const PEER = 'Model\\PfInformacoesPeer';
 
     /**
      * The Peer class.

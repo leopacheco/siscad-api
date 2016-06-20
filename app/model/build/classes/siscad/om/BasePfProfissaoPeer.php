@@ -1,5 +1,17 @@
 <?php
 
+namespace Model\om;
+
+use \BasePeer;
+use \Criteria;
+use \PDO;
+use \PDOStatement;
+use \Propel;
+use \PropelException;
+use \PropelPDO;
+use Model\PfProfissao;
+use Model\PfProfissaoPeer;
+use Model\map\PfProfissaoTableMap;
 
 /**
  * Base static class for performing query and update operations on the 'pf_profissao' table.
@@ -18,10 +30,10 @@ abstract class BasePfProfissaoPeer
     const TABLE_NAME = 'pf_profissao';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'PfProfissao';
+    const OM_CLASS = 'Model\\PfProfissao';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'PfProfissaoTableMap';
+    const TM_CLASS = 'Model\\map\\PfProfissaoTableMap';
 
     /** The total number of columns. */
     const NUM_COLUMNS = 10;
@@ -515,7 +527,7 @@ abstract class BasePfProfissaoPeer
     {
       $dbMap = Propel::getDatabaseMap(BasePfProfissaoPeer::DATABASE_NAME);
       if (!$dbMap->hasTable(BasePfProfissaoPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new \PfProfissaoTableMap());
+        $dbMap->addTableObject(new \Model\map\PfProfissaoTableMap());
       }
     }
 

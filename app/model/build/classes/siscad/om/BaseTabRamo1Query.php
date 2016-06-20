@@ -1,5 +1,18 @@
 <?php
 
+namespace Model\om;
+
+use \Criteria;
+use \Exception;
+use \ModelCriteria;
+use \PDO;
+use \Propel;
+use \PropelException;
+use \PropelObjectCollection;
+use \PropelPDO;
+use Model\TabRamo1;
+use Model\TabRamo1Peer;
+use Model\TabRamo1Query;
 
 /**
  * Base class that represents a query for the 'tab_ramo1' table.
@@ -45,7 +58,7 @@ abstract class BaseTabRamo1Query extends ModelCriteria
             $dbName = 'siscad';
         }
         if (null === $modelName) {
-            $modelName = 'TabRamo1';
+            $modelName = 'Model\\TabRamo1';
         }
         parent::__construct($dbName, $modelName, $modelAlias);
     }

@@ -1,5 +1,9 @@
 <?php
 
+namespace Model\map;
+
+use \RelationMap;
+use \TableMap;
 
 
 /**
@@ -34,7 +38,7 @@ class PfjEnderecoTableMap extends TableMap
         // attributes
         $this->setName('pfj_endereco');
         $this->setPhpName('PfjEndereco');
-        $this->setClassname('PfjEndereco');
+        $this->setClassname('Model\\PfjEndereco');
         $this->setPackage('siscad');
         $this->setUseIdGenerator(true);
         // columns

@@ -1,6 +1,8 @@
 <?php
 
+namespace Model;
 
+use Model\om\BaseLogAtividadePeer;
 
 /**
  * Skeleton subclass for performing query and update operations on the 'log_atividade' table.

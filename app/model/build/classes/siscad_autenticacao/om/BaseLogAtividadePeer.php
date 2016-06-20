@@ -1,5 +1,18 @@
 <?php
 
+namespace Model\om;
+
+use \BasePeer;
+use \Criteria;
+use \PDO;
+use \PDOStatement;
+use \Propel;
+use \PropelException;
+use \PropelPDO;
+use Model\LogAtividade;
+use Model\LogAtividadePeer;
+use Model\LogRequisicaoPeer;
+use Model\map\LogAtividadeTableMap;
 
 /**
  * Base static class for performing query and update operations on the 'log_atividade' table.
@@ -18,37 +31,31 @@ abstract class BaseLogAtividadePeer
     const TABLE_NAME = 'log_atividade';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'LogAtividade';
+    const OM_CLASS = 'Model\\LogAtividade';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'LogAtividadeTableMap';
+    const TM_CLASS = 'Model\\map\\LogAtividadeTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 6;
+    const NUM_COLUMNS = 4;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 6;
+    const NUM_HYDRATE_COLUMNS = 4;
 
     /** the column name for the id field */
     const ID = 'log_atividade.id';
 
-    /** the column name for the usuario_id field */
-    const USUARIO_ID = 'log_atividade.usuario_id';
-
-    /** the column name for the tabela_atualizada field */
-    const TABELA_ATUALIZADA = 'log_atividade.tabela_atualizada';
+    /** the column name for the log_requisicao_id field */
+    const LOG_REQUISICAO_ID = 'log_atividade.log_requisicao_id';
 
     /** the column name for the valor_anterior field */
     const VALOR_ANTERIOR = 'log_atividade.valor_anterior';
 
     /** the column name for the valor_atual field */
     const VALOR_ATUAL = 'log_atividade.valor_atual';
-
-    /** the column name for the data field */
-    const DATA = 'log_atividade.data';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -69,12 +76,12 @@ abstract class BaseLogAtividadePeer
      * e.g. LogAtividadePeer::$fieldNames[LogAtividadePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'UsuarioId', 'TabelaAtualizada', 'ValorAnterior', 'ValorAtual', 'Data', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'usuarioId', 'tabelaAtualizada', 'valorAnterior', 'valorAtual', 'data', ),
-        BasePeer::TYPE_COLNAME => array (LogAtividadePeer::ID, LogAtividadePeer::USUARIO_ID, LogAtividadePeer::TABELA_ATUALIZADA, LogAtividadePeer::VALOR_ANTERIOR, LogAtividadePeer::VALOR_ATUAL, LogAtividadePeer::DATA, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USUARIO_ID', 'TABELA_ATUALIZADA', 'VALOR_ANTERIOR', 'VALOR_ATUAL', 'DATA', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'usuario_id', 'tabela_atualizada', 'valor_anterior', 'valor_atual', 'data', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'LogRequisicaoId', 'ValorAnterior', 'ValorAtual', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'logRequisicaoId', 'valorAnterior', 'valorAtual', ),
+        BasePeer::TYPE_COLNAME => array (LogAtividadePeer::ID, LogAtividadePeer::LOG_REQUISICAO_ID, LogAtividadePeer::VALOR_ANTERIOR, LogAtividadePeer::VALOR_ATUAL, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'LOG_REQUISICAO_ID', 'VALOR_ANTERIOR', 'VALOR_ATUAL', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'log_requisicao_id', 'valor_anterior', 'valor_atual', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
     /**
@@ -84,12 +91,12 @@ abstract class BaseLogAtividadePeer
      * e.g. LogAtividadePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UsuarioId' => 1, 'TabelaAtualizada' => 2, 'ValorAnterior' => 3, 'ValorAtual' => 4, 'Data' => 5, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'usuarioId' => 1, 'tabelaAtualizada' => 2, 'valorAnterior' => 3, 'valorAtual' => 4, 'data' => 5, ),
-        BasePeer::TYPE_COLNAME => array (LogAtividadePeer::ID => 0, LogAtividadePeer::USUARIO_ID => 1, LogAtividadePeer::TABELA_ATUALIZADA => 2, LogAtividadePeer::VALOR_ANTERIOR => 3, LogAtividadePeer::VALOR_ATUAL => 4, LogAtividadePeer::DATA => 5, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USUARIO_ID' => 1, 'TABELA_ATUALIZADA' => 2, 'VALOR_ANTERIOR' => 3, 'VALOR_ATUAL' => 4, 'DATA' => 5, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'usuario_id' => 1, 'tabela_atualizada' => 2, 'valor_anterior' => 3, 'valor_atual' => 4, 'data' => 5, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'LogRequisicaoId' => 1, 'ValorAnterior' => 2, 'ValorAtual' => 3, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'logRequisicaoId' => 1, 'valorAnterior' => 2, 'valorAtual' => 3, ),
+        BasePeer::TYPE_COLNAME => array (LogAtividadePeer::ID => 0, LogAtividadePeer::LOG_REQUISICAO_ID => 1, LogAtividadePeer::VALOR_ANTERIOR => 2, LogAtividadePeer::VALOR_ATUAL => 3, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'LOG_REQUISICAO_ID' => 1, 'VALOR_ANTERIOR' => 2, 'VALOR_ATUAL' => 3, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'log_requisicao_id' => 1, 'valor_anterior' => 2, 'valor_atual' => 3, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
     /**
@@ -164,18 +171,14 @@ abstract class BaseLogAtividadePeer
     {
         if (null === $alias) {
             $criteria->addSelectColumn(LogAtividadePeer::ID);
-            $criteria->addSelectColumn(LogAtividadePeer::USUARIO_ID);
-            $criteria->addSelectColumn(LogAtividadePeer::TABELA_ATUALIZADA);
+            $criteria->addSelectColumn(LogAtividadePeer::LOG_REQUISICAO_ID);
             $criteria->addSelectColumn(LogAtividadePeer::VALOR_ANTERIOR);
             $criteria->addSelectColumn(LogAtividadePeer::VALOR_ATUAL);
-            $criteria->addSelectColumn(LogAtividadePeer::DATA);
         } else {
             $criteria->addSelectColumn($alias . '.id');
-            $criteria->addSelectColumn($alias . '.usuario_id');
-            $criteria->addSelectColumn($alias . '.tabela_atualizada');
+            $criteria->addSelectColumn($alias . '.log_requisicao_id');
             $criteria->addSelectColumn($alias . '.valor_anterior');
             $criteria->addSelectColumn($alias . '.valor_atual');
-            $criteria->addSelectColumn($alias . '.data');
         }
     }
 
@@ -478,7 +481,7 @@ abstract class BaseLogAtividadePeer
 
 
     /**
-     * Returns the number of rows matching criteria, joining the related Usuario table
+     * Returns the number of rows matching criteria, joining the related LogRequisicao table
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -486,7 +489,7 @@ abstract class BaseLogAtividadePeer
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
      * @return int Number of matching rows.
      */
-    public static function doCountJoinUsuario(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doCountJoinLogRequisicao(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         // we're going to modify criteria, so copy it first
         $criteria = clone $criteria;
@@ -513,7 +516,7 @@ abstract class BaseLogAtividadePeer
             $con = Propel::getConnection(LogAtividadePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(LogAtividadePeer::USUARIO_ID, UsuarioPeer::ID, $join_behavior);
+        $criteria->addJoin(LogAtividadePeer::LOG_REQUISICAO_ID, LogRequisicaoPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -529,7 +532,7 @@ abstract class BaseLogAtividadePeer
 
 
     /**
-     * Selects a collection of LogAtividade objects pre-filled with their Usuario objects.
+     * Selects a collection of LogAtividade objects pre-filled with their LogRequisicao objects.
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
      * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -537,7 +540,7 @@ abstract class BaseLogAtividadePeer
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinUsuario(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinLogRequisicao(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
@@ -548,9 +551,9 @@ abstract class BaseLogAtividadePeer
 
         LogAtividadePeer::addSelectColumns($criteria);
         $startcol = LogAtividadePeer::NUM_HYDRATE_COLUMNS;
-        UsuarioPeer::addSelectColumns($criteria);
+        LogRequisicaoPeer::addSelectColumns($criteria);
 
-        $criteria->addJoin(LogAtividadePeer::USUARIO_ID, UsuarioPeer::ID, $join_behavior);
+        $criteria->addJoin(LogAtividadePeer::LOG_REQUISICAO_ID, LogRequisicaoPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
@@ -570,19 +573,19 @@ abstract class BaseLogAtividadePeer
                 LogAtividadePeer::addInstanceToPool($obj1, $key1);
             } // if $obj1 already loaded
 
-            $key2 = UsuarioPeer::getPrimaryKeyHashFromRow($row, $startcol);
+            $key2 = LogRequisicaoPeer::getPrimaryKeyHashFromRow($row, $startcol);
             if ($key2 !== null) {
-                $obj2 = UsuarioPeer::getInstanceFromPool($key2);
+                $obj2 = LogRequisicaoPeer::getInstanceFromPool($key2);
                 if (!$obj2) {
 
-                    $cls = UsuarioPeer::getOMClass();
+                    $cls = LogRequisicaoPeer::getOMClass();
 
                     $obj2 = new $cls();
                     $obj2->hydrate($row, $startcol);
-                    UsuarioPeer::addInstanceToPool($obj2, $key2);
+                    LogRequisicaoPeer::addInstanceToPool($obj2, $key2);
                 } // if obj2 already loaded
 
-                // Add the $obj1 (LogAtividade) to $obj2 (Usuario)
+                // Add the $obj1 (LogAtividade) to $obj2 (LogRequisicao)
                 $obj2->addLogAtividade($obj1);
 
             } // if joined row was not null
@@ -631,7 +634,7 @@ abstract class BaseLogAtividadePeer
             $con = Propel::getConnection(LogAtividadePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
-        $criteria->addJoin(LogAtividadePeer::USUARIO_ID, UsuarioPeer::ID, $join_behavior);
+        $criteria->addJoin(LogAtividadePeer::LOG_REQUISICAO_ID, LogRequisicaoPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -667,10 +670,10 @@ abstract class BaseLogAtividadePeer
         LogAtividadePeer::addSelectColumns($criteria);
         $startcol2 = LogAtividadePeer::NUM_HYDRATE_COLUMNS;
 
-        UsuarioPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + UsuarioPeer::NUM_HYDRATE_COLUMNS;
+        LogRequisicaoPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + LogRequisicaoPeer::NUM_HYDRATE_COLUMNS;
 
-        $criteria->addJoin(LogAtividadePeer::USUARIO_ID, UsuarioPeer::ID, $join_behavior);
+        $criteria->addJoin(LogAtividadePeer::LOG_REQUISICAO_ID, LogRequisicaoPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
@@ -689,21 +692,21 @@ abstract class BaseLogAtividadePeer
                 LogAtividadePeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
-            // Add objects for joined Usuario rows
+            // Add objects for joined LogRequisicao rows
 
-            $key2 = UsuarioPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+            $key2 = LogRequisicaoPeer::getPrimaryKeyHashFromRow($row, $startcol2);
             if ($key2 !== null) {
-                $obj2 = UsuarioPeer::getInstanceFromPool($key2);
+                $obj2 = LogRequisicaoPeer::getInstanceFromPool($key2);
                 if (!$obj2) {
 
-                    $cls = UsuarioPeer::getOMClass();
+                    $cls = LogRequisicaoPeer::getOMClass();
 
                     $obj2 = new $cls();
                     $obj2->hydrate($row, $startcol2);
-                    UsuarioPeer::addInstanceToPool($obj2, $key2);
+                    LogRequisicaoPeer::addInstanceToPool($obj2, $key2);
                 } // if obj2 loaded
 
-                // Add the $obj1 (LogAtividade) to the collection in $obj2 (Usuario)
+                // Add the $obj1 (LogAtividade) to the collection in $obj2 (LogRequisicao)
                 $obj2->addLogAtividade($obj1);
             } // if joined row not null
 
@@ -733,7 +736,7 @@ abstract class BaseLogAtividadePeer
     {
       $dbMap = Propel::getDatabaseMap(BaseLogAtividadePeer::DATABASE_NAME);
       if (!$dbMap->hasTable(BaseLogAtividadePeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new \LogAtividadeTableMap());
+        $dbMap->addTableObject(new \Model\map\LogAtividadeTableMap());
       }
     }
 

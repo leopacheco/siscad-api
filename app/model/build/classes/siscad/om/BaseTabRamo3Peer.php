@@ -1,5 +1,17 @@
 <?php
 
+namespace Model\om;
+
+use \BasePeer;
+use \Criteria;
+use \PDO;
+use \PDOStatement;
+use \Propel;
+use \PropelException;
+use \PropelPDO;
+use Model\TabRamo3;
+use Model\TabRamo3Peer;
+use Model\map\TabRamo3TableMap;
 
 /**
  * Base static class for performing query and update operations on the 'tab_ramo3' table.
@@ -18,10 +30,10 @@ abstract class BaseTabRamo3Peer
     const TABLE_NAME = 'tab_ramo3';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'TabRamo3';
+    const OM_CLASS = 'Model\\TabRamo3';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'TabRamo3TableMap';
+    const TM_CLASS = 'Model\\map\\TabRamo3TableMap';
 
     /** The total number of columns. */
     const NUM_COLUMNS = 5;
@@ -490,7 +502,7 @@ abstract class BaseTabRamo3Peer
     {
       $dbMap = Propel::getDatabaseMap(BaseTabRamo3Peer::DATABASE_NAME);
       if (!$dbMap->hasTable(BaseTabRamo3Peer::TABLE_NAME)) {
-        $dbMap->addTableObject(new \TabRamo3TableMap());
+        $dbMap->addTableObject(new \Model\map\TabRamo3TableMap());
       }
     }
 

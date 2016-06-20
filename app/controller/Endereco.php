@@ -1,25 +1,26 @@
 <?php
+namespace Controller;
 
 class Endereco{
 
 
   public function getEndereco($id){
 
-    $model = new PfjEndereco();
+    $model = new \Model\PfjEndereco();
 
     $response = $model->getEnderecoM($id);
-    $response = Utils::utf8_converter($response);
+    $response = \Utils\Utils::utf8_converter($response);
 
     return json_encode($response);
   }
 
 
-  public function setEndereco($id, $fields, $userId){
+  public function setEndereco($id, $fields, $logId){
 
-    $model = new PfjEndereco();
+    $model = new \Model\PfjEndereco();
 
     if(!empty($fields)){
-      $model->setEnderecoM($id, $fields, $userId);
+      $model->setEnderecoM($id, $fields, $logId);
       $response = 'Atualizado com sucesso';
     }else{
       throw new Exception('Dados inválidos', 400);
@@ -30,10 +31,10 @@ class Endereco{
 
   public function getEnderecoWithFilters($filters){
 
-    $model = new PfjEndereco();
+    $model = new \Model\PfjEndereco();
     if(!empty($filters)){
       $response = $model->getEnderecoWithFilters($filters);
-      $response = Utils::utf8_converter($response);
+      $response = \Utils\Utils::utf8_converter($response);
     }
     return json_encode($response);
   }

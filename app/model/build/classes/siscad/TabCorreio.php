@@ -1,5 +1,7 @@
 <?php
+namespace Model;
 
+use Model\om\BaseTabCorreio;
 
 
 /**
@@ -13,6 +15,7 @@
  *
  * @package    propel.generator.siscad-api
  */
+
 class TabCorreio extends BaseTabCorreio
 {
 
@@ -36,22 +39,20 @@ class TabCorreio extends BaseTabCorreio
     if(!is_null($query)){
       return $query->toArray();
     }else{
-      throw new Exception('Nenhum resultado encontrado', 400);
+      throw new \Exception('Nenhum resultado encontrado', 400);
     }
   }
 
   /*
 
   */
-  public function setCorreio($id, $fields, $userId){
+  public function setCorreio($id, $fields, $logId){
 
     $query = $this->getById($id);
 
     $log = new LogAtividade();
     $log->setValorAnterior(json_encode($query->toArray()));
-    $log->setUsuarioId($userId);
-    $tableName = new TabCorreioTableMap();
-    $log->setTabelaAtualizada($tableName->getName());
+    $log->setLogRequisicaoId($logId);
 
     foreach ($fields as $key => $value) {
       //verifica se o  campo existe na tabela
@@ -59,7 +60,7 @@ class TabCorreio extends BaseTabCorreio
           $value = $this->_sanitize($key, $value);
 
         if($this->_validate($key, $value)){
-          $column = 'set'.Utils::dashesToCamelCase($key);
+          $column = 'set'.\Utils\Utils::dashesToCamelCase($key);
           $query->$column($value);
         }
       }
@@ -76,7 +77,7 @@ class TabCorreio extends BaseTabCorreio
       foreach ($query->getValidationFailures() as $failure) {
         $errorMsg .= $failure->getMessage() . "\n";
       }
-      throw new Exception($errorMsg, 400);
+      throw new \Exception($errorMsg, 400);
     }
 
   }
@@ -87,7 +88,7 @@ class TabCorreio extends BaseTabCorreio
   */
   public function getCorreioWithFilters($filters){
 
-    $parsedFilters = Utils::parseFilters($filters);
+    $parsedFilters = \Utils\Utils::parseFilters($filters);
 
     if(is_array($parsedFilters)){
       //compara os filtos enviados com as colunas da tabela
@@ -103,11 +104,11 @@ class TabCorreio extends BaseTabCorreio
         if(count($query) > 0){
           return $query->toArray();
         }else{
-          throw new Exception('Nenhum resultado encontrado', 400);
+          throw new \Exception('Nenhum resultado encontrado', 400);
         }
 
       }else{
-        throw new Exception('Parâmetros de busca inválidos', 400);
+        throw new \Exception('Parâmetros de busca inválidos', 400);
       }
     }
   }

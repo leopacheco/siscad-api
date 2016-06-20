@@ -1,5 +1,17 @@
 <?php
 
+namespace Model\om;
+
+use \BasePeer;
+use \Criteria;
+use \PDO;
+use \PDOStatement;
+use \Propel;
+use \PropelException;
+use \PropelPDO;
+use Model\PfjEndereco;
+use Model\PfjEnderecoPeer;
+use Model\map\PfjEnderecoTableMap;
 
 /**
  * Base static class for performing query and update operations on the 'pfj_endereco' table.
@@ -18,10 +30,10 @@ abstract class BasePfjEnderecoPeer
     const TABLE_NAME = 'pfj_endereco';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'PfjEndereco';
+    const OM_CLASS = 'Model\\PfjEndereco';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'PfjEnderecoTableMap';
+    const TM_CLASS = 'Model\\map\\PfjEnderecoTableMap';
 
     /** The total number of columns. */
     const NUM_COLUMNS = 21;
@@ -570,7 +582,7 @@ abstract class BasePfjEnderecoPeer
     {
       $dbMap = Propel::getDatabaseMap(BasePfjEnderecoPeer::DATABASE_NAME);
       if (!$dbMap->hasTable(BasePfjEnderecoPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new \PfjEnderecoTableMap());
+        $dbMap->addTableObject(new \Model\map\PfjEnderecoTableMap());
       }
     }
 

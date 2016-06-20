@@ -1,5 +1,9 @@
 <?php
 
+namespace Model\map;
+
+use \RelationMap;
+use \TableMap;
 
 
 /**
@@ -34,7 +38,7 @@ class TabIesTableMap extends TableMap
         // attributes
         $this->setName('tab_ies');
         $this->setPhpName('TabIes');
-        $this->setClassname('TabIes');
+        $this->setClassname('Model\\TabIes');
         $this->setPackage('siscad');
         $this->setUseIdGenerator(true);
         // columns

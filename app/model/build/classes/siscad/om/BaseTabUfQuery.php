@@ -1,5 +1,18 @@
 <?php
 
+namespace Model\om;
+
+use \Criteria;
+use \Exception;
+use \ModelCriteria;
+use \PDO;
+use \Propel;
+use \PropelException;
+use \PropelObjectCollection;
+use \PropelPDO;
+use Model\TabUf;
+use Model\TabUfPeer;
+use Model\TabUfQuery;
 
 /**
  * Base class that represents a query for the 'tab_uf' table.
@@ -101,7 +114,7 @@ abstract class BaseTabUfQuery extends ModelCriteria
             $dbName = 'siscad';
         }
         if (null === $modelName) {
-            $modelName = 'TabUf';
+            $modelName = 'Model\\TabUf';
         }
         parent::__construct($dbName, $modelName, $modelAlias);
     }

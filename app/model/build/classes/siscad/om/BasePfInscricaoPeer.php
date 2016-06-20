@@ -1,5 +1,17 @@
 <?php
 
+namespace Model\om;
+
+use \BasePeer;
+use \Criteria;
+use \PDO;
+use \PDOStatement;
+use \Propel;
+use \PropelException;
+use \PropelPDO;
+use Model\PfInscricao;
+use Model\PfInscricaoPeer;
+use Model\map\PfInscricaoTableMap;
 
 /**
  * Base static class for performing query and update operations on the 'pf_inscricao' table.
@@ -18,10 +30,10 @@ abstract class BasePfInscricaoPeer
     const TABLE_NAME = 'pf_inscricao';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'PfInscricao';
+    const OM_CLASS = 'Model\\PfInscricao';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'PfInscricaoTableMap';
+    const TM_CLASS = 'Model\\map\\PfInscricaoTableMap';
 
     /** The total number of columns. */
     const NUM_COLUMNS = 29;
@@ -610,7 +622,7 @@ abstract class BasePfInscricaoPeer
     {
       $dbMap = Propel::getDatabaseMap(BasePfInscricaoPeer::DATABASE_NAME);
       if (!$dbMap->hasTable(BasePfInscricaoPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new \PfInscricaoTableMap());
+        $dbMap->addTableObject(new \Model\map\PfInscricaoTableMap());
       }
     }
 

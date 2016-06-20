@@ -1,5 +1,17 @@
 <?php
 
+namespace Model\om;
+
+use \BasePeer;
+use \Criteria;
+use \PDO;
+use \PDOStatement;
+use \Propel;
+use \PropelException;
+use \PropelPDO;
+use Model\TabGraduacaoArea;
+use Model\TabGraduacaoAreaPeer;
+use Model\map\TabGraduacaoAreaTableMap;
 
 /**
  * Base static class for performing query and update operations on the 'tab_graduacao_area' table.
@@ -18,10 +30,10 @@ abstract class BaseTabGraduacaoAreaPeer
     const TABLE_NAME = 'tab_graduacao_area';
 
     /** the related Propel class for this table */
-    const OM_CLASS = 'TabGraduacaoArea';
+    const OM_CLASS = 'Model\\TabGraduacaoArea';
 
     /** the related TableMap class for this table */
-    const TM_CLASS = 'TabGraduacaoAreaTableMap';
+    const TM_CLASS = 'Model\\map\\TabGraduacaoAreaTableMap';
 
     /** The total number of columns. */
     const NUM_COLUMNS = 2;
@@ -475,7 +487,7 @@ abstract class BaseTabGraduacaoAreaPeer
     {
       $dbMap = Propel::getDatabaseMap(BaseTabGraduacaoAreaPeer::DATABASE_NAME);
       if (!$dbMap->hasTable(BaseTabGraduacaoAreaPeer::TABLE_NAME)) {
-        $dbMap->addTableObject(new \TabGraduacaoAreaTableMap());
+        $dbMap->addTableObject(new \Model\map\TabGraduacaoAreaTableMap());
       }
     }
 

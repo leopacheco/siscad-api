@@ -1,5 +1,9 @@
 <?php
 
+namespace Model\map;
+
+use \RelationMap;
+use \TableMap;
 
 
 /**
@@ -34,7 +38,7 @@ class UsuarioTableMap extends TableMap
         // attributes
         $this->setName('usuario');
         $this->setPhpName('Usuario');
-        $this->setClassname('Usuario');
+        $this->setClassname('Model\\Usuario');
         $this->setPackage('siscad_autenticacao');
         $this->setUseIdGenerator(true);
         // columns
@@ -45,6 +49,8 @@ class UsuarioTableMap extends TableMap
         $this->addColumn('ativo', 'Ativo', 'BOOLEAN', true, 1, null);
         $this->addForeignKey('perfil_id', 'PerfilId', 'INTEGER', 'perfil', 'id', true, null, null);
         // validators
+        $this->addValidator('nome', 'maxLength', 'propel.validator.MaxLengthValidator', '30', 'Nome: Tamanho máximo 30');
+        $this->addValidator('descricao', 'maxLength', 'propel.validator.MaxLengthValidator', '255', 'Descrição: Tamanho máximo 255');
     } // initialize()
 
     /**
@@ -52,9 +58,8 @@ class UsuarioTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Perfil', 'Perfil', RelationMap::MANY_TO_ONE, array('perfil_id' => 'id', ), null, null);
-        $this->addRelation('LogAcesso', 'LogAcesso', RelationMap::ONE_TO_MANY, array('id' => 'usuario_id', ), null, null, 'LogAcessos');
-        $this->addRelation('LogAtividade', 'LogAtividade', RelationMap::ONE_TO_MANY, array('id' => 'usuario_id', ), null, null, 'LogAtividades');
+        $this->addRelation('Perfil', 'Model\\Perfil', RelationMap::MANY_TO_ONE, array('perfil_id' => 'id', ), null, null);
+        $this->addRelation('LogRequisicao', 'Model\\LogRequisicao', RelationMap::ONE_TO_MANY, array('id' => 'usuario_id', ), null, null, 'LogRequisicaos');
     } // buildRelations()
 
 } // UsuarioTableMap

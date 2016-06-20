@@ -1,5 +1,9 @@
 <?php
 
+namespace Model\map;
+
+use \RelationMap;
+use \TableMap;
 
 
 /**
@@ -34,7 +38,7 @@ class PfGraduacaoTableMap extends TableMap
         // attributes
         $this->setName('pf_graduacao');
         $this->setPhpName('PfGraduacao');
-        $this->setClassname('PfGraduacao');
+        $this->setClassname('Model\\PfGraduacao');
         $this->setPackage('siscad');
         $this->setUseIdGenerator(true);
         // columns
