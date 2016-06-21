@@ -14,12 +14,12 @@ $conf = array (
         'password' => '',
       ),
     ),
-    'siscad_autenticacao' => 
+    'siscad_api' => 
     array (
       'adapter' => 'mysql',
       'connection' => 
       array (
-        'dsn' => 'mysql:host=localhost;dbname=siscad_autenticacao',
+        'dsn' => 'mysql:host=localhost;dbname=siscad_api',
         'user' => 'root',
         'password' => '',
       ),

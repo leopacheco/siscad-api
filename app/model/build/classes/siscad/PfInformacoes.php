@@ -123,7 +123,7 @@ class PfInformacoes extends BasePfInformacoes
 
   public function getProfissional($id){
     $con = \Propel::getConnection();
-    $sql = "SELECT * FROM siscad.view_profissional WHERE id_pf_informacoes = :id";
+    $sql = "SELECT * FROM siscad.view_profissional WHERE carteira_crmv = :id";
     $stmt = $con->prepare($sql);
     $stmt->execute(array(':id' => $id));
     $query = $stmt->fetch();
@@ -131,6 +131,50 @@ class PfInformacoes extends BasePfInformacoes
       return $query;
     }else{
       throw new \Exception('Nenhum resultado encontrado', 400);
+    }
+  }
+
+  public function getProfissionalWithFilters($filters){
+
+    $parsedFilters = \Utils\Utils::parseFilters($filters);
+
+    if(is_array($parsedFilters) && count($parsedFilters) > 0){
+      $where = "";
+      $params = array();
+      $flag = 0;
+
+      foreach ($parsedFilters as $key => $value) {
+        if($flag !== 0){
+          $where .= " and ";
+        }
+        $where .= "{$key} = :{$key}";
+        $params[":{$key}"] = $value;
+
+        $flag = 1;
+      }
+      $con = \Propel::getConnection();
+      $sql = "SELECT * FROM siscad.view_profissional WHERE {$where}";
+      $stmt = $con->prepare($sql);
+      try{
+        $stmt->execute($params);
+        $query = $stmt->fetchAll();
+      }catch(\Exception $e){
+        throw new \Exception('Parâmetros de busca inválidos', 400);
+      }
+      if($query){
+        return $query;
+      }else{
+        throw new \Exception('Nenhum resultado encontrado', 400);
+      }
+
+      if(count($query) > 0){
+        return $query->toArray();
+      }else{
+        throw new \Exception('Nenhum resultado encontrado', 400);
+      }
+
+    }else{
+      throw new \Exception('Parâmetros de busca inválidos', 400);
     }
   }
 

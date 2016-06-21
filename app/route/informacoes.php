@@ -32,3 +32,10 @@ $app->get('/profissional/:id', function ($id) use ($app) {
   $response = $controller->getProfissional($id);
   $app->response->body($response);
 });
+
+//busca a view_profissional
+$app->get('/profissional/filtrar/:filters', function ($filters) use ($app) {
+  $controller = new Controller\ Informacoes;
+  $response = $controller->getProfissionalWithFilters($filters);
+  $app->response->body($response);
+});

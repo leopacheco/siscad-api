@@ -48,4 +48,14 @@ class Informacoes{
 
     return json_encode($response);
   }
+
+  public function getProfissionalWithFilters($filters){
+
+    $model = new \Model\PfInformacoes();
+    if(!empty($filters)){
+      $response = $model->getProfissionalWithFilters($filters);
+      $response = \Utils\Utils::utf8_converter($response);
+    }
+    return json_encode($response);
+  }
 }
