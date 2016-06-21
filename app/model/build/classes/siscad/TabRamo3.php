@@ -19,15 +19,6 @@ use Model\om\BaseTabRamo3;
 class TabRamo3 extends BaseTabRamo3
 {
 
-  private $_columns = array("id_tab_ramo3" => array("sanitize" => FILTER_SANITIZE_NUMBER_INT, "size" => "5"),
-                            "cod_ramo1"    => array("sanitize" => FILTER_SANITIZE_STRING,     "size" => "2"),
-                            "cod_ramo2"    => array("sanitize" => FILTER_SANITIZE_STRING,     "size" => "2"),
-                            "cod_ramo3"    => array("sanitize" => FILTER_SANITIZE_STRING,     "size" => "2"),
-                            "descricao"    => array("sanitize" => FILTER_SANITIZE_STRING,    "size" => "40")
-                          );
-
-  private $_valid = false;
-  private $_errorMessage = '';
   /*
 
   */
@@ -59,15 +50,13 @@ class TabRamo3 extends BaseTabRamo3
 
     foreach ($fields as $key => $value) {
       //verifica se o  campo existe na tabela
-      if(array_key_exists($key, $this->_columns)){
-          $value = $this->_sanitize($key, $value);
+      $tableMap = new map\TabRamo3TableMap();
 
-        if($this->_validate($key, $value)){
-          $column = 'set'.\Utils\Utils::dashesToCamelCase($key);
+      if($tableMap->hasColumnByPhpName($key)){
+          $value = \Utils\Utils::sanitize($value, $tableMap->getColumnByPhpName($key)->getType());
+          $column = 'set'.$key;
           $query->$column($value);
-        }
       }
-
     }
 
     if($query->validate()){
@@ -95,12 +84,19 @@ class TabRamo3 extends BaseTabRamo3
 
     if(is_array($parsedFilters)){
       //compara os filtos enviados com as colunas da tabela
-      $validFilters = array_intersect_key($parsedFilters, $this->_columns);
+      $tableMap = new map\TabRamo3TableMap();
+      $validFilters = array();
+      foreach ($parsedFilters as $key => $value) {
+        if($tableMap->hasColumnByPhpName($key)){
+          $validFilters[$key] = $value;
+        }
+      }
+
       if(count($validFilters) > 0){
         $search =  TabRamo3Query::create();
-
+        $search->setModelAlias('t');
         foreach ($validFilters as $key => $value) {
-          $search->where("TabRamo3.{$key} like ?", "%{$value}%");
+          $search->where("t.{$key} like ?", "%{$value}%");
         }
 
         $query = $search->find();
@@ -124,15 +120,6 @@ class TabRamo3 extends BaseTabRamo3
         $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
     }
     return TabRamo3Query::create()->findPK($id);
-  }
-
-  private function _validate($key, $value){
-    $this->_valid = true;
-    return true;
-  }
-
-  private function _sanitize($key, $value){
-    return filter_var($value, $this->_columns[$key]['sanitize']);
   }
 
 }

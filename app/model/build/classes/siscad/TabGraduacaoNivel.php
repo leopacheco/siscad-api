@@ -19,12 +19,6 @@ use Model\om\BaseTabGraduacaoNivel;
 class TabGraduacaoNivel extends BaseTabGraduacaoNivel
 {
 
-  private $_columns = array("id_tab_graduacao_nivel" => array("sanitize"=>FILTER_SANITIZE_NUMBER_INT, "size"=>"5" , "required" => true),
-                            "descricao" => array("sanitize"=>FILTER_SANITIZE_STRING, "size"=>"15")
-                          );
-
-  private $_valid = false;
-  private $_errorMessage = '';
   /*
 
   */
@@ -56,15 +50,13 @@ class TabGraduacaoNivel extends BaseTabGraduacaoNivel
 
     foreach ($fields as $key => $value) {
       //verifica se o  campo existe na tabela
-      if(array_key_exists($key, $this->_columns)){
-          $value = $this->_sanitize($key, $value);
+      $tableMap = new map\TabGraduacaoNivelTableMap();
 
-        if($this->_validate($key, $value)){
-          $column = 'set'.\Utils\Utils::dashesToCamelCase($key);
+      if($tableMap->hasColumnByPhpName($key)){
+          $value = \Utils\Utils::sanitize($value, $tableMap->getColumnByPhpName($key)->getType());
+          $column = 'set'.$key;
           $query->$column($value);
-        }
       }
-
     }
 
     if($query->validate()){
@@ -92,12 +84,18 @@ class TabGraduacaoNivel extends BaseTabGraduacaoNivel
 
     if(is_array($parsedFilters)){
       //compara os filtos enviados com as colunas da tabela
-      $validFilters = array_intersect_key($parsedFilters, $this->_columns);
+      $tableMap = new map\TabGraduacaoNivelTableMap();
+      $validFilters = array();
+      foreach ($parsedFilters as $key => $value) {
+        if($tableMap->hasColumnByPhpName($key)){
+          $validFilters[$key] = $value;
+        }
+      }
       if(count($validFilters) > 0){
         $search =  TabGraduacaoNivelQuery::create();
-
+        $search->setModelAlias('t');
         foreach ($validFilters as $key => $value) {
-          $search->where("TabGraduacaoNivel.{$key} like ?", "%{$value}%");
+          $search->where("t.{$key} like ?", "%{$value}%");
         }
 
         $query = $search->find();
@@ -121,15 +119,6 @@ class TabGraduacaoNivel extends BaseTabGraduacaoNivel
         $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
     }
     return TabGraduacaoNivelQuery::create()->findPK($id);
-  }
-
-  private function _validate($key, $value){
-    $this->_valid = true;
-    return true;
-  }
-
-  private function _sanitize($key, $value){
-    return filter_var($value, $this->_columns[$key]['sanitize']);
   }
 
 }

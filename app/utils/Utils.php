@@ -32,4 +32,21 @@ class Utils{
     return $parsedFilters;
   }
 
+  public static function sanitize($value, $type){
+    switch ($type) {
+      case 'VARCHAR':
+        return filter_var($value, FILTER_SANITIZE_STRING);
+        break;
+
+      case 'TINYINT':
+      case 'INTEGER':
+        return filter_var($value, FILTER_SANITIZE_NUMBER_INT);
+        break;
+
+      default:
+        return filter_var($value, FILTER_SANITIZE_STRING);
+        break;
+    }
+  }
+
 }

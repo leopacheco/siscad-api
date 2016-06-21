@@ -18,40 +18,6 @@ use Model\om\BasePfInscricao;
 
 class PfInscricao extends BasePfInscricao
 {
-
-  private $_columns = array("id_pf_inscricao"       => array("sanitize" => FILTER_SANITIZE_NUMBER_INT, "size" => "10", "required" => "true"),
-                            "fk_id_pf_informacoes"  => array("sanitize" => FILTER_SANITIZE_NUMBER_INT, "size" => "10"),
-                            "pf_uf"                 => array("sanitize" => FILTER_SANITIZE_STRING, "size" => "2" ),
-                            "pf_inscricao"          => array("sanitize" => FILTER_SANITIZE_STRING, "size" => "5" ),
-                            "pf_classe"             => array("sanitize" => FILTER_SANITIZE_STRING, "size" => "2" ),
-                            "nome"                  => array("sanitize" => FILTER_SANITIZE_STRING, "size" => "60"),
-                            "cpf"                   => array("sanitize" => FILTER_SANITIZE_STRING, "size" => "14"),
-                            "carteira_crmv"         => array("sanitize" => FILTER_SANITIZE_STRING, "size" => "10"),
-                            "dt_carteira_crmv"      => array("sanitize" => FILTER_SANITIZE_NUMBER_INT ),
-                            "dt_inscricao"          => array("sanitize" => FILTER_SANITIZE_NUMBER_INT ),
-                            "atuante"               => array("sanitize" => FILTER_SANITIZE_NUMBER_INT, "size" => "1"),
-                            "isento"                => array("sanitize" => FILTER_SANITIZE_NUMBER_INT, "size" => "1"),
-                            "dt_inc_cadin"          => array("sanitize" => FILTER_SANITIZE_NUMBER_INT),
-                            "dt_exc_cadin"          => array("sanitize" => FILTER_SANITIZE_NUMBER_INT),
-                            "processo"              => array("sanitize" => FILTER_SANITIZE_NUMBER_INT, "size" => "1"),
-                            "revista_cfmv"          => array("sanitize" => FILTER_SANITIZE_NUMBER_INT, "size" => "1"),
-                            "revista_cfmv_dt"       => array("sanitize" => FILTER_SANITIZE_NUMBER_INT),
-                            "carteira_validade"     => array("sanitize" => FILTER_SANITIZE_NUMBER_INT),
-                            "provisoria"            => array("sanitize" => FILTER_SANITIZE_NUMBER_INT),
-                            "provisoria_num"        => array("sanitize" => FILTER_SANITIZE_STRING, "size" => "10"),
-                            "provisoria_data"       => array("sanitize" => FILTER_SANITIZE_NUMBER_INT),
-                            "provisoria_validade"   => array("sanitize" => FILTER_SANITIZE_NUMBER_INT),
-                            "especialista_num"      => array("sanitize" => FILTER_SANITIZE_STRING, "size" => "10"),
-                            "especialista_data"     => array("sanitize" => FILTER_SANITIZE_NUMBER_INT),
-                            "especialista_validade" => array("sanitize" => FILTER_SANITIZE_NUMBER_INT),
-                            "segundavia_num"        => array("sanitize" => FILTER_SANITIZE_STRING, "size" => "10"),
-                            "segundavia_data"       => array("sanitize" => FILTER_SANITIZE_NUMBER_INT),
-                            "segundavia_validade"   => array("sanitize" => FILTER_SANITIZE_NUMBER_INT),
-                            "senha"                 => array("sanitize" => FILTER_SANITIZE_STRING, "size" => "32")
-);
-
-private $_valid = false;
-private $_errorMessage = '';
 /*
   */
   public function getInscricao($id){
@@ -93,15 +59,13 @@ private $_errorMessage = '';
 
     foreach ($fields as $key => $value) {
       //verifica se o  campo existe na tabela
-      if(array_key_exists($key, $this->_columns)){
-          $value = $this->_sanitize($key, $value);
+      $tableMap = new map\PfInscricaoTableMap();
 
-        if($this->_validate($key, $value)){
-          $column = 'set'.\Utils\Utils::dashesToCamelCase($key);
+      if($tableMap->hasColumnByPhpName($key)){
+          $value = \Utils\Utils::sanitize($value, $tableMap->getColumnByPhpName($key)->getType());
+          $column = 'set'.$key;
           $query->$column($value);
-        }
       }
-
     }
 
     if($query->validate()){
@@ -129,12 +93,19 @@ private $_errorMessage = '';
 
     if(is_array($parsedFilters)){
       //compara os filtos enviados com as colunas da tabela
-      $validFilters = array_intersect_key($parsedFilters, $this->_columns);
+      $tableMap = new map\PfInscricaoTableMap();
+      $validFilters = array();
+      foreach ($parsedFilters as $key => $value) {
+        if($tableMap->hasColumnByPhpName($key)){
+          $validFilters[$key] = $value;
+        }
+      }
+
       if(count($validFilters) > 0){
         $search =  PfInscricaoQuery::create();
-
+        $search->setModelAlias('t');
         foreach ($validFilters as $key => $value) {
-          $search->where("PfInscricao.{$key} like ?", "%{$value}%");
+          $search->where("t.{$key} like ?", "%{$value}%");
         }
 
         $query = $search->find();
@@ -156,15 +127,6 @@ private $_errorMessage = '';
   private function _getById($id){
     $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
     return PfInscricaoQuery::create()->findPK($id);
-  }
-
-  private function _validate($key, $value){
-    $this->_valid = true;
-    return true;
-  }
-
-  private function _sanitize($key, $value){
-    return filter_var($value, $this->_columns[$key]['sanitize']);
   }
 
   private function _getCollection(){

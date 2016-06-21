@@ -19,20 +19,6 @@ use Model\om\BasePfProfissao;
 class PfProfissao extends BasePfProfissao
 {
 
-  private $_columns = array("id_pf_profissao"      => array("sanitize" => FILTER_SANITIZE_NUMBER_INT, "size" => "10", "required" => "true"),
-                            "fk_id_pf_informacoes" => array("sanitize" => FILTER_SANITIZE_NUMBER_INT, "size" => "10"),
-                            "empresa"              => array("sanitize" => FILTER_SANITIZE_STRING, "size" => "50"),
-                            "cidade"               => array("sanitize" => FILTER_SANITIZE_STRING, "size" => "40"),
-                            "dt_admissao"          => array("sanitize" => FILTER_SANITIZE_NUMBER_INT),
-                            "dt_demissao"          => array("sanitize" => FILTER_SANITIZE_NUMBER_INT),
-                            "carga_horaria"        => array("sanitize" => FILTER_SANITIZE_NUMBER_INT, "size" => "3"),
-                            "fk_id_tab_ramo1"      => array("sanitize" => FILTER_SANITIZE_NUMBER_INT, "size" => "5"),
-                            "fk_id_tab_ramo2"      => array("sanitize" => FILTER_SANITIZE_NUMBER_INT, "size" => "5"),
-                            "fk_id_tab_ramo3"      => array("sanitize" => FILTER_SANITIZE_NUMBER_INT, "size" => "5")
-                          );
-
-  private $_valid = false;
-  private $_errorMessage = '';
   /*
 
   */
@@ -75,15 +61,13 @@ class PfProfissao extends BasePfProfissao
 
     foreach ($fields as $key => $value) {
       //verifica se o  campo existe na tabela
-      if(array_key_exists($key, $this->_columns)){
-          $value = $this->_sanitize($key, $value);
+      $tableMap = new map\PfProfissaoTableMap();
 
-        if($this->_validate($key, $value)){
-          $column = 'set'.\Utils\Utils::dashesToCamelCase($key);
+      if($tableMap->hasColumnByPhpName($key)){
+          $value = \Utils\Utils::sanitize($value, $tableMap->getColumnByPhpName($key)->getType());
+          $column = 'set'.$key;
           $query->$column($value);
-        }
       }
-
     }
 
     if($query->validate()){
@@ -111,12 +95,19 @@ class PfProfissao extends BasePfProfissao
 
     if(is_array($parsedFilters)){
       //compara os filtos enviados com as colunas da tabela
-      $validFilters = array_intersect_key($parsedFilters, $this->_columns);
+      $tableMap = new map\PfProfissaoTableMap();
+      $validFilters = array();
+      foreach ($parsedFilters as $key => $value) {
+        if($tableMap->hasColumnByPhpName($key)){
+          $validFilters[$key] = $value;
+        }
+      }
+
       if(count($validFilters) > 0){
         $search =  PfProfissaoQuery::create();
-
+        $search->setModelAlias('t');
         foreach ($validFilters as $key => $value) {
-          $search->where("PfProfissao.{$key} like ?", "%{$value}%");
+          $search->where("t.{$key} like ?", "%{$value}%");
         }
 
         $query = $search->find();
@@ -138,15 +129,6 @@ class PfProfissao extends BasePfProfissao
   private function _getById($id){
     $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
     return PfProfissaoQuery::create()->findPK($id);
-  }
-
-  private function _validate($key, $value){
-    $this->_valid = true;
-    return true;
-  }
-
-  private function _sanitize($key, $value){
-    return filter_var($value, $this->_columns[$key]['sanitize']);
   }
 
   private function _getCollection(){

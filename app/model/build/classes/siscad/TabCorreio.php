@@ -19,12 +19,6 @@ use Model\om\BaseTabCorreio;
 class TabCorreio extends BaseTabCorreio
 {
 
-  private $_columns = array("id_tab_correio"               => array("sanitize" => FILTER_SANITIZE_NUMBER_INT, "size" => "5", "required" => "true"),
-                            "descricao" => array("sanitize" => FILTER_SANITIZE_STRING, "size" => "30")
-                          );
-
-  private $_valid = false;
-  private $_errorMessage = '';
   /*
 
   */
@@ -56,15 +50,13 @@ class TabCorreio extends BaseTabCorreio
 
     foreach ($fields as $key => $value) {
       //verifica se o  campo existe na tabela
-      if(array_key_exists($key, $this->_columns)){
-          $value = $this->_sanitize($key, $value);
+      $tableMap = new map\TabCorreioTableMap();
 
-        if($this->_validate($key, $value)){
-          $column = 'set'.\Utils\Utils::dashesToCamelCase($key);
+      if($tableMap->hasColumnByPhpName($key)){
+          $value = \Utils\Utils::sanitize($value, $tableMap->getColumnByPhpName($key)->getType());
+          $column = 'set'.$key;
           $query->$column($value);
-        }
       }
-
     }
 
     if($query->validate()){
@@ -92,12 +84,19 @@ class TabCorreio extends BaseTabCorreio
 
     if(is_array($parsedFilters)){
       //compara os filtos enviados com as colunas da tabela
-      $validFilters = array_intersect_key($parsedFilters, $this->_columns);
+      $tableMap = new map\TabCorreioTableMap();
+      $validFilters = array();
+      foreach ($parsedFilters as $key => $value) {
+        if($tableMap->hasColumnByPhpName($key)){
+          $validFilters[$key] = $value;
+        }
+      }
+
       if(count($validFilters) > 0){
         $search =  TabCorreioQuery::create();
-
+        $search->setModelAlias('t');
         foreach ($validFilters as $key => $value) {
-          $search->where("TabCorreio.{$key} like ?", "%{$value}%");
+          $search->where("t.{$key} like ?", "%{$value}%");
         }
 
         $query = $search->find();
@@ -121,15 +120,6 @@ class TabCorreio extends BaseTabCorreio
         $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
     }
     return TabCorreioQuery::create()->findPK($id);
-  }
-
-  private function _validate($key, $value){
-    $this->_valid = true;
-    return true;
-  }
-
-  private function _sanitize($key, $value){
-    return filter_var($value, $this->_columns[$key]['sanitize']);
   }
 
 }

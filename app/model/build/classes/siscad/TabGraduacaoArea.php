@@ -16,12 +16,7 @@ use Model\om\BaseTabGraduacaoArea;
  */
 class TabGraduacaoArea extends BaseTabGraduacaoArea
 {
-  private $_columns = array("id_tab_graduacao_area" => array("sanitize"=>FILTER_SANITIZE_NUMBER_INT, "size"=>"5"),
-                            "descricao" => array("sanitize"=>FILTER_SANITIZE_STRING, "size"=>"50")
-                            );
 
-  private $_valid = false;
-  private $_errorMessage = '';
   /*
 
   */
@@ -45,7 +40,7 @@ class TabGraduacaoArea extends BaseTabGraduacaoArea
   */
   public function setGraduacaoArea($id, $fields, $logId){
 
-    $graduacaoArea = $this->getById($id);
+    $query = $this->getById($id);
 
     $log = new LogAtividade();
     $log->setValorAnterior(json_encode($query->toArray()));
@@ -53,15 +48,13 @@ class TabGraduacaoArea extends BaseTabGraduacaoArea
 
     foreach ($fields as $key => $value) {
       //verifica se o  campo existe na tabela
-      if(array_key_exists($key, $this->_columns)){
-          $value = $this->_sanitize($key, $value);
+      $tableMap = new map\TabGraduacaoAreaTableMap();
 
-        if($this->_validate($key, $value)){
-          $column = 'set'.\Utils\Utils::dashesToCamelCase($key);
-          $graduacaoArea->$column($value);
-        }
+      if($tableMap->hasColumnByPhpName($key)){
+          $value = \Utils\Utils::sanitize($value, $tableMap->getColumnByPhpName($key)->getType());
+          $column = 'set'.$key;
+          $query->$column($value);
       }
-
     }
 
     if($query->validate()){
@@ -89,12 +82,19 @@ class TabGraduacaoArea extends BaseTabGraduacaoArea
 
     if(is_array($parsedFilters)){
       //compara os filtos enviados com as colunas da tabela
-      $validFilters = array_intersect_key($parsedFilters, $this->_columns);
+      $tableMap = new map\TabGraduacaoAreaTableMap();
+      $validFilters = array();
+      foreach ($parsedFilters as $key => $value) {
+        if($tableMap->hasColumnByPhpName($key)){
+          $validFilters[$key] = $value;
+        }
+      }
+
       if(count($validFilters) > 0){
         $query =  TabGraduacaoAreaQuery::create();
-
+        $query->setModelAlias('t');
         foreach ($validFilters as $key => $value) {
-          $query->where("TabGraduacaoArea.{$key} like ?", "%{$value}%");
+          $query->where("t.{$key} like ?", "%$value%");
         }
 
         $graduacaoArea = $query->find();
@@ -119,15 +119,5 @@ class TabGraduacaoArea extends BaseTabGraduacaoArea
     }
     return TabGraduacaoAreaQuery::create()->findPK($id);
   }
-
-  private function _validate($key, $value){
-    $this->_valid = true;
-    return true;
-  }
-
-  private function _sanitize($key, $value){
-    return filter_var($value, $this->_columns[$key]['sanitize']);
-  }
-
 
 }

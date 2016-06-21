@@ -19,23 +19,6 @@ use Model\om\BaseTabIes;
 class TabIes extends BaseTabIes
 {
 
-    private $_columns = array("id_tab_ies"               => array("sanitize" => FILTER_SANITIZE_NUMBER_INT, "size" => "5", "required" => "true"),
-                              "fk_id_tab_ies_vinculacao" => array("sanitize" => FILTER_SANITIZE_STRING, "size" => "5"),
-                              "fk_id_tab_uf"             => array("sanitize" => FILTER_SANITIZE_NUMBER_INT, "size" => "5"),
-                              "fk_id_tab_ies_situacao"   => array("sanitize" => FILTER_SANITIZE_STRING, "size" => "5"),
-                              "nome"                     => array("sanitize" => FILTER_SANITIZE_STRING, "size" => "60"),
-                              "sigla"                    => array("sanitize" => FILTER_SANITIZE_STRING, "size" => "20"),
-                              "endereco"                 => array("sanitize" => FILTER_SANITIZE_STRING, "size" => "50"),
-                              "bairro"                   => array("sanitize" => FILTER_SANITIZE_STRING, "size" => "40"),
-                              "cidade"                   => array("sanitize" => FILTER_SANITIZE_STRING, "size" => "40"),
-                              "cep"                      => array("sanitize" => FILTER_SANITIZE_STRING, "size" => "9"),
-                              "site"                     => array("sanitize" => FILTER_SANITIZE_STRING, "size" => "80"),
-                              "email"                    => array("sanitize" => FILTER_SANITIZE_STRING, "size" => "80"),
-                              "condicao"                 => array("sanitize" => FILTER_SANITIZE_STRING)
-                            );
-
-    private $_valid = false;
-    private $_errorMessage = '';
     /*
 
     */
@@ -67,15 +50,13 @@ class TabIes extends BaseTabIes
 
       foreach ($fields as $key => $value) {
         //verifica se o  campo existe na tabela
-        if(array_key_exists($key, $this->_columns)){
-            $value = $this->_sanitize($key, $value);
+        $tableMap = new map\TabIesTableMap();
 
-          if($this->_validate($key, $value)){
-            $column = 'set'.\Utils\Utils::dashesToCamelCase($key);
+        if($tableMap->hasColumnByPhpName($key)){
+            $value = \Utils\Utils::sanitize($value, $tableMap->getColumnByPhpName($key)->getType());
+            $column = 'set'.$key;
             $query->$column($value);
-          }
         }
-
       }
 
       if($query->validate()){
@@ -103,12 +84,19 @@ class TabIes extends BaseTabIes
 
       if(is_array($parsedFilters)){
         //compara os filtos enviados com as colunas da tabela
-        $validFilters = array_intersect_key($parsedFilters, $this->_columns);
+        $tableMap = new map\TabIesTableMap();
+        $validFilters = array();
+        foreach ($parsedFilters as $key => $value) {
+          if($tableMap->hasColumnByPhpName($key)){
+            $validFilters[$key] = $value;
+          }
+        }
+
         if(count($validFilters) > 0){
           $search =  TabIesQuery::create();
-
+          $search->setModelAlias('t');
           foreach ($validFilters as $key => $value) {
-            $search->where("TabIes.{$key} like ?", "%{$value}%");
+            $search->where("t.{$key} like ?", "%{$value}%");
           }
 
           $query = $search->find();
@@ -132,15 +120,6 @@ class TabIes extends BaseTabIes
           $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
       }
       return TabIesQuery::create()->findPK($id);
-    }
-
-    private function _validate($key, $value){
-      $this->_valid = true;
-      return true;
-    }
-
-    private function _sanitize($key, $value){
-      return filter_var($value, $this->_columns[$key]['sanitize']);
     }
 
 }
