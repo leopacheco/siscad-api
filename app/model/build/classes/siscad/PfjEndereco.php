@@ -35,7 +35,7 @@ class PfjEndereco extends BasePfjEndereco
 
         return $response;
       }else{
-        throw new \Exception('Nenhum resultado encontrado', 200);
+        throw new \Exception('Nenhum resultado encontrado', 400);
       }
 
     }else{
@@ -44,7 +44,7 @@ class PfjEndereco extends BasePfjEndereco
       if(!is_null($query)){
         return $query->toArray();
       }else{
-        throw new \Exception('Nenhum resultado encontrado', 200);
+        throw new \Exception('Nenhum resultado encontrado', 400);
       }
     }
 
@@ -88,14 +88,14 @@ class PfjEndereco extends BasePfjEndereco
         $query->save();
         return true;
       }else{
-        throw new \Exception('Parâmetros inválidos', 200);
+        throw new \Exception('Parâmetros inválidos', 400);
       }
     }else{
       $errorMsg = '';
       foreach ($query->getValidationFailures() as $failure) {
         $errorMsg .= $failure->getMessage() . "\n";
       }
-      throw new \Exception($errorMsg, 200);
+      throw new \Exception($errorMsg, 400);
     }
 
   }
