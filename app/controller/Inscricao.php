@@ -38,4 +38,14 @@ class Inscricao{
     }
     return json_encode($response);
   }
+
+  public function getInadimplente($id){
+
+    $model = new \Model\PfInscricao();
+
+    $response = $model->getInadimplente($id);
+    $response = \Utils\Utils::utf8_converter($response);
+
+    return json_encode($response);
+  }
 }

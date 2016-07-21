@@ -40,6 +40,7 @@ use Model\PfjEnderecoQuery;
  * @method PfjEnderecoQuery orderByCelular($order = Criteria::ASC) Order by the celular column
  * @method PfjEnderecoQuery orderByDddFax($order = Criteria::ASC) Order by the ddd_fax column
  * @method PfjEnderecoQuery orderByFax($order = Criteria::ASC) Order by the fax column
+ * @method PfjEnderecoQuery orderByUsuarioApi($order = Criteria::ASC) Order by the usuario_api column
  *
  * @method PfjEnderecoQuery groupByIdPfjEndereco() Group by the id_pfj_endereco column
  * @method PfjEnderecoQuery groupByFkIdPjRegistro() Group by the fk_id_pj_registro column
@@ -62,6 +63,7 @@ use Model\PfjEnderecoQuery;
  * @method PfjEnderecoQuery groupByCelular() Group by the celular column
  * @method PfjEnderecoQuery groupByDddFax() Group by the ddd_fax column
  * @method PfjEnderecoQuery groupByFax() Group by the fax column
+ * @method PfjEnderecoQuery groupByUsuarioApi() Group by the usuario_api column
  *
  * @method PfjEnderecoQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method PfjEnderecoQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -90,6 +92,7 @@ use Model\PfjEnderecoQuery;
  * @method PfjEndereco findOneByCelular(string $celular) Return the first PfjEndereco filtered by the celular column
  * @method PfjEndereco findOneByDddFax(string $ddd_fax) Return the first PfjEndereco filtered by the ddd_fax column
  * @method PfjEndereco findOneByFax(string $fax) Return the first PfjEndereco filtered by the fax column
+ * @method PfjEndereco findOneByUsuarioApi(string $usuario_api) Return the first PfjEndereco filtered by the usuario_api column
  *
  * @method array findByIdPfjEndereco(int $id_pfj_endereco) Return PfjEndereco objects filtered by the id_pfj_endereco column
  * @method array findByFkIdPjRegistro(int $fk_id_pj_registro) Return PfjEndereco objects filtered by the fk_id_pj_registro column
@@ -112,6 +115,7 @@ use Model\PfjEnderecoQuery;
  * @method array findByCelular(string $celular) Return PfjEndereco objects filtered by the celular column
  * @method array findByDddFax(string $ddd_fax) Return PfjEndereco objects filtered by the ddd_fax column
  * @method array findByFax(string $fax) Return PfjEndereco objects filtered by the fax column
+ * @method array findByUsuarioApi(string $usuario_api) Return PfjEndereco objects filtered by the usuario_api column
  *
  * @package    propel.generator.siscad.om
  */
@@ -219,7 +223,7 @@ abstract class BasePfjEnderecoQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id_pfj_endereco`, `fk_id_pj_registro`, `fk_id_pf_inscricao`, `fk_id_tab_uf`, `fk_id_tab_cep_cidade`, `endereco`, `bairro`, `cidade`, `cep`, `uf`, `fk_id_tab_correio`, `dt_atualizacao`, `dt_atualizacao_web`, `email`, `ddd_tel`, `telefone`, `ramal`, `ddd_cel`, `celular`, `ddd_fax`, `fax` FROM `pfj_endereco` WHERE `id_pfj_endereco` = :p0';
+        $sql = 'SELECT `id_pfj_endereco`, `fk_id_pj_registro`, `fk_id_pf_inscricao`, `fk_id_tab_uf`, `fk_id_tab_cep_cidade`, `endereco`, `bairro`, `cidade`, `cep`, `uf`, `fk_id_tab_correio`, `dt_atualizacao`, `dt_atualizacao_web`, `email`, `ddd_tel`, `telefone`, `ramal`, `ddd_cel`, `celular`, `ddd_fax`, `fax`, `usuario_api` FROM `pfj_endereco` WHERE `id_pfj_endereco` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1021,6 +1025,35 @@ abstract class BasePfjEnderecoQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PfjEnderecoPeer::FAX, $fax, $comparison);
+    }
+
+    /**
+     * Filter the query on the usuario_api column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUsuarioApi('fooValue');   // WHERE usuario_api = 'fooValue'
+     * $query->filterByUsuarioApi('%fooValue%'); // WHERE usuario_api LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $usuarioApi The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PfjEnderecoQuery The current query, for fluid interface
+     */
+    public function filterByUsuarioApi($usuarioApi = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($usuarioApi)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $usuarioApi)) {
+                $usuarioApi = str_replace('*', '%', $usuarioApi);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PfjEnderecoPeer::USUARIO_API, $usuarioApi, $comparison);
     }
 
     /**

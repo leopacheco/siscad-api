@@ -66,7 +66,7 @@ class PfjEndereco extends BasePfjEndereco
       $tableMap = new map\PfjEnderecoTableMap();
 
       if($tableMap->hasColumnByPhpName($key)){
-        if(in_array($key, $_enderecoFisico)){
+        if(in_array($key, $this->_enderecoFisico)){
           $flagEndereco = true;
         }
         $value = \Utils\Utils::sanitize($value, $tableMap->getColumnByPhpName($key)->getType());
@@ -80,9 +80,9 @@ class PfjEndereco extends BasePfjEndereco
         $log->setValorAtual(json_encode($query->toArray()));
         $log->save();
         if($flagEndereco){
-          $query->DtAtualizacaoWeb = date("Y-m-d");
-          $query->FkIdTabCorreio = 0;
-          $query->UsuarioApi = $this->_getUsuarioApi($logId). '|' .$log->getId();
+          $query->setDtAtualizacaoWeb(date("Y-m-d"));
+          $query->setFkIdTabCorreio(0);
+          $query->setUsuarioApi($this->_getUsuarioApi($logId). '|' .$log->getId());
         }
 
         $query->save();
@@ -172,8 +172,8 @@ class PfjEndereco extends BasePfjEndereco
   }
 
   private function _getUsuarioApi($logId){
-    $logReq = LogRequisicao::create()->findPK($logId);
-    $user = Usuario::create()->findPK($logReq->getUsuarioId());
+    $logReq = LogRequisicaoQuery::create()->findPK($logId);
+    $user = UsuarioQuery::create()->findPK($logReq->getUsuarioId());
     return $user->getNome();
   }
 

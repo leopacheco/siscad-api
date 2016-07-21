@@ -25,3 +25,10 @@ $app->put('/inscricao/:id', function ($id = null) use ($app) {
   $response = $controller->setInscricao($id, $params, $app->log->getId());
   $app->response->body($response);
 });
+
+//consulta profissional inadimplente
+$app->get('/inadimplente/:id', function ($id = null) use ($app) {
+  $controller = new Controller\ Inscricao;
+  $response = $controller->getInadimplente($id);
+  $app->response->body($response);
+});

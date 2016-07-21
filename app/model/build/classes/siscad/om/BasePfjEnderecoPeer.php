@@ -36,13 +36,13 @@ abstract class BasePfjEnderecoPeer
     const TM_CLASS = 'Model\\map\\PfjEnderecoTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 21;
+    const NUM_COLUMNS = 22;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 21;
+    const NUM_HYDRATE_COLUMNS = 22;
 
     /** the column name for the id_pfj_endereco field */
     const ID_PFJ_ENDERECO = 'pfj_endereco.id_pfj_endereco';
@@ -107,6 +107,9 @@ abstract class BasePfjEnderecoPeer
     /** the column name for the fax field */
     const FAX = 'pfj_endereco.fax';
 
+    /** the column name for the usuario_api field */
+    const USUARIO_API = 'pfj_endereco.usuario_api';
+
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
@@ -126,12 +129,12 @@ abstract class BasePfjEnderecoPeer
      * e.g. PfjEnderecoPeer::$fieldNames[PfjEnderecoPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('IdPfjEndereco', 'FkIdPjRegistro', 'FkIdPfInscricao', 'FkIdTabUf', 'FkIdTabCepCidade', 'Endereco', 'Bairro', 'Cidade', 'Cep', 'Uf', 'FkIdTabCorreio', 'DtAtualizacao', 'DtAtualizacaoWeb', 'Email', 'DddTel', 'Telefone', 'Ramal', 'DddCel', 'Celular', 'DddFax', 'Fax', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idPfjEndereco', 'fkIdPjRegistro', 'fkIdPfInscricao', 'fkIdTabUf', 'fkIdTabCepCidade', 'endereco', 'bairro', 'cidade', 'cep', 'uf', 'fkIdTabCorreio', 'dtAtualizacao', 'dtAtualizacaoWeb', 'email', 'dddTel', 'telefone', 'ramal', 'dddCel', 'celular', 'dddFax', 'fax', ),
-        BasePeer::TYPE_COLNAME => array (PfjEnderecoPeer::ID_PFJ_ENDERECO, PfjEnderecoPeer::FK_ID_PJ_REGISTRO, PfjEnderecoPeer::FK_ID_PF_INSCRICAO, PfjEnderecoPeer::FK_ID_TAB_UF, PfjEnderecoPeer::FK_ID_TAB_CEP_CIDADE, PfjEnderecoPeer::ENDERECO, PfjEnderecoPeer::BAIRRO, PfjEnderecoPeer::CIDADE, PfjEnderecoPeer::CEP, PfjEnderecoPeer::UF, PfjEnderecoPeer::FK_ID_TAB_CORREIO, PfjEnderecoPeer::DT_ATUALIZACAO, PfjEnderecoPeer::DT_ATUALIZACAO_WEB, PfjEnderecoPeer::EMAIL, PfjEnderecoPeer::DDD_TEL, PfjEnderecoPeer::TELEFONE, PfjEnderecoPeer::RAMAL, PfjEnderecoPeer::DDD_CEL, PfjEnderecoPeer::CELULAR, PfjEnderecoPeer::DDD_FAX, PfjEnderecoPeer::FAX, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID_PFJ_ENDERECO', 'FK_ID_PJ_REGISTRO', 'FK_ID_PF_INSCRICAO', 'FK_ID_TAB_UF', 'FK_ID_TAB_CEP_CIDADE', 'ENDERECO', 'BAIRRO', 'CIDADE', 'CEP', 'UF', 'FK_ID_TAB_CORREIO', 'DT_ATUALIZACAO', 'DT_ATUALIZACAO_WEB', 'EMAIL', 'DDD_TEL', 'TELEFONE', 'RAMAL', 'DDD_CEL', 'CELULAR', 'DDD_FAX', 'FAX', ),
-        BasePeer::TYPE_FIELDNAME => array ('id_pfj_endereco', 'fk_id_pj_registro', 'fk_id_pf_inscricao', 'fk_id_tab_uf', 'fk_id_tab_cep_cidade', 'endereco', 'bairro', 'cidade', 'cep', 'uf', 'fk_id_tab_correio', 'dt_atualizacao', 'dt_atualizacao_web', 'email', 'ddd_tel', 'telefone', 'ramal', 'ddd_cel', 'celular', 'ddd_fax', 'fax', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, )
+        BasePeer::TYPE_PHPNAME => array ('IdPfjEndereco', 'FkIdPjRegistro', 'FkIdPfInscricao', 'FkIdTabUf', 'FkIdTabCepCidade', 'Endereco', 'Bairro', 'Cidade', 'Cep', 'Uf', 'FkIdTabCorreio', 'DtAtualizacao', 'DtAtualizacaoWeb', 'Email', 'DddTel', 'Telefone', 'Ramal', 'DddCel', 'Celular', 'DddFax', 'Fax', 'UsuarioApi', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idPfjEndereco', 'fkIdPjRegistro', 'fkIdPfInscricao', 'fkIdTabUf', 'fkIdTabCepCidade', 'endereco', 'bairro', 'cidade', 'cep', 'uf', 'fkIdTabCorreio', 'dtAtualizacao', 'dtAtualizacaoWeb', 'email', 'dddTel', 'telefone', 'ramal', 'dddCel', 'celular', 'dddFax', 'fax', 'usuarioApi', ),
+        BasePeer::TYPE_COLNAME => array (PfjEnderecoPeer::ID_PFJ_ENDERECO, PfjEnderecoPeer::FK_ID_PJ_REGISTRO, PfjEnderecoPeer::FK_ID_PF_INSCRICAO, PfjEnderecoPeer::FK_ID_TAB_UF, PfjEnderecoPeer::FK_ID_TAB_CEP_CIDADE, PfjEnderecoPeer::ENDERECO, PfjEnderecoPeer::BAIRRO, PfjEnderecoPeer::CIDADE, PfjEnderecoPeer::CEP, PfjEnderecoPeer::UF, PfjEnderecoPeer::FK_ID_TAB_CORREIO, PfjEnderecoPeer::DT_ATUALIZACAO, PfjEnderecoPeer::DT_ATUALIZACAO_WEB, PfjEnderecoPeer::EMAIL, PfjEnderecoPeer::DDD_TEL, PfjEnderecoPeer::TELEFONE, PfjEnderecoPeer::RAMAL, PfjEnderecoPeer::DDD_CEL, PfjEnderecoPeer::CELULAR, PfjEnderecoPeer::DDD_FAX, PfjEnderecoPeer::FAX, PfjEnderecoPeer::USUARIO_API, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID_PFJ_ENDERECO', 'FK_ID_PJ_REGISTRO', 'FK_ID_PF_INSCRICAO', 'FK_ID_TAB_UF', 'FK_ID_TAB_CEP_CIDADE', 'ENDERECO', 'BAIRRO', 'CIDADE', 'CEP', 'UF', 'FK_ID_TAB_CORREIO', 'DT_ATUALIZACAO', 'DT_ATUALIZACAO_WEB', 'EMAIL', 'DDD_TEL', 'TELEFONE', 'RAMAL', 'DDD_CEL', 'CELULAR', 'DDD_FAX', 'FAX', 'USUARIO_API', ),
+        BasePeer::TYPE_FIELDNAME => array ('id_pfj_endereco', 'fk_id_pj_registro', 'fk_id_pf_inscricao', 'fk_id_tab_uf', 'fk_id_tab_cep_cidade', 'endereco', 'bairro', 'cidade', 'cep', 'uf', 'fk_id_tab_correio', 'dt_atualizacao', 'dt_atualizacao_web', 'email', 'ddd_tel', 'telefone', 'ramal', 'ddd_cel', 'celular', 'ddd_fax', 'fax', 'usuario_api', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, )
     );
 
     /**
@@ -141,12 +144,12 @@ abstract class BasePfjEnderecoPeer
      * e.g. PfjEnderecoPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('IdPfjEndereco' => 0, 'FkIdPjRegistro' => 1, 'FkIdPfInscricao' => 2, 'FkIdTabUf' => 3, 'FkIdTabCepCidade' => 4, 'Endereco' => 5, 'Bairro' => 6, 'Cidade' => 7, 'Cep' => 8, 'Uf' => 9, 'FkIdTabCorreio' => 10, 'DtAtualizacao' => 11, 'DtAtualizacaoWeb' => 12, 'Email' => 13, 'DddTel' => 14, 'Telefone' => 15, 'Ramal' => 16, 'DddCel' => 17, 'Celular' => 18, 'DddFax' => 19, 'Fax' => 20, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('idPfjEndereco' => 0, 'fkIdPjRegistro' => 1, 'fkIdPfInscricao' => 2, 'fkIdTabUf' => 3, 'fkIdTabCepCidade' => 4, 'endereco' => 5, 'bairro' => 6, 'cidade' => 7, 'cep' => 8, 'uf' => 9, 'fkIdTabCorreio' => 10, 'dtAtualizacao' => 11, 'dtAtualizacaoWeb' => 12, 'email' => 13, 'dddTel' => 14, 'telefone' => 15, 'ramal' => 16, 'dddCel' => 17, 'celular' => 18, 'dddFax' => 19, 'fax' => 20, ),
-        BasePeer::TYPE_COLNAME => array (PfjEnderecoPeer::ID_PFJ_ENDERECO => 0, PfjEnderecoPeer::FK_ID_PJ_REGISTRO => 1, PfjEnderecoPeer::FK_ID_PF_INSCRICAO => 2, PfjEnderecoPeer::FK_ID_TAB_UF => 3, PfjEnderecoPeer::FK_ID_TAB_CEP_CIDADE => 4, PfjEnderecoPeer::ENDERECO => 5, PfjEnderecoPeer::BAIRRO => 6, PfjEnderecoPeer::CIDADE => 7, PfjEnderecoPeer::CEP => 8, PfjEnderecoPeer::UF => 9, PfjEnderecoPeer::FK_ID_TAB_CORREIO => 10, PfjEnderecoPeer::DT_ATUALIZACAO => 11, PfjEnderecoPeer::DT_ATUALIZACAO_WEB => 12, PfjEnderecoPeer::EMAIL => 13, PfjEnderecoPeer::DDD_TEL => 14, PfjEnderecoPeer::TELEFONE => 15, PfjEnderecoPeer::RAMAL => 16, PfjEnderecoPeer::DDD_CEL => 17, PfjEnderecoPeer::CELULAR => 18, PfjEnderecoPeer::DDD_FAX => 19, PfjEnderecoPeer::FAX => 20, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID_PFJ_ENDERECO' => 0, 'FK_ID_PJ_REGISTRO' => 1, 'FK_ID_PF_INSCRICAO' => 2, 'FK_ID_TAB_UF' => 3, 'FK_ID_TAB_CEP_CIDADE' => 4, 'ENDERECO' => 5, 'BAIRRO' => 6, 'CIDADE' => 7, 'CEP' => 8, 'UF' => 9, 'FK_ID_TAB_CORREIO' => 10, 'DT_ATUALIZACAO' => 11, 'DT_ATUALIZACAO_WEB' => 12, 'EMAIL' => 13, 'DDD_TEL' => 14, 'TELEFONE' => 15, 'RAMAL' => 16, 'DDD_CEL' => 17, 'CELULAR' => 18, 'DDD_FAX' => 19, 'FAX' => 20, ),
-        BasePeer::TYPE_FIELDNAME => array ('id_pfj_endereco' => 0, 'fk_id_pj_registro' => 1, 'fk_id_pf_inscricao' => 2, 'fk_id_tab_uf' => 3, 'fk_id_tab_cep_cidade' => 4, 'endereco' => 5, 'bairro' => 6, 'cidade' => 7, 'cep' => 8, 'uf' => 9, 'fk_id_tab_correio' => 10, 'dt_atualizacao' => 11, 'dt_atualizacao_web' => 12, 'email' => 13, 'ddd_tel' => 14, 'telefone' => 15, 'ramal' => 16, 'ddd_cel' => 17, 'celular' => 18, 'ddd_fax' => 19, 'fax' => 20, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, )
+        BasePeer::TYPE_PHPNAME => array ('IdPfjEndereco' => 0, 'FkIdPjRegistro' => 1, 'FkIdPfInscricao' => 2, 'FkIdTabUf' => 3, 'FkIdTabCepCidade' => 4, 'Endereco' => 5, 'Bairro' => 6, 'Cidade' => 7, 'Cep' => 8, 'Uf' => 9, 'FkIdTabCorreio' => 10, 'DtAtualizacao' => 11, 'DtAtualizacaoWeb' => 12, 'Email' => 13, 'DddTel' => 14, 'Telefone' => 15, 'Ramal' => 16, 'DddCel' => 17, 'Celular' => 18, 'DddFax' => 19, 'Fax' => 20, 'UsuarioApi' => 21, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('idPfjEndereco' => 0, 'fkIdPjRegistro' => 1, 'fkIdPfInscricao' => 2, 'fkIdTabUf' => 3, 'fkIdTabCepCidade' => 4, 'endereco' => 5, 'bairro' => 6, 'cidade' => 7, 'cep' => 8, 'uf' => 9, 'fkIdTabCorreio' => 10, 'dtAtualizacao' => 11, 'dtAtualizacaoWeb' => 12, 'email' => 13, 'dddTel' => 14, 'telefone' => 15, 'ramal' => 16, 'dddCel' => 17, 'celular' => 18, 'dddFax' => 19, 'fax' => 20, 'usuarioApi' => 21, ),
+        BasePeer::TYPE_COLNAME => array (PfjEnderecoPeer::ID_PFJ_ENDERECO => 0, PfjEnderecoPeer::FK_ID_PJ_REGISTRO => 1, PfjEnderecoPeer::FK_ID_PF_INSCRICAO => 2, PfjEnderecoPeer::FK_ID_TAB_UF => 3, PfjEnderecoPeer::FK_ID_TAB_CEP_CIDADE => 4, PfjEnderecoPeer::ENDERECO => 5, PfjEnderecoPeer::BAIRRO => 6, PfjEnderecoPeer::CIDADE => 7, PfjEnderecoPeer::CEP => 8, PfjEnderecoPeer::UF => 9, PfjEnderecoPeer::FK_ID_TAB_CORREIO => 10, PfjEnderecoPeer::DT_ATUALIZACAO => 11, PfjEnderecoPeer::DT_ATUALIZACAO_WEB => 12, PfjEnderecoPeer::EMAIL => 13, PfjEnderecoPeer::DDD_TEL => 14, PfjEnderecoPeer::TELEFONE => 15, PfjEnderecoPeer::RAMAL => 16, PfjEnderecoPeer::DDD_CEL => 17, PfjEnderecoPeer::CELULAR => 18, PfjEnderecoPeer::DDD_FAX => 19, PfjEnderecoPeer::FAX => 20, PfjEnderecoPeer::USUARIO_API => 21, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID_PFJ_ENDERECO' => 0, 'FK_ID_PJ_REGISTRO' => 1, 'FK_ID_PF_INSCRICAO' => 2, 'FK_ID_TAB_UF' => 3, 'FK_ID_TAB_CEP_CIDADE' => 4, 'ENDERECO' => 5, 'BAIRRO' => 6, 'CIDADE' => 7, 'CEP' => 8, 'UF' => 9, 'FK_ID_TAB_CORREIO' => 10, 'DT_ATUALIZACAO' => 11, 'DT_ATUALIZACAO_WEB' => 12, 'EMAIL' => 13, 'DDD_TEL' => 14, 'TELEFONE' => 15, 'RAMAL' => 16, 'DDD_CEL' => 17, 'CELULAR' => 18, 'DDD_FAX' => 19, 'FAX' => 20, 'USUARIO_API' => 21, ),
+        BasePeer::TYPE_FIELDNAME => array ('id_pfj_endereco' => 0, 'fk_id_pj_registro' => 1, 'fk_id_pf_inscricao' => 2, 'fk_id_tab_uf' => 3, 'fk_id_tab_cep_cidade' => 4, 'endereco' => 5, 'bairro' => 6, 'cidade' => 7, 'cep' => 8, 'uf' => 9, 'fk_id_tab_correio' => 10, 'dt_atualizacao' => 11, 'dt_atualizacao_web' => 12, 'email' => 13, 'ddd_tel' => 14, 'telefone' => 15, 'ramal' => 16, 'ddd_cel' => 17, 'celular' => 18, 'ddd_fax' => 19, 'fax' => 20, 'usuario_api' => 21, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, )
     );
 
     /**
@@ -241,6 +244,7 @@ abstract class BasePfjEnderecoPeer
             $criteria->addSelectColumn(PfjEnderecoPeer::CELULAR);
             $criteria->addSelectColumn(PfjEnderecoPeer::DDD_FAX);
             $criteria->addSelectColumn(PfjEnderecoPeer::FAX);
+            $criteria->addSelectColumn(PfjEnderecoPeer::USUARIO_API);
         } else {
             $criteria->addSelectColumn($alias . '.id_pfj_endereco');
             $criteria->addSelectColumn($alias . '.fk_id_pj_registro');
@@ -263,6 +267,7 @@ abstract class BasePfjEnderecoPeer
             $criteria->addSelectColumn($alias . '.celular');
             $criteria->addSelectColumn($alias . '.ddd_fax');
             $criteria->addSelectColumn($alias . '.fax');
+            $criteria->addSelectColumn($alias . '.usuario_api');
         }
     }
 
@@ -801,51 +806,6 @@ abstract class BasePfjEnderecoPeer
                 }
             }
         } else {
-
-        if ($obj->isNew() || $obj->isColumnModified(PfjEnderecoPeer::ENDERECO))
-            $columns[PfjEnderecoPeer::ENDERECO] = $obj->getEndereco();
-
-        if ($obj->isNew() || $obj->isColumnModified(PfjEnderecoPeer::BAIRRO))
-            $columns[PfjEnderecoPeer::BAIRRO] = $obj->getBairro();
-
-        if ($obj->isNew() || $obj->isColumnModified(PfjEnderecoPeer::CIDADE))
-            $columns[PfjEnderecoPeer::CIDADE] = $obj->getCidade();
-
-        if ($obj->isNew() || $obj->isColumnModified(PfjEnderecoPeer::CEP))
-            $columns[PfjEnderecoPeer::CEP] = $obj->getCep();
-
-        if ($obj->isNew() || $obj->isColumnModified(PfjEnderecoPeer::UF))
-            $columns[PfjEnderecoPeer::UF] = $obj->getUf();
-
-        if ($obj->isNew() || $obj->isColumnModified(PfjEnderecoPeer::DT_ATUALIZACAO))
-            $columns[PfjEnderecoPeer::DT_ATUALIZACAO] = $obj->getDtAtualizacao();
-
-        if ($obj->isNew() || $obj->isColumnModified(PfjEnderecoPeer::DT_ATUALIZACAO_WEB))
-            $columns[PfjEnderecoPeer::DT_ATUALIZACAO_WEB] = $obj->getDtAtualizacaoWeb();
-
-        if ($obj->isNew() || $obj->isColumnModified(PfjEnderecoPeer::EMAIL))
-            $columns[PfjEnderecoPeer::EMAIL] = $obj->getEmail();
-
-        if ($obj->isNew() || $obj->isColumnModified(PfjEnderecoPeer::DDD_TEL))
-            $columns[PfjEnderecoPeer::DDD_TEL] = $obj->getDddTel();
-
-        if ($obj->isNew() || $obj->isColumnModified(PfjEnderecoPeer::TELEFONE))
-            $columns[PfjEnderecoPeer::TELEFONE] = $obj->getTelefone();
-
-        if ($obj->isNew() || $obj->isColumnModified(PfjEnderecoPeer::RAMAL))
-            $columns[PfjEnderecoPeer::RAMAL] = $obj->getRamal();
-
-        if ($obj->isNew() || $obj->isColumnModified(PfjEnderecoPeer::DDD_CEL))
-            $columns[PfjEnderecoPeer::DDD_CEL] = $obj->getDddCel();
-
-        if ($obj->isNew() || $obj->isColumnModified(PfjEnderecoPeer::CELULAR))
-            $columns[PfjEnderecoPeer::CELULAR] = $obj->getCelular();
-
-        if ($obj->isNew() || $obj->isColumnModified(PfjEnderecoPeer::DDD_FAX))
-            $columns[PfjEnderecoPeer::DDD_FAX] = $obj->getDddFax();
-
-        if ($obj->isNew() || $obj->isColumnModified(PfjEnderecoPeer::FAX))
-            $columns[PfjEnderecoPeer::FAX] = $obj->getFax();
 
         }
 

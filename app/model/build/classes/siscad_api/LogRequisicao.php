@@ -20,7 +20,7 @@ class LogRequisicao extends BaseLogRequisicao
 {
 
   public static function validateNonce($userId, $nonce){
-  $query = LogRequisicaoQuery::create()
+    $query = LogRequisicaoQuery::create()
                           ->filterByNonce($nonce)
                           ->findOneByUsuarioId($userId);
   if(is_null($query)){

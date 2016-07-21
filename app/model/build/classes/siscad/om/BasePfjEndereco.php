@@ -172,6 +172,12 @@ abstract class BasePfjEndereco extends BaseObject implements Persistent
     protected $fax;
 
     /**
+     * The value for the usuario_api field.
+     * @var        string
+     */
+    protected $usuario_api;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      * @var        boolean
@@ -478,6 +484,17 @@ abstract class BasePfjEndereco extends BaseObject implements Persistent
     {
 
         return $this->fax;
+    }
+
+    /**
+     * Get the [usuario_api] column value.
+     *
+     * @return string
+     */
+    public function getUsuarioApi()
+    {
+
+        return $this->usuario_api;
     }
 
     /**
@@ -926,6 +943,27 @@ abstract class BasePfjEndereco extends BaseObject implements Persistent
     } // setFax()
 
     /**
+     * Set the value of [usuario_api] column.
+     *
+     * @param  string $v new value
+     * @return PfjEndereco The current object (for fluent API support)
+     */
+    public function setUsuarioApi($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->usuario_api !== $v) {
+            $this->usuario_api = $v;
+            $this->modifiedColumns[] = PfjEnderecoPeer::USUARIO_API;
+        }
+
+
+        return $this;
+    } // setUsuarioApi()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -978,6 +1016,7 @@ abstract class BasePfjEndereco extends BaseObject implements Persistent
             $this->celular = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
             $this->ddd_fax = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
             $this->fax = ($row[$startcol + 20] !== null) ? (string) $row[$startcol + 20] : null;
+            $this->usuario_api = ($row[$startcol + 21] !== null) ? (string) $row[$startcol + 21] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -987,7 +1026,7 @@ abstract class BasePfjEndereco extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 21; // 21 = PfjEnderecoPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 22; // 22 = PfjEnderecoPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PfjEndereco object", $e);
@@ -1262,6 +1301,9 @@ abstract class BasePfjEndereco extends BaseObject implements Persistent
         if ($this->isColumnModified(PfjEnderecoPeer::FAX)) {
             $modifiedColumns[':p' . $index++]  = '`fax`';
         }
+        if ($this->isColumnModified(PfjEnderecoPeer::USUARIO_API)) {
+            $modifiedColumns[':p' . $index++]  = '`usuario_api`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `pfj_endereco` (%s) VALUES (%s)',
@@ -1335,6 +1377,9 @@ abstract class BasePfjEndereco extends BaseObject implements Persistent
                         break;
                     case '`fax`':
                         $stmt->bindValue($identifier, $this->fax, PDO::PARAM_STR);
+                        break;
+                    case '`usuario_api`':
+                        $stmt->bindValue($identifier, $this->usuario_api, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1533,6 +1578,9 @@ abstract class BasePfjEndereco extends BaseObject implements Persistent
             case 20:
                 return $this->getFax();
                 break;
+            case 21:
+                return $this->getUsuarioApi();
+                break;
             default:
                 return null;
                 break;
@@ -1582,6 +1630,7 @@ abstract class BasePfjEndereco extends BaseObject implements Persistent
             $keys[18] => $this->getCelular(),
             $keys[19] => $this->getDddFax(),
             $keys[20] => $this->getFax(),
+            $keys[21] => $this->getUsuarioApi(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1684,6 +1733,9 @@ abstract class BasePfjEndereco extends BaseObject implements Persistent
             case 20:
                 $this->setFax($value);
                 break;
+            case 21:
+                $this->setUsuarioApi($value);
+                break;
         } // switch()
     }
 
@@ -1729,6 +1781,7 @@ abstract class BasePfjEndereco extends BaseObject implements Persistent
         if (array_key_exists($keys[18], $arr)) $this->setCelular($arr[$keys[18]]);
         if (array_key_exists($keys[19], $arr)) $this->setDddFax($arr[$keys[19]]);
         if (array_key_exists($keys[20], $arr)) $this->setFax($arr[$keys[20]]);
+        if (array_key_exists($keys[21], $arr)) $this->setUsuarioApi($arr[$keys[21]]);
     }
 
     /**
@@ -1761,6 +1814,7 @@ abstract class BasePfjEndereco extends BaseObject implements Persistent
         if ($this->isColumnModified(PfjEnderecoPeer::CELULAR)) $criteria->add(PfjEnderecoPeer::CELULAR, $this->celular);
         if ($this->isColumnModified(PfjEnderecoPeer::DDD_FAX)) $criteria->add(PfjEnderecoPeer::DDD_FAX, $this->ddd_fax);
         if ($this->isColumnModified(PfjEnderecoPeer::FAX)) $criteria->add(PfjEnderecoPeer::FAX, $this->fax);
+        if ($this->isColumnModified(PfjEnderecoPeer::USUARIO_API)) $criteria->add(PfjEnderecoPeer::USUARIO_API, $this->usuario_api);
 
         return $criteria;
     }
@@ -1844,6 +1898,7 @@ abstract class BasePfjEndereco extends BaseObject implements Persistent
         $copyObj->setCelular($this->getCelular());
         $copyObj->setDddFax($this->getDddFax());
         $copyObj->setFax($this->getFax());
+        $copyObj->setUsuarioApi($this->getUsuarioApi());
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setIdPfjEndereco(NULL); // this is a auto-increment column, so set to default value
@@ -1916,6 +1971,7 @@ abstract class BasePfjEndereco extends BaseObject implements Persistent
         $this->celular = null;
         $this->ddd_fax = null;
         $this->fax = null;
+        $this->usuario_api = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

@@ -121,6 +121,19 @@ class PfInscricao extends BasePfInscricao
     }
   }
 
+  public function getInadimplente($id){
+    $con = \Propel::getConnection();
+    $sql = "SELECT * FROM siscad.api_inadimplentes WHERE id_pf_inscricao = :id";
+    $stmt = $con->prepare($sql);
+    $stmt->execute(array(':id' => $id));
+    $query = $stmt->fetch();
+    if($query){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
   /*
 
   */
