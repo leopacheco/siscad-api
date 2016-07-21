@@ -18,6 +18,7 @@ use Model\om\BasePfjEndereco;
 
 class PfjEndereco extends BasePfjEndereco
 {
+  private $_enderecoFisico = array('Endereco', 'Bairro', 'Cidade', 'Cep', 'Uf');
 
   /*
   */
@@ -59,23 +60,36 @@ class PfjEndereco extends BasePfjEndereco
     $log = new LogAtividade();
     $log->setValorAnterior(json_encode($query->toArray()));
     $log->setLogRequisicaoId($logId);
-
+    $flagEndereco = false;
     foreach ($fields as $key => $value) {
       //verifica se o  campo existe na tabela
       $tableMap = new map\PfjEnderecoTableMap();
 
       if($tableMap->hasColumnByPhpName($key)){
-          $value = \Utils\Utils::sanitize($value, $tableMap->getColumnByPhpName($key)->getType());
-          $column = 'set'.$key;
-          $query->$column($value);
+        if(in_array($key, $_enderecoFisico)){
+          $flagEndereco = true;
+        }
+        $value = \Utils\Utils::sanitize($value, $tableMap->getColumnByPhpName($key)->getType());
+        $column = 'set'.$key;
+        $query->$column($value);
       }
     }
 
     if($query->validate()){
-      $query->save();
-      $log->setValorAtual(json_encode($query->toArray()));
-      $log->save();
-      return true;
+      if($this->_isAtuante($query->getFkIdPfInscricao())){
+        $log->setValorAtual(json_encode($query->toArray()));
+        $log->save();
+        if($flagEndereco){
+          $query->DtAtualizacaoWeb = date("Y-m-d");
+          $query->FkIdTabCorreio = 0;
+          $query->UsuarioApi = $this->_getUsuarioApi($logId). '|' .$log->getId();
+        }
+
+        $query->save();
+        return true;
+      }else{
+        throw new \Exception('Parâmetros inválidos', 400);
+      }
     }else{
       $errorMsg = '';
       foreach ($query->getValidationFailures() as $failure) {
@@ -143,5 +157,25 @@ class PfjEndereco extends BasePfjEndereco
       return null;
     }
   }
+
+  private function _isAtuante($FkIdPfInscricao){
+    $inscricao = PfInscricaoQuery::create()->findPK($FkIdPfInscricao);
+    if(!is_null($inscricao)){
+      if($inscricao->getAtuante() == 1){
+        return true;
+      }else{
+        return false;
+      }
+    }else{
+      return false;
+    }
+  }
+
+  private function _getUsuarioApi($logId){
+    $logReq = LogRequisicao::create()->findPK($logId);
+    $user = Usuario::create()->findPK($logReq->getUsuarioId());
+    return $user->getNome();
+  }
+
 
 }

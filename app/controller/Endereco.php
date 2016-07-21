@@ -23,7 +23,7 @@ class Endereco{
       $model->setEnderecoM($id, $fields, $logId);
       $response = 'Atualizado com sucesso';
     }else{
-      throw new Exception('Dados inválidos', 400);
+      throw new \Exception('Dados inválidos', 400);
     }
 
     return json_encode($response);

@@ -14,12 +14,12 @@ class Autenticacao extends \Slim\Middleware{
     $app = $this->app;
     $req = $app->request;
 
-    try{
-      $this->_authenticate($req);
-
-    }catch (\Exception $e) {
-      die($e->getMessage());
-    }
+    // try{
+    //   $this->_authenticate($req);
+    //
+    // }catch (\Exception $e) {
+    //   die($e->getMessage());
+    // }
       //nenhuma exceção foi lançada
       //prossegue com a requisição
     $this->next->call();
@@ -90,7 +90,6 @@ class Autenticacao extends \Slim\Middleware{
   }
 
   private function _log($userId, $ip){
-    $log = //new \Model\LogRequisicao();
     //recuperando o singleton de log injetado na aplicação
     $log = $this->app->log;
     $log->setUsuarioId($userId);
