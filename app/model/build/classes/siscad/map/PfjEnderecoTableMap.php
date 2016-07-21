@@ -65,6 +65,24 @@ class PfjEnderecoTableMap extends TableMap
         $this->addColumn('fax', 'Fax', 'VARCHAR', false, 15, null);
         $this->addColumn('usuario_api', 'UsuarioApi', 'VARCHAR', false, 40, null);
         // validators
+        $this->addValidator('endereco', 'maxLength', 'propel.validator.MaxLengthValidator', '50', 'Endereco: Tamanho máximo 50');
+        $this->addValidator('bairro', 'maxLength', 'propel.validator.MaxLengthValidator', '30', 'Bairro: Tamanho máximo 30');
+        $this->addValidator('cidade', 'maxLength', 'propel.validator.MaxLengthValidator', '40', 'Cidade: Tamanho máximo 40');
+        $this->addValidator('cep', 'maxLength', 'propel.validator.MaxLengthValidator', '9', 'Cep: Tamanho máximo 9');
+        $this->addValidator('uf', 'maxLength', 'propel.validator.MaxLengthValidator', '2', 'Uf: Tamanho máximo 2');
+        $this->addValidator('dt_atualizacao', 'maxLength', 'propel.validator.MaxLengthValidator', '', 'DtAtualizacao: Tamanho máximo ');
+        $this->addValidator('dt_atualizacao', 'type', 'propel.validator.TypeValidator', 'date', 'DtAtualizacao: formato inválido');
+        $this->addValidator('dt_atualizacao_web', 'maxLength', 'propel.validator.MaxLengthValidator', '', 'DtAtualizacaoWeb: Tamanho máximo ');
+        $this->addValidator('dt_atualizacao_web', 'type', 'propel.validator.TypeValidator', 'date', 'DtAtualizacaoWeb: formato inválido');
+        $this->addValidator('email', 'maxLength', 'propel.validator.MaxLengthValidator', '100', 'Email: Tamanho máximo 100');
+        $this->addValidator('email', 'match', 'propel.validator.MatchValidator', '/^([a-zA-Z0-9])+([\.a-zA-Z0-9_-])*@([a-zA-Z0-9])+(\.[a-zA-Z0-9_-]+)+$/', 'Email: formato inválido');
+        $this->addValidator('ddd_tel', 'maxLength', 'propel.validator.MaxLengthValidator', '2', 'DddTel: Tamanho máximo 2');
+        $this->addValidator('telefone', 'maxLength', 'propel.validator.MaxLengthValidator', '15', 'Telefone: Tamanho máximo 15');
+        $this->addValidator('ramal', 'maxLength', 'propel.validator.MaxLengthValidator', '5', 'Ramal: Tamanho máximo 5');
+        $this->addValidator('ddd_cel', 'maxLength', 'propel.validator.MaxLengthValidator', '2', 'DddCel: Tamanho máximo 2');
+        $this->addValidator('celular', 'maxLength', 'propel.validator.MaxLengthValidator', '15', 'Celular: Tamanho máximo 15');
+        $this->addValidator('ddd_fax', 'maxLength', 'propel.validator.MaxLengthValidator', '2', 'DddFax: Tamanho máximo 2');
+        $this->addValidator('fax', 'maxLength', 'propel.validator.MaxLengthValidator', '15', 'Fax: Tamanho máximo 15');
     } // initialize()
 
     /**

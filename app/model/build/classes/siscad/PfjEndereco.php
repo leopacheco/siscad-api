@@ -35,7 +35,7 @@ class PfjEndereco extends BasePfjEndereco
 
         return $response;
       }else{
-        throw new \Exception('Nenhum resultado encontrado', 400);
+        throw new \Exception('Nenhum resultado encontrado', 200);
       }
 
     }else{
@@ -44,7 +44,7 @@ class PfjEndereco extends BasePfjEndereco
       if(!is_null($query)){
         return $query->toArray();
       }else{
-        throw new \Exception('Nenhum resultado encontrado', 400);
+        throw new \Exception('Nenhum resultado encontrado', 200);
       }
     }
 
@@ -88,14 +88,14 @@ class PfjEndereco extends BasePfjEndereco
         $query->save();
         return true;
       }else{
-        throw new \Exception('Parâmetros inválidos', 400);
+        throw new \Exception('Parâmetros inválidos', 200);
       }
     }else{
       $errorMsg = '';
       foreach ($query->getValidationFailures() as $failure) {
         $errorMsg .= $failure->getMessage() . "\n";
       }
-      throw new \Exception($errorMsg, 400);
+      throw new \Exception($errorMsg, 200);
     }
 
   }
@@ -161,11 +161,7 @@ class PfjEndereco extends BasePfjEndereco
   private function _isAtuante($FkIdPfInscricao){
     $inscricao = PfInscricaoQuery::create()->findPK($FkIdPfInscricao);
     if(!is_null($inscricao)){
-      if($inscricao->getAtuante() == 1){
-        return true;
-      }else{
-        return false;
-      }
+      return $inscricao->getAtuante();
     }else{
       return false;
     }
